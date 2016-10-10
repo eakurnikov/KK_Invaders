@@ -54,6 +54,23 @@ TEST(point2d_test, test_equality)
   EXPECT_LT(p1, p3);
 }
 
+// Тестирование на перемещение
+TEST(point2d_test, test_move)
+{
+  Point2D p1 = { 1.0f, 2.0f };
+  Point2D p2 = { 3.0f, 4.0f };
+
+  // Оператор перемещения
+  p2 = std::move(p1);
+  EXPECT_EQ(p1, Point2D(3.0f, 4.0f));
+  EXPECT_EQ(p2, Point2D(1.0f, 2.0f));
+
+  // Конструктор перемещеиня
+  Point2D p3 = std::move(p1);
+  EXPECT_EQ(p1, Point2D(0.0f, 0.0f));
+  EXPECT_EQ(p3, Point2D(3.0f, 4.0f));
+}
+
 TEST(point2d_test, test_calculus)
 {
   Point2D p1 = { 1.2f, 2.4f };

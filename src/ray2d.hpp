@@ -10,8 +10,6 @@
 class Ray2D
 {
 public:
-
-
   // Конструкторы
 
   // Конструирование по умолчанию
@@ -38,21 +36,23 @@ public:
   // Конструктор со списком иниациализации
   Ray2D(std::initializer_list<float> const & lst);
 
+  // Конструктор перемещения
+  Ray2D(Ray2D && obj);
+
+  // Оператор перемещения
+  Ray2D & operator = (Ray2D && obj);
+
   // Методы
 
-  Point2D & initial();
+  // Изменить начало луча
+  void SetInitial(Point2D const & initial);
 
-  Point2D & direction();
+  // Изменить направления луча
+  void SetDirection (Point2D const & direction);
 
   Point2D const & initial() const;
 
   Point2D const & direction() const;
-
-  // Замена начальной точки луча
-  void MoveToPoint (Point2D const & initial);
-
-  // Измеение направления луча
-  void ChangeDirection (Point2D const & direction);
 
   // Поворот направление луча на degree градусов против часовой стрелки
   void RotateDirection (float const degree);

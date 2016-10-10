@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Конструктор с параметрами.
-Point2D::Point2D(float x, float y)
+Point2D::Point2D(float const x, float const y)
   : m_x(x)
   , m_y(y)
 {}
@@ -26,6 +26,13 @@ Point2D::Point2D(std::initializer_list<float> const & lst)
   }
 }
 
+// Конструктор перемещения.
+Point2D::Point2D(Point2D && obj)
+{
+  std::swap(m_x, obj.x());
+  std::swap(m_y, obj.y());
+}
+
 float & Point2D::x() { return m_x; }
 
 float & Point2D::y() { return m_y; }
@@ -37,9 +44,19 @@ float const & Point2D::y() const { return m_y; }
 // Оператор присваивания.
 Point2D & Point2D::operator = (Point2D const & obj)
 {
+  if (this == &obj) return *this;
   m_x = obj.m_x;
   m_y = obj.m_y;
 
+  return *this;
+}
+
+// Оператор перемещения.
+Point2D & Point2D::operator = (Point2D && obj)
+{
+  if (this == &obj) return *this;
+  std::swap(m_x, obj.m_x);
+  std::swap(m_y, obj.m_y);
   return *this;
 }
 
@@ -53,7 +70,7 @@ Point2D & Point2D::operator += (Point2D const & obj)
 }
 
 // Смещение сложением с числом.
-Point2D & Point2D::operator += (float delta)
+Point2D & Point2D::operator += (float const delta)
 {
   m_x += delta;
   m_y += delta;
@@ -71,7 +88,7 @@ Point2D & Point2D::operator -= (Point2D const & obj)
 }
 
 // Смещение вычитанием числа.
-Point2D & Point2D::operator -= (float delta)
+Point2D & Point2D::operator -= (float const delta)
 {
   m_x -= delta;
   m_y -= delta;
@@ -89,7 +106,7 @@ Point2D & Point2D::operator *= (Point2D const & obj)
 }
 
 // Смещение умножением на число.
-Point2D & Point2D::operator *= (float scale)
+Point2D & Point2D::operator *= (float const scale)
 {
   m_x *= scale;
   m_y *= scale;
@@ -108,7 +125,7 @@ Point2D & Point2D::operator /= (Point2D const & obj)
     return *this;
   }
 
-  catch(const std::exception & ex)
+  catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
 
@@ -117,7 +134,7 @@ Point2D & Point2D::operator /= (Point2D const & obj)
 }
 
 // Смещение делением на число.
-Point2D & Point2D::operator /= (float scale)
+Point2D & Point2D::operator /= (float const scale)
 {
   try
   {
@@ -126,7 +143,7 @@ Point2D & Point2D::operator /= (float scale)
 
     return *this;
   }
-  catch(const std::exception & ex)
+  catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
 
@@ -147,7 +164,7 @@ Point2D Point2D::operator - (Point2D const & obj) const
 }
 
 // Вычитание числа.
-Point2D Point2D::operator - (float scale) const
+Point2D Point2D::operator - (float const scale) const
 {
   return { m_x - scale, m_y - scale };
 }
@@ -159,25 +176,25 @@ Point2D Point2D::operator + (Point2D const & obj) const
 }
 
 // Сложение с числом.
-Point2D Point2D::operator + (float scale) const
+Point2D Point2D::operator + (float const scale) const
 {
   return { m_x + scale, m_y + scale };
 }
 
 // Умножение на число.
-Point2D Point2D::operator * (float scale)
+Point2D Point2D::operator * (float const scale) const
 {
   return { m_x * scale, m_y * scale };
 }
 
 // Деление на число.
-Point2D Point2D::operator / (float scale)
+Point2D Point2D::operator / (float const scale) const
 {
   try
   {
     return { m_x / scale, m_y / scale };
   }
-  catch(const std::exception& ex)
+  catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
 

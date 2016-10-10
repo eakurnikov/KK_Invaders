@@ -108,6 +108,22 @@ TEST(ray2d_test, test_equality)
   EXPECT_NE(r1, r3);
 }
 
+// Тестирование на перемещение
+TEST(ray2d_test, test_move)
+{
+  Ray2D r1 = { 1.0f, 2.0f, 3.0f, 4.0f };
+  Ray2D r2 = { 1.1f, 2.2f, 3.3f, 4.4f };
+
+  // Оператор перемещения
+  r1 = std::move(r2);
+  EXPECT_EQ(r1, Ray2D(1.1f, 2.2f, 3.3f, 4.4f));
+  EXPECT_EQ(r2, Ray2D(1.0f, 2.0f, 3.0f, 4.0f));
+
+  // Конструктор перемещеиня
+  Ray2D r3 = std::move(r1);
+  EXPECT_EQ(r3, Ray2D(1.1f, 2.2f, 3.3f, 4.4f));
+  EXPECT_EQ(r1, Ray2D(1.0f, 0.0f, 0.0f, 0.0f));
+}
 
 TEST(ray2d_test, test_calculus)
 {
@@ -117,12 +133,12 @@ TEST(ray2d_test, test_calculus)
 
   // Тестирование измения начальной точки
   Point2D p1 = { 5.0f, 6.0f };
-  r1.MoveToPoint(p1);
+  r1.SetInitial(p1);
   EXPECT_EQ(r1 , Ray2D(4.0f, 0.0f, 5.0f, 6.0f));
 
   // Тестирование изменения направления луча
   Point2D p2 = { 0.0f, 6.0f };
-  r1.ChangeDirection(p2);
+  r1.SetDirection(p2);
   EXPECT_EQ(r1 , Ray2D(0.0f, 1.0f, 5.0f, 6.0f));
 
   // Тестирование сдвига луча в горизонтальном направлении
