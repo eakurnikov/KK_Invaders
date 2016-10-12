@@ -1,22 +1,20 @@
 #include "ray2d.hpp"
 
-//float const kEps = 1e-5;
-
-#define PI 3.14159265
+#define M_PI 3.14159265358979323846
 
 // Конструкторы
 
 // Конструктор с заданием двух координат, определяющих направление луча
-Ray2D::Ray2D(float const direction_x, float const direction_y)
-  : m_direction(direction_x, direction_y)
+Ray2D::Ray2D(float const directionX, float const directionY)
+  : m_direction(directionX, directionY)
 {
   Normalize();
 }
 
 // Конструктор с заданием четырех координат, определяющих направление луча и его начало
-Ray2D::Ray2D(float const direction_x, float const direction_y, float const initial_x, float const initial_y)
-  : m_direction(direction_x, direction_y)
-  , m_initial(initial_x, initial_y)
+Ray2D::Ray2D(float const directionX, float const directionY, float const initialX, float const initialY)
+  : m_direction(directionX, directionY)
+  , m_initial(initialX, initialY)
 {
   Normalize();
 }
@@ -58,7 +56,6 @@ Ray2D::Ray2D(std::initializer_list<Point2D> const & lst)
 // Конструктор со списком иниациализации
 Ray2D::Ray2D(std::initializer_list<float> const & lst)
 {
-
   float * vals[] = { &m_direction.x(), &m_direction.y(), &m_initial.x(), &m_initial.y()};
   int const count = sizeof(vals) / sizeof(vals[0]);
   auto it = lst.begin();
@@ -69,6 +66,14 @@ Ray2D::Ray2D(std::initializer_list<float> const & lst)
   }
   Normalize();
 }
+
+// Конструктор перемещения
+Ray2D::Ray2D(Ray2D && obj)
+{
+  std::swap(m_initial, obj.m_initial);
+  std::swap(m_direction, obj.m_direction);
+}
+
 // Операторы
 
 // Оператор присваивания
@@ -77,6 +82,15 @@ Ray2D & Ray2D::operator = (Ray2D const & obj)
   if (this == &obj) return *this;
   m_initial = obj.m_initial;
   m_direction = obj.m_direction;
+  return *this;
+}
+
+// Оператор перемещения
+Ray2D & Ray2D::operator = (Ray2D && obj)
+{
+  if (this == &obj) return *this;
+  std::swap(m_initial, obj.m_initial);
+  std::swap(m_direction, obj.m_direction);
   return *this;
 }
 
@@ -100,39 +114,35 @@ Ray2D Ray2D::operator - () const
 
 // Методы
 
-Point2D & Ray2D::initial() { return m_initial; }
-
-Point2D & Ray2D::direction() { return m_direction; }
-
-Point2D const & Ray2D::initial() const { return m_initial; }
-
-Point2D const & Ray2D::direction() const { return m_direction; }
-
-// Замена начальной точки луча
-void Ray2D::MoveToPoint (Point2D const & initial)
+// Изменить начало луча
+void Ray2D::SetInitial(Point2D const & initial)
 {
   m_initial = initial;
 }
 
-// Измение направления луча
-void Ray2D::ChangeDirection (Point2D const & direction)
+// Изменить направления луча
+void Ray2D::SetDirection (Point2D const & direction)
 {
   m_direction = direction;
   Normalize();
 }
 
+Point2D const & Ray2D::initial() const { return m_initial; }
+
+Point2D const & Ray2D::direction() const { return m_direction; }
+
 // Поворот направление луча на degree градусов против часовой стрелки
 void Ray2D::RotateDirection (float const degree)
 {
   //TODO: обработать деление на 0
-  float deg = 180 / PI * atanf(fabs(m_direction.y() / m_direction.x())*PI/180);
+  float deg = 180 / M_PI * atanf(fabs(m_direction.y() / m_direction.x())*M_PI/180);
 
   if((m_direction.x() < 0) && (m_direction.y() > 0)) deg += 90;
   else if((m_direction.x() < 0) && (m_direction.y() < 0)) deg += 180;
   else if((m_direction.x() > 0) && (m_direction.y() < 0)) deg += 270;
 
-  m_direction.x() = cosf((degree + deg) * PI / 180);
-  m_direction.y() = sinf((degree + deg) * PI / 180);
+  m_direction.x() = cosf((degree + deg) * M_PI / 180);
+  m_direction.y() = sinf((degree + deg) * M_PI / 180);
   Normalize();
 }
 
@@ -199,10 +209,10 @@ bool Ray2D::Intersection(Point2D const & p1, Point2D const & p2) const
 // Проверка на пересечение луча и прямоугольника
 bool Ray2D::Intersection(Box2D const & obj) const
 {
-  return Intersection(obj.p1(), Point2D(obj.p1().x(), obj.p2().y()))
-         || Intersection(Point2D(obj.p1().x(), obj.p2().y()), obj.p2())
-         || Intersection(Point2D(obj.p2().x(), obj.p1().y()), obj.p2())
-         || Intersection(obj.p1(), Point2D(obj.p2().x(), obj.p1().y()));
+  return Intersection(obj.leftBottomPoint(), Point2D(obj.leftBottomPoint().x(), obj.rightTopPoint().y()))
+         || Intersection(Point2D(obj.leftBottomPoint().x(), obj.rightTopPoint().y()), obj.rightTopPoint())
+         || Intersection(Point2D(obj.rightTopPoint().x(), obj.leftBottomPoint().y()), obj.rightTopPoint())
+         || Intersection(obj.leftBottomPoint(), Point2D(obj.rightTopPoint().x(), obj.leftBottomPoint().y()));
 }
 
 //Вывод в поток

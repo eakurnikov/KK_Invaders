@@ -1,56 +1,58 @@
 #include "box2d.hpp"
 #include <iostream>
 
-//Конструктор с двумя координатами
-Box2D::Box2D(float const x2, float const y2)
-  : m_p2(x2, y2)
-{
-  CheckPoints();
-}
-
-//Конструктор с четырьмя координатами
+// Конструктор с четырьмя координатами
 Box2D::Box2D(float const x1, float const y1, float const x2, float const y2)
-  : m_p1(x1, y1)
-  , m_p2(x2, y2)
+  : m_leftBottomPoint(x1, y1)
+  , m_rightTopPoint(x2, y2)
 {
   CheckPoints();
 }
 
-//Конструктор с параметрами - точками.
-Box2D::Box2D(Point2D p1, Point2D p2)
-  : m_p1(p1)
-  , m_p2(p2)
+// Конструктор с двумя точками.
+Box2D::Box2D(Point2D const & leftBottomPoint, Point2D const & rightTopPoint)
+  : m_leftBottomPoint(leftBottomPoint)
+  , m_rightTopPoint(rightTopPoint)
 {
   CheckPoints();
 }
 
-//Конструктор с параметром - точкой.
-Box2D::Box2D(Point2D p1)
-  : m_p2(p1)
+// Конструктор с двумя координатами.
+Box2D::Box2D(float const x1, float const y1)
+  : m_leftBottomPoint(x1, y1)
+  , m_rightTopPoint(x1 + 1.0 , y1 + 1.0 )
 {
   CheckPoints();
 }
 
-//Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
-Box2D::Box2D(Point2D p1, float xSide, float ySide)
-  : m_p1(p1)
-  , m_p2(p1.x() + xSide, p1.y() + ySide)
+// Конструктор с точкой.
+Box2D::Box2D(Point2D const & leftBottomPoint)
+  : m_leftBottomPoint(leftBottomPoint)
+  , m_rightTopPoint(leftBottomPoint.x() + 1.0 , leftBottomPoint.y() + 1.0)
 {
   CheckPoints();
 }
 
-//Конструктор копирования.
+// Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
+Box2D::Box2D(Point2D const & leftBottomPoint, float const xSide, float const ySide)
+  : m_leftBottomPoint(leftBottomPoint)
+  , m_rightTopPoint(leftBottomPoint.x() + xSide, leftBottomPoint.y() + ySide)
+{
+  CheckPoints();
+}
+
+// Конструктор копирования.
 Box2D::Box2D(Box2D const & obj)
-  : m_p1(obj.p1())
-  , m_p2(obj.p2())
+  : m_leftBottomPoint(obj.leftBottomPoint())
+  , m_rightTopPoint(obj.rightTopPoint())
 {
   CheckPoints();
 }
 
-//Конструктор со списком инициализации из точек.
+// Конструктор со списком инициализации из точек.
 Box2D::Box2D(std::initializer_list<Point2D> const & lst)
 {
-  Point2D * arr[] = { & m_p1, & m_p2 };
+  Point2D * arr[] = { & m_leftBottomPoint, & m_rightTopPoint };
   int const count = sizeof(arr) / sizeof(arr[0]);
   auto it = lst.begin();
 
@@ -61,10 +63,10 @@ Box2D::Box2D(std::initializer_list<Point2D> const & lst)
   CheckPoints();
 }
 
-//Конструктор со списком инициализации из координат точек.
+// Конструктор со списком инициализации из координат точек.
 Box2D::Box2D(std::initializer_list<float> const & lst)
 {
-  float * arr[] = { & m_p1.x(), & m_p1.y(), & m_p2.x(), & m_p2.y() };
+  float * arr[] = { & m_leftBottomPoint.x(), & m_leftBottomPoint.y(), & m_rightTopPoint.x(), & m_rightTopPoint.y() };
   int const count = sizeof(arr) / sizeof(arr[0]);
   auto it = lst.begin();
 
@@ -75,65 +77,88 @@ Box2D::Box2D(std::initializer_list<float> const & lst)
   CheckPoints();
 }
 
-// Вернуть правую верхнюю вершину.
-Point2D & Box2D::p1()
+// Конструктор перемещения.
+Box2D::Box2D(Box2D && obj)
 {
-  return m_p1;
+  std::swap(m_leftBottomPoint, obj.m_leftBottomPoint);
+  std::swap(m_rightTopPoint, obj.m_rightTopPoint);
+}
+
+// Изменить левую нижнюю вершину.
+void Box2D::SetLeftBottomPoint(Point2D const & leftBottomPoint)
+{
+  m_rightTopPoint.x() = leftBottomPoint.x() + Width();
+  m_rightTopPoint.y() = leftBottomPoint.y() + Height();
+  m_leftBottomPoint = leftBottomPoint;
+  CheckPoints();
+}
+
+// Изменить верхнюю правую вершину.
+void Box2D::SetRightTopPoint(Point2D const & rightTopPoint)
+{
+  m_leftBottomPoint.x() = rightTopPoint.x() - Width();
+  m_rightTopPoint.y() = rightTopPoint.y() - Height();
+  m_rightTopPoint = rightTopPoint;
+  CheckPoints();
+}
+
+// Вернуть правую верхнюю вершину.
+Point2D const & Box2D::leftBottomPoint() const
+{
+  return m_leftBottomPoint;
 }
 
 // Вернуть левую нижнюю вершину.
-Point2D & Box2D::p2()
+Point2D const & Box2D::rightTopPoint() const
 {
-  return m_p2;
-}
-
-// Вернуть правую верхнюю вершину.
-Point2D const & Box2D::p1() const
-{
-  return m_p1;
-}
-
-// Вернуть левую нижнюю вершину.
-Point2D const & Box2D::p2() const
-{
-  return m_p2;
+  return m_rightTopPoint;
 }
 
 // Вернуть левую верхнюю вершину.
-Point2D const & Box2D::left_top_point() const
+Point2D const Box2D::leftTopPoint() const
 {
-  return { m_p1.x(), m_p2.y() };
+  return { m_leftBottomPoint.x(), m_rightTopPoint.y() };
 }
 
 // Вернуть правую нижнюю вершину.
-Point2D const & Box2D::right_bottom_point() const
+Point2D const Box2D::rightBottomPoint() const
 {
-  return { m_p2.x(), m_p1.y() };
+  return { m_rightTopPoint.x(), m_leftBottomPoint.y() };
 }
 
-// Оператор присваивания #1.
+// Оператор присваивания.
 Box2D & Box2D::operator = (Box2D const & obj)
 {
-  m_p1 = obj.p1();
-  m_p2 = obj.p2();
+  if (this == &obj) return *this;
+  m_leftBottomPoint = obj.leftBottomPoint();
+  m_rightTopPoint = obj.rightTopPoint();
 
+  return *this;
+}
+
+// Оператор перемещения.
+Box2D & Box2D::operator = (Box2D && obj)
+{
+  if (this == &obj) return *this;
+  m_leftBottomPoint = std::move(obj.m_leftBottomPoint);
+  m_rightTopPoint = std::move(obj.m_rightTopPoint);
   return *this;
 }
 
 //Смещение сложением с точкой.
 Box2D & Box2D::operator += (Point2D const & obj)
 {
-  m_p1 += obj;
-  m_p2 += obj;
+  m_leftBottomPoint += obj;
+  m_rightTopPoint += obj;
 
   return *this;
 }
 
 //Смещение сложением с числом.
-Box2D & Box2D::operator += (float delta)
+Box2D & Box2D::operator += (float const delta)
 {
-  m_p1 += delta;
-  m_p2 += delta;
+  m_leftBottomPoint += delta;
+  m_rightTopPoint += delta;
 
   return *this;
 }
@@ -141,17 +166,17 @@ Box2D & Box2D::operator += (float delta)
 //Смещение вычитанием точки.
 Box2D & Box2D::operator -= (Point2D const & obj)
 {
-  m_p1 -= obj;
-  m_p2 -= obj;
+  m_leftBottomPoint -= obj;
+  m_rightTopPoint -= obj;
 
   return *this;
 }
 
 //Смещение вычитанием числа.
-Box2D & Box2D::operator -= (float delta)
+Box2D & Box2D::operator -= (float const delta)
 {
-  m_p1 -= delta;
-  m_p2 -= delta;
+  m_leftBottomPoint -= delta;
+  m_rightTopPoint -= delta;
 
   return *this;
 }
@@ -159,8 +184,8 @@ Box2D & Box2D::operator -= (float delta)
 //Смещение умножением на точку.
 Box2D & Box2D::operator *= (Point2D const & obj)
 {
-  m_p1 *= obj;
-  m_p2 *= obj;
+  m_leftBottomPoint *= obj;
+  m_rightTopPoint *= obj;
 
   return *this;
 }
@@ -170,12 +195,12 @@ Box2D & Box2D::operator /= (Point2D const & obj)
 {
   try
   {
-    m_p1 /= obj;
-    m_p2 /= obj;
+    m_leftBottomPoint /= obj;
+    m_rightTopPoint /= obj;
 
     return *this;
   }
-  catch(const std::exception & ex)
+  catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
 
@@ -184,23 +209,23 @@ Box2D & Box2D::operator /= (Point2D const & obj)
 }
 
 //Масштабирование: увеличение.
-Box2D & Box2D::operator *= (float scale)
+Box2D & Box2D::operator *= (float const scale)
 {
-  m_p2 *= scale;
+  m_rightTopPoint *= scale;
 
   return *this;
 }
 
 //Масштабирование: уменьшение.
-Box2D & Box2D::operator /= (float scale)
+Box2D & Box2D::operator /= (float const scale)
 {
   try
   {
-    m_p2 /= scale;
+    m_rightTopPoint /= scale;
 
     return *this;
   }
-  catch(const std::exception & ex)
+  catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
 
@@ -213,35 +238,35 @@ Box2D & Box2D::operator /= (float scale)
 // Математическое отрицание.
 Box2D Box2D::operator - () const
 {
-  return { -m_p1, -m_p2 };
+  return { -m_leftBottomPoint, -m_rightTopPoint };
 }
 
 // Вычитание числа.
-Box2D Box2D::operator - (float scale) const
+Box2D Box2D::operator - (float const scale) const
 {
-  return { m_p1 - scale, m_p2 - scale };
+  return { m_leftBottomPoint - scale, m_rightTopPoint - scale };
 }
 
 // Сложение с числом.
-Box2D Box2D::operator + (float scale) const
+Box2D Box2D::operator + (float const scale) const
 {
-  return { m_p1 + scale, m_p2 + scale };
+  return { m_leftBottomPoint + scale, m_rightTopPoint + scale };
 }
 
 // Умножение на число.
-Box2D Box2D::operator * (float scale)
+Box2D Box2D::operator * (float const scale) const
 {
-  return { m_p1 * scale, m_p2 * scale };
+  return { m_leftBottomPoint * scale, m_rightTopPoint * scale };
 }
 
 // Деление на число.
-Box2D Box2D::operator / (float scale)
+Box2D Box2D::operator / (float const scale) const
 {
   try
   {
-    return {m_p1 / scale, m_p2 / scale};
+    return {m_leftBottomPoint / scale, m_rightTopPoint / scale};
   }
-  catch(const std::exception & ex)
+  catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
 
@@ -252,7 +277,7 @@ Box2D Box2D::operator / (float scale)
 // Оператор логического равенства.
 bool Box2D::operator == (Box2D const & obj) const
 {
-  return (m_p1 == obj.m_p1) && (m_p2 == obj.m_p2);
+  return (m_leftBottomPoint == obj.m_leftBottomPoint) && (m_rightTopPoint == obj.m_rightTopPoint);
 }
 
 // Оператор логического неравенства.
@@ -264,32 +289,32 @@ bool Box2D::operator != (Box2D const & obj) const
 // Вернуть центр.
 Point2D Box2D::GetCenter() const
 {
-  Point2D p = { (m_p1.x() + m_p2.x()) / 2 , (m_p1.y() + m_p2.y()) / 2 };
+  Point2D p = { (m_leftBottomPoint.x() + m_rightTopPoint.x()) / 2 , (m_leftBottomPoint.y() + m_rightTopPoint.y()) / 2 };
   return p;
 }
 
 // Вернуть высоту.
 float Box2D::Height() const
 {
-  return m_p2.y() - m_p1.y();
+  return m_rightTopPoint.y() - m_leftBottomPoint.y();
 }
 
 // Вернуть ширину.
 float Box2D::Width() const
 {
-  return m_p2.x() - m_p1.x();
+  return m_rightTopPoint.x() - m_leftBottomPoint.x();
 }
 
 // Вернуть периметр
 float Box2D::Perimeter() const
 {
-  return 2 * (m_p2.x() - m_p1.x()) + 2 * (m_p2.y() - m_p1.y());
+  return 2 * (m_rightTopPoint.x() - m_leftBottomPoint.x()) + 2 * (m_rightTopPoint.y() - m_leftBottomPoint.y());
 }
 
 // Вернуть площадь
 float Box2D::Area() const
 {
-  return (m_p2.x() - m_p1.x())*(m_p2.y() - m_p1.y());
+  return (m_rightTopPoint.x() - m_leftBottomPoint.x())*(m_rightTopPoint.y() - m_leftBottomPoint.y());
 }
 
 // Оператор меньше.
@@ -317,59 +342,57 @@ bool Box2D::operator >= (Box2D const & obj) const
 }
 
 // Переопределение оператора [].
-Point2D Box2D::operator [] (unsigned int index) const
+Point2D Box2D::operator [] (unsigned int const index) const
 {
   if (index >= 2)
   {
-  return {0.0, 0,0};
+    return {0.0, 0,0};
   }
   else
   {
-  return index == 0 ? m_p1 : m_p2;
+    return index == 0 ? m_leftBottomPoint : m_rightTopPoint;
   }
 }
 
 // Проверка корректности задания точек прямоугольника.
 void Box2D::CheckPoints()
 {
-  if(m_p2 < m_p1)
-  {
-  Point2D buffer = m_p1;
-  m_p1 = m_p2;
-  m_p2 = buffer;
-  }
+  Point2D p1 = Point2D(std::min(m_leftBottomPoint.x(), m_rightTopPoint.x()), std::min(m_leftBottomPoint.y(), m_rightTopPoint.y()));
+  Point2D p2 = Point2D(std::max(m_leftBottomPoint.x(), m_rightTopPoint.x()), std::max(m_leftBottomPoint.y(), m_rightTopPoint.y()));
+  m_leftBottomPoint = p1;
+  m_rightTopPoint = p2;
 }
 
 // Проверка, лежит ли точка в данном прямоугольнике.
 bool Box2D::IsPointInBox(Point2D const & obj) const
 {
-  return obj > m_p1 && obj < m_p2;
+  return obj > m_leftBottomPoint && obj < m_rightTopPoint;
 }
 
 // Проверка, пересекается ли прямоугольник с данным прямоугольником.
 bool Box2D::IsBoxesIntersect(Box2D const & obj) const
 {
-  return this->IsPointInBox(obj.p1()) ||
-         this->IsPointInBox(obj.p2()) ||
-         this->IsPointInBox(obj.left_top_point()) ||
-         this->IsPointInBox(obj.right_bottom_point());
+  return this->IsPointInBox(obj.leftBottomPoint()) ||
+         this->IsPointInBox(obj.rightTopPoint()) ||
+         this->IsPointInBox(obj.leftTopPoint()) ||
+         this->IsPointInBox(obj.rightBottomPoint());
 }
 
 // Проверка на равенство с эпсилон #1.
-bool Box2D::EqualWithEps(float a, float b) const
+bool Box2D::EqualWithEps(float const a, float const b) const
 {
   return fabs(a - b) < kEps;
 }
 
 // Проверка на равенство с эпсилон #2.
-bool Box2D::EqualWithEps(Point2D const & a, Point2D const & b) const
+bool Box2D::EqualWithEps(Point2D const & p1, Point2D const & p2) const
 {
-  return fabs(a.x() - b.x())*fabs(a.y() - b.y()) < kEps;
+  return (fabs(p1.x() - p2.x())) < kEps && (fabs(p1.y() - p2.y()) < kEps);
 }
 
 // Вывод в поток
 std::ostream & operator << (std::ostream & os, Box2D const & obj)
 {
-  os << "Box2D {" << obj.p1() << ", " << obj.p2() << "}";
+  os << "Box2D {" << obj.leftBottomPoint() << ", " << obj.rightTopPoint() << "}";
   return os;
 }

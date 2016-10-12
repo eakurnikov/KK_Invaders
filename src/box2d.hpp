@@ -6,90 +6,97 @@
 #include <functional>
 #include <ostream>
 
-
 class Box2D
 {
 public:
-  //Разрешаем конструктор по умолчанию.
+  // Разрешаем конструктор по умолчанию.
   Box2D() = default;
 
-  //Конструктор с двумя координатами
-  Box2D(float const x2, float const y2);
-
-  //Конструктор с четырьмя координатами
+  // Конструктор с четырьмя координатами
   Box2D(float const x1, float const y1, float const x2, float const y2);
 
-  //Конструктор с параметром - точкой.
-  Box2D(Point2D p1);
+  // Конструктор с двумя точками.
+  Box2D(Point2D const & leftBottomPoint, Point2D const & rightTopPoint);
 
-  //Конструктор с параметрами - точками.
-  Box2D(Point2D p1, Point2D p2);
+  // Конструктор с двумя координатами
+  Box2D(float const x1, float const y1);
 
-  //Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
-  Box2D(Point2D p1, float xSide, float ySide);
+  // Конструктор с точкой.
+  Box2D(Point2D const & leftBottomPoint);
 
-  //Конструктор копирования.
+  // Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
+  Box2D(Point2D const & leftBottomPoint, float const xSide, float const ySide);
+
+  // Конструктор копирования.
   Box2D(Box2D const & obj);
 
-  //Конструктор со списком инициализации из точек.
+  // Конструктор со списком инициализации из точек.
   Box2D(std::initializer_list<Point2D> const & lst);
 
-  //Конструктор со списком инициализации из координат точек.
+  // Конструктор со списком инициализации из координат точек.
   Box2D(std::initializer_list<float> const & lst);
 
-  Point2D & p1();
+  // Конструктор перемещения.
+  Box2D(Box2D && obj);
 
-  Point2D & p2();
+  // Изменить левую нижнюю вершину.
+  void SetLeftBottomPoint(Point2D const & leftBottomPoint);
 
-  Point2D const & p1() const;
+  // Изменить правую верхнюю вершину.
+  void SetRightTopPoint(Point2D const & rightTopPoint);
 
-  Point2D const & p2() const;
+  Point2D const & leftBottomPoint() const;
 
-  Point2D const & left_top_point() const;
+  Point2D const & rightTopPoint() const;
 
-  Point2D const & right_bottom_point() const;
+  Point2D const leftTopPoint() const;
+
+  Point2D const rightBottomPoint() const;
 
   // Оператор присваивания.
   Box2D & operator = (Box2D const & obj);
 
-  //Смещение сложением с точкой.
+  // Оператор перемещения.
+  Box2D & operator = (Box2D && obj);
+
+  // Смещение сложением с точкой.
   Box2D & operator += (Point2D const & obj);
 
-  //Смещение сложением с числом.
-  Box2D & operator += (float delta);
+  // Смещение сложением с числом.
+  Box2D & operator += (float const delta);
 
-  //Смещение вычитанием точки.
+  // Смещение вычитанием точки.
   Box2D & operator -= (Point2D const & obj);
 
-  //Смещение вычитанием числа.
-  Box2D & operator -= (float delta);
+  // Смещение вычитанием числа.
+  Box2D & operator -= (float const delta);
 
-  //Смещение умножением на точку.
+  // Смещение умножением на точку.
   Box2D & operator *= (Point2D const & obj);
 
-  //Смещение делением на точку.
+  // Смещение делением на точку.
   Box2D & operator /= (Point2D const & obj);
 
-  //Масштабирование: увеличение.
-  Box2D & operator *= (float scale);
+  // Масштабирование: увеличение.
+  Box2D & operator *= (float const scale);
 
-  //Масштабирование: уменьшение.
-  Box2D & operator /= (float scale);
+  // Масштабирование: уменьшение.
+  Box2D & operator /= (float const scale);
 
   // Математическое отрицание.
   Box2D operator - () const;
 
   // Вычитание числа.
-  Box2D operator - (float scale) const;
+  Box2D operator - (float const scale) const;
 
   // Сложение с числом.
-  Box2D operator + (float scale) const;
+  Box2D operator + (float const scale) const;
 
   // Умножение на число.
-  Box2D operator * (float scale);
+  Box2D operator * (float const scale) const;
 
   // Деление на число.
-  Box2D operator / (float scale);
+  Box2D operator / (float const scale) const;
 
   // Оператор логического равенства.
   bool operator == (Box2D const & obj) const;
@@ -125,7 +132,7 @@ public:
   bool operator >= (Box2D const & obj) const;
 
   // Переопределение оператора [].
-  Point2D operator [] (unsigned int index) const;
+  Point2D operator [] (unsigned int const index) const;
 
   // Проверка, лежит ли точка в данном прямоугольнике.
   bool IsPointInBox(Point2D const & obj) const;
@@ -135,16 +142,16 @@ public:
 
 private:
   // Левая нижняя точка
-  Point2D m_p1 = { 0.0, 0.0 };
+  Point2D m_leftBottomPoint = { 0.0, 0.0 };
 
   // Правая верхняя точка
-  Point2D m_p2 = { 0.0, 0.0 };
+  Point2D m_rightTopPoint = { 0.0, 0.0 };
 
   // Проверка корректности задания точек прямоугольника.
   void CheckPoints();
 
   // Проверка на равенство с эпсилон #1.
-  bool EqualWithEps(float a, float b) const;
+  bool EqualWithEps(float const a, float const b) const;
 
   // Проверка на равенство с эпсилон #2.
   bool EqualWithEps(Point2D const & a, Point2D const & b) const;
