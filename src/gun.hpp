@@ -22,10 +22,3 @@ public:
 private:
   bool m_isAlive = false;
 };
-
-/*template <typename T>
-std::ostream & operator << (std::ostream & os, T const & obj)
-{
-  os << typeid(obj).name() << " {" << obj.GetCoordinate() << "}";
-  return os;
-}*/

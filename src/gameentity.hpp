@@ -18,10 +18,17 @@ public:
   virtual void Damage(int amount);
 
 protected:
-  bool isCreated = false;
+  bool m_isCreated = false;
   unsigned int m_hp = 100;
   float const m_height, m_width = 0;
   Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };
+
+/*template <typename T>
+std::ostream & operator << (std::ostream & os, T const & obj)
+{
+  os << typeid(obj).name() << " {" << obj.GetCoordinate() << "}";
+  return os;
+}*/
 
