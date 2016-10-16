@@ -1,19 +1,19 @@
 #pragma once
 
-#include <gameentity.h>
-#include <point2d.hpp>
-#include <box2d.hpp>
+#include "point2d.hpp"
+#include "box2d.hpp"
 #include <cmath>
 #include <initializer_list>
 #include <functional>
 #include <ostream>
 
-class Space : public GameEntity
+class GameEntity
 {
 public:
-  Space() = default;
+  virtual ~GameEntity() = 0;
+  virtual toString() = 0;
 
 private:
+  Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };
-

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <gameentity.h>
-#include <movable.h>
-#include <point2d.hpp>
-#include <box2d.hpp>
+#include "gameentity.hpp"
+#include "movable.hpp"
+#include "point2d.hpp"
+#include "box2d.hpp"
 #include <cmath>
 #include <initializer_list>
 #include <functional>

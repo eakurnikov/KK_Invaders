@@ -1,4 +1,4 @@
-#include "Gun.h"
+#include "Gun.hpp"
 
 //Gun::Gun(unsigned int const Ammo) : m_ammo(Ammo) {}
 

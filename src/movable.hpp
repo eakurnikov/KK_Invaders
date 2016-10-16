@@ -1,20 +1,18 @@
 #pragma once
 
-#include <gameentity.h>
-#include <movable.h>
-#include <point2d.hpp>
-#include <box2d.hpp>
+#include "gameentity.hpp"
+#include "point2d.hpp"
+#include "box2d.hpp"
 #include <cmath>
 #include <initializer_list>
 #include <functional>
 #include <ostream>
 
-class Bullet : public Movable
+class Movable : public GameEntity
 {
 public:
-  Bullet() = default;
-
-  void Move() override;
+  virtual ~Movable() = default;
+  virtual void Move();
 
 private:
   Point2D m_coordinate = {0.0f, 0.0f};

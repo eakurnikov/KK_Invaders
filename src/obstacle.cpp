@@ -1,4 +1,4 @@
-#include "obstacle.h"
+#include "obstacle.hpp"
 
 void Obstacle::Damage(int Amount)
 {

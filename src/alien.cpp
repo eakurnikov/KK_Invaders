@@ -1,4 +1,4 @@
-#include "alien.h"
+#include "alien.hpp"
 
 void Alien::Move(float shift)
 {
