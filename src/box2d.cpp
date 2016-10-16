@@ -34,9 +34,9 @@ Box2D::Box2D(Point2D const & leftBottomPoint)
 }
 
 // Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
-Box2D::Box2D(Point2D const & leftBottomPoint, float const xSide, float const ySide)
-  : m_leftBottomPoint(leftBottomPoint)
-  , m_rightTopPoint(leftBottomPoint.x() + xSide, leftBottomPoint.y() + ySide)
+Box2D::Box2D(Point2D const & centerPoint, float const xSide, float const ySide)
+  : m_leftBottomPoint(centerPoint.x() - xSide / 2, centerPoint.y() - ySide / 2)
+  , m_rightTopPoint(centerPoint.x() + xSide / 2, centerPoint.y() + ySide / 2)
 {
   CheckPoints();
 }

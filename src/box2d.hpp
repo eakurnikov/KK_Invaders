@@ -25,7 +25,7 @@ public:
   Box2D(Point2D const & leftBottomPoint);
 
   // Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
-  Box2D(Point2D const & leftBottomPoint, float const xSide, float const ySide);
+  Box2D(Point2D const & centerPoint, float const xSide, float const ySide);
 
   // Конструктор копирования.
   Box2D(Box2D const & obj);

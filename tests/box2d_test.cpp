@@ -56,9 +56,9 @@ TEST(box2d_test, test_construction)
   EXPECT_EQ(b7.rightTopPoint().y(), 1.2f);
 
   // Конструктор с параметрами - точкой и двумя сторонами прямоугольника
-  Box2D b8 = {1.1f, 1.2f, 2.0f, 2.0f};
-  EXPECT_EQ(b8.leftBottomPoint().x(), 1.1f);
-  EXPECT_EQ(b8.leftBottomPoint().y(), 1.2f);
+  Box2D b8 = {Point2D(1.0f, 1.0f), 2.0f, 2.0f};
+  EXPECT_EQ(b8.leftBottomPoint().x(), 0.0f);
+  EXPECT_EQ(b8.leftBottomPoint().y(), 0.0f);
   EXPECT_EQ(b8.rightTopPoint().x(), 2.0f);
   EXPECT_EQ(b8.rightTopPoint().y(), 2.0f);
 }

@@ -13,12 +13,24 @@
 class Bullet : public Movable
 {
 public:
-  Bullet() = default;
+  Bullet();
+
+  Bullet(Point2D const & speed, float damage);
+
+  Bullet(Point2D const & position);
+
+  Bullet(Point2D const & position, Point2D const & speed, float damage);
+
+  Bullet(Ray2D const & obj);
+
+  Bullet(Ray2D const & obj, Point2D const & speed, float damage);
+
+  Bullet(std::initializer_list<float> const & lst);
 
   void Move() override;
 
 private:
-  float const m_damage = 0;
+  float m_damage = 0;
   Ray2D m_direction = {0.0f, 0.0f, 0.0f, 0.0f};
 };
 

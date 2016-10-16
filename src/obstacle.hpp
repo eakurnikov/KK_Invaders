@@ -12,7 +12,13 @@
 class Obstacle : public GameEntity
 {
 public:
-  Obstacle() = default;
+  Obstacle();
+
+  Obstacle(Point2D const & obj);
+
+  Obstacle(Box2D const & obj);
+
+  Obstacle(std::initializer_list<float> const & lst);
 
 };
 

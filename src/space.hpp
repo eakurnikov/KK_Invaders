@@ -11,7 +11,13 @@
 class Space : public GameEntity
 {
 public:
-  Space() = default;
+  Space();
+
+  Space(Point2D const & obj);
+
+  Space(Box2D const & obj);
+
+  Space(std::initializer_list<float> const & lst);
 
 private:
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};

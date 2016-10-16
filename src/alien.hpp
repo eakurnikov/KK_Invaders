@@ -13,7 +13,13 @@
 class Alien : public Shootable
 {
 public:
-  Alien() = default;
+  Alien();
+
+  Alien(Point2D const & obj);
+
+  Alien(Box2D const & obj);
+
+  Alien(std::initializer_list<float> const & lst);
 
   void Move() override;
 
@@ -23,7 +29,7 @@ public:
 
 private:
   bool m_isAlive = false;
-  float const m_yShift = 0;
-  float const m_xShift = 0;
+  float const m_yShift = 10;
+  float const m_xShift = 1;
 };
 

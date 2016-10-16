@@ -13,9 +13,19 @@
 class Gun : public Shootable
 {
 public:
-  Gun() = default;
+  Gun();
 
   Gun(unsigned int const Ammo);
+
+  Gun(Point2D const & obj);
+
+  Gun(Box2D const & obj);
+
+  Gun(Point2D const & obj, unsigned int const Ammo);
+
+  Gun(Box2D const & obj, unsigned int const Ammo);
+
+  Gun(std::initializer_list<float> const & lst);
 
   void Move(float const shift);
 

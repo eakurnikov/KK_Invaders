@@ -11,7 +11,14 @@
 class Movable : public GameEntity
 {
 public:
+  Movable();
+
+  Movable(Point2D const & obj);
+
+  Movable(std::initializer_list<float> const & lst);
+
   virtual ~Movable() = default;
+
   virtual void Move() = 0;
 
 protected:
