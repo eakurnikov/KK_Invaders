@@ -15,14 +15,11 @@ class Alien : public Shootable
 public:
   Alien() = default;
 
-  Alien(unsigned int const Ammo);
-
   void Move(float shift);
 
   void Shot();
 
 private:
-  unsigned int m_ammo = 0;
   Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };

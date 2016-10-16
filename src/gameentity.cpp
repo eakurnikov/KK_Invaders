@@ -1,21 +1,6 @@
-#pragma once
+#include "gameentity.hpp"
 
-#include "point2d.hpp"
-#include "box2d.hpp"
-#include <cmath>
-#include <initializer_list>
-#include <functional>
-#include <ostream>
-
-class GameEntity
+Point2D GameEntity::GetCoordinate()
 {
-public:
-  virtual ~GameEntity() = 0;
-  virtual toString() = 0;
-
-protected:
-  Point2D m_coordinate = {0.0f, 0.0f};
-
-private:
-  Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
-};
+  return m_coordinate;
+}
