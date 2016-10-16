@@ -19,10 +19,6 @@ public:
 
 private:
   float const m_damage = 0;
-  float const m_height, m_width = 0;
-  Point2D m_coordinate = {0.0f, 0.0f};
-  Point2D m_speed = {0.0f, 0.0f};
-  Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
   Ray2D m_direction = {0.0f, 0.0f, 0.0f, 0.0f};
 };
 

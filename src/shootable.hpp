@@ -18,5 +18,6 @@ public:
 
 private:
   unsigned int m_ammo = 0;
+  float m_rapidity = 0;
 };
 

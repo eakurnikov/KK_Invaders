@@ -17,8 +17,10 @@ public:
 
   virtual void Damage(int amount);
 
-private:
+protected:
+  bool isCreated = false;
   unsigned int m_hp = 100;
+  float const m_height, m_width = 0;
   Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };

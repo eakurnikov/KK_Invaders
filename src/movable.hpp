@@ -12,10 +12,9 @@ class Movable : public GameEntity
 {
 public:
   virtual ~Movable() = default;
-  virtual void Move();
+  virtual void Move() = 0;
 
-private:
-  Point2D m_coordinate = {0.0f, 0.0f};
+protected:
   Point2D m_speed = {0.0f, 0.0f};
 };
 
