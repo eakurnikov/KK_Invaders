@@ -9,16 +9,11 @@
 #include <functional>
 #include <ostream>
 
-class Bullet : public Movable
+class Shootable : public Movable
 {
 public:
-  Bullet() = default;
+    virtual ~Shootable() = default;
 
-  void Move() override;
-
-private:
-  Point2D m_coordinate = {0.0f, 0.0f};
-  Point2D m_speed = {0.0f, 0.0f};
-  Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
+    virtual void Shot();
 };
 
