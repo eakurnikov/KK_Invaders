@@ -12,8 +12,11 @@
 class Shootable : public Movable
 {
 public:
-    virtual ~Shootable() = default;
+  virtual ~Shootable() = default;
 
-    virtual void Shot();
+  virtual void Shot();
+
+private:
+  unsigned int m_ammo = 0;
 };
 

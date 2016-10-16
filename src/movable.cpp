@@ -2,5 +2,5 @@
 
 void Movable::Move()
 {
-      m_coordinate += m_speed;
+  m_coordinate += m_speed;
 }

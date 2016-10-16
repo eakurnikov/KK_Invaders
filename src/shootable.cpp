@@ -2,7 +2,6 @@
 
 void Shootable::Shot()
 {
-
   m_ammo--;
 }
 

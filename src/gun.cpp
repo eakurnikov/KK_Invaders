@@ -6,9 +6,3 @@ void Gun::Move(float const shift)
 {
   m_coordinate.x() += shift;
 }
-
-void Gun::Shot()
-{
-  m_ammo--;
-}
-

@@ -14,10 +14,8 @@ class Obstacle : public GameEntity
 public:
   Obstacle() = default;
 
-  void Damage(int amount);
-
 private:
-  unsigned int hp = 100;
+  unsigned int m_hp = 100;
   Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };

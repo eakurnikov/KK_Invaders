@@ -19,17 +19,20 @@ public:
 
   void Move(float const shift);
 
-  void Shot();
-
 private:
+  bool m_isAlive = false;
+  unsigned int m_hp = 100;
   unsigned int m_ammo = 0;
+  float const m_rapidity = 0;
+  float const m_height, m_width = 0;
   Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
+
 };
 
-template <typename T>
+/*template <typename T>
 std::ostream & operator << (std::ostream & os, T const & obj)
 {
   os << typeid(obj).name() << " {" << obj.GetCoordinate() << "}";
   return os;
-}
+}*/
