@@ -145,11 +145,17 @@ TEST(box2d_test, test_move)
 
 TEST(box2d_test, test_set)
 {
+    // Тест на установку значения левой нижней точки.
     Point2D p1 = {1.0f, 1.0f};
     Box2D b1 = {0.0f, 0.0f, 1.0f, 1.0f};
     Box2D b2 = {1.0f, 1.0f, 2.0f, 2.0f};
     b1.SetLeftBottomPoint(p1);
     EXPECT_EQ(b1, b2);
+
+    // Тест на установку значения центра.
+    Box2D b3 = {0.0f, 0.0f, 2.0f, 2.0f};
+    b3.SetCenter(Point2D(1.0f, 1.0f));
+    EXPECT_EQ(b3.GetCenter(), p1);
 }
 
 TEST(box2d_test, test_height)

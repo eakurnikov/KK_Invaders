@@ -195,6 +195,7 @@ Box2D & Box2D::operator /= (Point2D const & obj)
 {
   try
   {
+    if (obj.x() == 0 || obj.y() == 0) throw std::invalid_argument("Division by zero.");
     m_leftBottomPoint /= obj;
     m_rightTopPoint /= obj;
 
@@ -221,6 +222,7 @@ Box2D & Box2D::operator /= (float const scale)
 {
   try
   {
+    if (scale == 0) throw std::invalid_argument("Division by zero.");
     m_rightTopPoint /= scale;
 
     return *this;
@@ -264,6 +266,7 @@ Box2D Box2D::operator / (float const scale) const
 {
   try
   {
+    if (scale == 0) throw std::invalid_argument("Division by zero.");
     return {m_leftBottomPoint / scale, m_rightTopPoint / scale};
   }
   catch(std::exception const & ex)
@@ -284,6 +287,13 @@ bool Box2D::operator == (Box2D const & obj) const
 bool Box2D::operator != (Box2D const & obj) const
 {
   return ! operator == (obj);
+}
+
+// Установить центр.
+void Box2D::SetCenter(Point2D const & obj)
+{
+  m_leftBottomPoint = { obj.x() - Width() / 2, obj.y() - Height() / 2 };
+  m_rightTopPoint = { obj.x() + Width() / 2, obj.y() + Height() / 2 };
 }
 
 // Вернуть центр.

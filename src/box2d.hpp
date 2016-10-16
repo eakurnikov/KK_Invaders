@@ -104,6 +104,9 @@ public:
   // Оператор логического неравенства.
   bool operator != (Box2D const & obj) const;
 
+  // Установить центр.
+  void SetCenter(Point2D const & obj);
+
   // Вернуть центр.
   Point2D GetCenter() const;
 
