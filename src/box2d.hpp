@@ -9,31 +9,31 @@
 class Box2D
 {
 public:
-  //Разрешаем конструктор по умолчанию.
+  // Разрешаем конструктор по умолчанию.
   Box2D() = default;
 
-  //Конструктор с двумя координатами
-  Box2D(float const x2, float const y2);
-
-  //Конструктор с четырьмя координатами
+  // Конструктор с четырьмя координатами
   Box2D(float const x1, float const y1, float const x2, float const y2);
 
-  //Конструктор с параметром - точкой.
-  Box2D(Point2D const & leftBottomPoint);
-
-  //Конструктор с параметрами - точками.
+  // Конструктор с двумя точками.
   Box2D(Point2D const & leftBottomPoint, Point2D const & rightTopPoint);
 
-  //Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
-  Box2D(Point2D const & leftBottomPoint, float const xSide, float const ySide);
+  // Конструктор с двумя координатами
+  Box2D(float const x1, float const y1);
 
-  //Конструктор копирования.
+  // Конструктор с точкой.
+  Box2D(Point2D const & leftBottomPoint);
+
+  // Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
+  Box2D(Point2D const & centerPoint, float const xSide, float const ySide);
+
+  // Конструктор копирования.
   Box2D(Box2D const & obj);
 
-  //Конструктор со списком инициализации из точек.
+  // Конструктор со списком инициализации из точек.
   Box2D(std::initializer_list<Point2D> const & lst);
 
-  //Конструктор со списком инициализации из координат точек.
+  // Конструктор со списком инициализации из координат точек.
   Box2D(std::initializer_list<float> const & lst);
 
   // Конструктор перемещения.
@@ -56,31 +56,31 @@ public:
   // Оператор присваивания.
   Box2D & operator = (Box2D const & obj);
 
-  //  Оператор перемещения.
+  // Оператор перемещения.
   Box2D & operator = (Box2D && obj);
 
-  //Смещение сложением с точкой.
+  // Смещение сложением с точкой.
   Box2D & operator += (Point2D const & obj);
 
-  //Смещение сложением с числом.
+  // Смещение сложением с числом.
   Box2D & operator += (float const delta);
 
-  //Смещение вычитанием точки.
+  // Смещение вычитанием точки.
   Box2D & operator -= (Point2D const & obj);
 
-  //Смещение вычитанием числа.
+  // Смещение вычитанием числа.
   Box2D & operator -= (float const delta);
 
-  //Смещение умножением на точку.
+  // Смещение умножением на точку.
   Box2D & operator *= (Point2D const & obj);
 
-  //Смещение делением на точку.
+  // Смещение делением на точку.
   Box2D & operator /= (Point2D const & obj);
 
-  //Масштабирование: увеличение.
+  // Масштабирование: увеличение.
   Box2D & operator *= (float const scale);
 
-  //Масштабирование: уменьшение.
+  // Масштабирование: уменьшение.
   Box2D & operator /= (float const scale);
 
   // Математическое отрицание.
@@ -103,6 +103,9 @@ public:
 
   // Оператор логического неравенства.
   bool operator != (Box2D const & obj) const;
+
+  // Установить центр.
+  void SetCenter(Point2D const & obj);
 
   // Вернуть центр.
   Point2D GetCenter() const;

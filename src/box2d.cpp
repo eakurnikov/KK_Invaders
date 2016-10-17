@@ -1,14 +1,7 @@
 #include "box2d.hpp"
 #include <iostream>
 
-//Конструктор с двумя координатами
-Box2D::Box2D(float const x2, float const y2)
-  : m_rightTopPoint(x2, y2)
-{
-  CheckPoints();
-}
-
-//Конструктор с четырьмя координатами
+// Конструктор с четырьмя координатами
 Box2D::Box2D(float const x1, float const y1, float const x2, float const y2)
   : m_leftBottomPoint(x1, y1)
   , m_rightTopPoint(x2, y2)
@@ -16,7 +9,7 @@ Box2D::Box2D(float const x1, float const y1, float const x2, float const y2)
   CheckPoints();
 }
 
-//Конструктор с параметрами - точками.
+// Конструктор с двумя точками.
 Box2D::Box2D(Point2D const & leftBottomPoint, Point2D const & rightTopPoint)
   : m_leftBottomPoint(leftBottomPoint)
   , m_rightTopPoint(rightTopPoint)
@@ -24,22 +17,31 @@ Box2D::Box2D(Point2D const & leftBottomPoint, Point2D const & rightTopPoint)
   CheckPoints();
 }
 
-//Конструктор с параметром - точкой.
+// Конструктор с двумя координатами.
+Box2D::Box2D(float const x1, float const y1)
+  : m_leftBottomPoint(x1, y1)
+  , m_rightTopPoint(x1 + 1.0 , y1 + 1.0 )
+{
+  CheckPoints();
+}
+
+// Конструктор с точкой.
 Box2D::Box2D(Point2D const & leftBottomPoint)
-  : m_rightTopPoint(leftBottomPoint)
-{
-  CheckPoints();
-}
-
-//Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
-Box2D::Box2D(Point2D const & leftBottomPoint, float const xSide, float const ySide)
   : m_leftBottomPoint(leftBottomPoint)
-  , m_rightTopPoint(leftBottomPoint.x() + xSide, leftBottomPoint.y() + ySide)
+  , m_rightTopPoint(leftBottomPoint.x() + 1.0 , leftBottomPoint.y() + 1.0)
 {
   CheckPoints();
 }
 
-//Конструктор копирования.
+// Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
+Box2D::Box2D(Point2D const & centerPoint, float const xSide, float const ySide)
+  : m_leftBottomPoint(centerPoint.x() - xSide / 2, centerPoint.y() - ySide / 2)
+  , m_rightTopPoint(centerPoint.x() + xSide / 2, centerPoint.y() + ySide / 2)
+{
+  CheckPoints();
+}
+
+// Конструктор копирования.
 Box2D::Box2D(Box2D const & obj)
   : m_leftBottomPoint(obj.leftBottomPoint())
   , m_rightTopPoint(obj.rightTopPoint())
@@ -47,7 +49,7 @@ Box2D::Box2D(Box2D const & obj)
   CheckPoints();
 }
 
-//Конструктор со списком инициализации из точек.
+// Конструктор со списком инициализации из точек.
 Box2D::Box2D(std::initializer_list<Point2D> const & lst)
 {
   Point2D * arr[] = { & m_leftBottomPoint, & m_rightTopPoint };
@@ -61,7 +63,7 @@ Box2D::Box2D(std::initializer_list<Point2D> const & lst)
   CheckPoints();
 }
 
-//Конструктор со списком инициализации из координат точек.
+// Конструктор со списком инициализации из координат точек.
 Box2D::Box2D(std::initializer_list<float> const & lst)
 {
   float * arr[] = { & m_leftBottomPoint.x(), & m_leftBottomPoint.y(), & m_rightTopPoint.x(), & m_rightTopPoint.y() };
@@ -85,6 +87,8 @@ Box2D::Box2D(Box2D && obj)
 // Изменить левую нижнюю вершину.
 void Box2D::SetLeftBottomPoint(Point2D const & leftBottomPoint)
 {
+  m_rightTopPoint.x() = leftBottomPoint.x() + Width();
+  m_rightTopPoint.y() = leftBottomPoint.y() + Height();
   m_leftBottomPoint = leftBottomPoint;
   CheckPoints();
 }
@@ -92,6 +96,8 @@ void Box2D::SetLeftBottomPoint(Point2D const & leftBottomPoint)
 // Изменить верхнюю правую вершину.
 void Box2D::SetRightTopPoint(Point2D const & rightTopPoint)
 {
+  m_leftBottomPoint.x() = rightTopPoint.x() - Width();
+  m_rightTopPoint.y() = rightTopPoint.y() - Height();
   m_rightTopPoint = rightTopPoint;
   CheckPoints();
 }
@@ -130,7 +136,7 @@ Box2D & Box2D::operator = (Box2D const & obj)
   return *this;
 }
 
-//  Оператор перемещения.
+// Оператор перемещения.
 Box2D & Box2D::operator = (Box2D && obj)
 {
   if (this == &obj) return *this;
@@ -189,6 +195,7 @@ Box2D & Box2D::operator /= (Point2D const & obj)
 {
   try
   {
+    if (obj.x() == 0 || obj.y() == 0) throw std::invalid_argument("Division by zero.");
     m_leftBottomPoint /= obj;
     m_rightTopPoint /= obj;
 
@@ -215,6 +222,7 @@ Box2D & Box2D::operator /= (float const scale)
 {
   try
   {
+    if (scale == 0) throw std::invalid_argument("Division by zero.");
     m_rightTopPoint /= scale;
 
     return *this;
@@ -258,6 +266,7 @@ Box2D Box2D::operator / (float const scale) const
 {
   try
   {
+    if (scale == 0) throw std::invalid_argument("Division by zero.");
     return {m_leftBottomPoint / scale, m_rightTopPoint / scale};
   }
   catch(std::exception const & ex)
@@ -278,6 +287,13 @@ bool Box2D::operator == (Box2D const & obj) const
 bool Box2D::operator != (Box2D const & obj) const
 {
   return ! operator == (obj);
+}
+
+// Установить центр.
+void Box2D::SetCenter(Point2D const & obj)
+{
+  m_leftBottomPoint = { obj.x() - Width() / 2, obj.y() - Height() / 2 };
+  m_rightTopPoint = { obj.x() + Width() / 2, obj.y() + Height() / 2 };
 }
 
 // Вернуть центр.

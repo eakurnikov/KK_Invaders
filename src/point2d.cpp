@@ -1,4 +1,4 @@
-#include <Point2D.hpp>
+#include "Point2D.hpp"
 #include <iostream>
 
 // Конструктор с параметрами.
@@ -9,8 +9,8 @@ Point2D::Point2D(float const x, float const y)
 
 // Конструктор копирования.
 Point2D::Point2D(Point2D const & obj)
-  : m_x(obj.m_x)
-  , m_y(obj.m_y)
+  : m_x(obj.x())
+  , m_y(obj.y())
 {}
 
 // Конструктор со списком инициализации.
@@ -45,8 +45,8 @@ float const & Point2D::y() const { return m_y; }
 Point2D & Point2D::operator = (Point2D const & obj)
 {
   if (this == &obj) return *this;
-  m_x = obj.m_x;
-  m_y = obj.m_y;
+  m_x = obj.x();
+  m_y = obj.y();
 
   return *this;
 }
@@ -55,16 +55,16 @@ Point2D & Point2D::operator = (Point2D const & obj)
 Point2D & Point2D::operator = (Point2D && obj)
 {
   if (this == &obj) return *this;
-  std::swap(m_x, obj.m_x);
-  std::swap(m_y, obj.m_y);
+  std::swap(m_x, obj.x());
+  std::swap(m_y, obj.y());
   return *this;
 }
 
 // Смещение сложением с точкой.
 Point2D & Point2D::operator += (Point2D const & obj)
 {
-  m_x += obj.m_x;
-  m_y += obj.m_y;
+  m_x += obj.x();
+  m_y += obj.y();
 
   return *this;
 }
@@ -81,8 +81,8 @@ Point2D & Point2D::operator += (float const delta)
 // Смещение вычитанием точки.
 Point2D & Point2D::operator -= (Point2D const & obj)
 {
-  m_x -= obj.m_x;
-  m_y -= obj.m_y;
+  m_x -= obj.x();
+  m_y -= obj.y();
 
   return *this;
 }
@@ -99,8 +99,8 @@ Point2D & Point2D::operator -= (float const delta)
 // Смещение умножением на точку.
 Point2D & Point2D::operator *= (Point2D const & obj)
 {
-  m_x *= obj.m_x;
-  m_y *= obj.m_y;
+  m_x *= obj.x();
+  m_y *= obj.y();
 
   return *this;
 }
@@ -119,8 +119,9 @@ Point2D & Point2D::operator /= (Point2D const & obj)
 {
   try
   {
-    m_x /= obj.m_x;
-    m_y /= obj.m_y;
+    if (obj.x() == 0 || obj.y() == 0) throw std::invalid_argument("Division by zero.");
+    m_x /= obj.x();
+    m_y /= obj.y();
 
     return *this;
   }
@@ -138,6 +139,7 @@ Point2D & Point2D::operator /= (float const scale)
 {
   try
   {
+    if (scale == 0) throw std::invalid_argument("Division by zero.");
     m_x /= scale;
     m_y /= scale;
 
@@ -160,7 +162,7 @@ Point2D Point2D::operator - () const
 // Вычитание точки.
 Point2D Point2D::operator - (Point2D const & obj) const
 {
-  return { m_x - obj.m_x, m_y - obj.m_y };
+  return { m_x - obj.x(), m_y - obj.y() };
 }
 
 // Вычитание числа.
@@ -172,7 +174,7 @@ Point2D Point2D::operator - (float const scale) const
 // Сложение с точкой.
 Point2D Point2D::operator + (Point2D const & obj) const
 {
-  return { m_x + obj.m_x, m_y + obj.m_y };
+  return { m_x + obj.x(), m_y + obj.y() };
 }
 
 // Сложение с числом.
@@ -192,6 +194,7 @@ Point2D Point2D::operator / (float const scale) const
 {
   try
   {
+    if (scale == 0) throw std::invalid_argument("Division by zero.");
     return { m_x / scale, m_y / scale };
   }
   catch(std::exception const & ex)
@@ -205,7 +208,7 @@ Point2D Point2D::operator / (float const scale) const
 // Оператор логического равенства.
 bool Point2D::operator == (Point2D const & obj) const
 {
-  return EqualWithEps(m_x, obj.m_x) && EqualWithEps(m_y, obj.m_y);
+  return EqualWithEps(m_x, obj.x()) && EqualWithEps(m_y, obj.y());
 }
 
 // Оператор логического неравенства.
@@ -217,25 +220,25 @@ bool Point2D::operator != (Point2D const & obj) const
 // Оператор меньше.
 bool Point2D::operator < (Point2D const & obj) const
 {
-  return m_x < obj.m_x && m_y < obj.m_y;
+  return m_x < obj.x() && m_y < obj.y();
 }
 
 // Оператор меньше равно.
 bool Point2D::operator <= (Point2D const & obj) const
 {
-  return m_x <= obj.m_x && m_y <= obj.m_y;
+  return m_x <= obj.x() && m_y <= obj.y();
 }
 
 // Оператор больше.
 bool Point2D::operator > (Point2D const & obj) const
 {
-  return m_x > obj.m_x && m_y > obj.m_y;
+  return m_x > obj.x() && m_y > obj.y();
 }
 
 // Оператор больше равно.
 bool Point2D::operator >= (Point2D const & obj) const
 {
-  return m_x >= obj.m_x && m_y >= obj.m_y;
+  return m_x >= obj.x() && m_y >= obj.y();
 }
 
 // Переопределение оператора [].
