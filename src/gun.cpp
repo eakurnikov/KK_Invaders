@@ -16,27 +16,12 @@ Gun::Gun(Point2D const & centerPosition)
   m_hp = GUN_HIT_POINTS;
 }
 
-void Gun::Move(float const xShift, float const yShift)
-{
-  //yShift = 0;
-}
+void Gun::Move(float const xShift, float const yShift) {}
 
-void Gun::Shot()
-{
+void Gun::Shot() {}
 
-}
+unsigned int const Gun::GetNumberOfLives () const { return m_numberOfLives; }
 
-unsigned int const Gun::GetNumberOfLives () const
-{
-  return m_numberOfLives;
-}
+void Gun::DecreaseOneLife() { m_numberOfLives--; }
 
-void Gun::DecreaseOneLife()
-{
-  m_numberOfLives--;
-}
-
-bool Gun::IsGameOver() const
-{
-  return (m_numberOfLives > 0) ? false : true;
-}
+bool Gun::IsGameOver() const { return (m_numberOfLives > 0) ? false : true; }

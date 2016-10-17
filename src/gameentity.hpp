@@ -6,10 +6,6 @@
 class GameEntity
 {
 public:
-  //virtual ~GameEntity() = default;
-  //virtual GameEntity(Point2D const & centerPosition);
-  //GameEntity(Box2D const & box);
-
   bool IsAlive() const;
   void Destroy();  
 

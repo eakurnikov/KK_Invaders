@@ -8,26 +8,12 @@ Alien::Alien(Point2D const & position)
   m_hp = ALIEN_HIT_POINTS;
 }
 
-void Alien::Move()
-{
+void Alien::Move() {}
 
-}
+void Alien::Move(float const xShift, float const yShift) {}
 
-void Alien::Move(float const xShift, float const yShift)
-{
+void Alien::Shot() {}
 
-}
+float const Alien::GetXshift() const { return m_xShift; }
 
-void Alien::Shot()
-{
-
-}
-
-float const Alien::GetXshift() const
-{
-  return m_xShift;
-}
-float const Alien::GetYshift() const
-{
-  return m_yShift;
-}
+float const Alien::GetYshift() const { return m_yShift; }

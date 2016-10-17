@@ -14,9 +14,7 @@ Ray2D const & Bullet::GetDirection() const
 }
 
 void Bullet::Move(float const xShift, float const yShift)
-{
-
-}
+{}
 
 unsigned int const Bullet::GetDamage() const
 {
