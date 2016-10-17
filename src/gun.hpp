@@ -1,5 +1,6 @@
 #pragma once
 
+#include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
 #include "shootable.hpp"
@@ -21,13 +22,13 @@ public:
 
   Gun(Box2D const & obj);
 
-  Gun(Point2D const & obj, unsigned int const Ammo);
+  Gun(Point2D const & obj, unsigned int const Ammo, float rapidity);
 
-  Gun(Box2D const & obj, unsigned int const Ammo);
-
-  Gun(std::initializer_list<float> const & lst);
+  Gun(Box2D const & obj, unsigned int const Ammo, float rapidity);
 
   void Move(float const shift);
+
+  bool IsAlive();
 
 private:
   bool m_isAlive = false;

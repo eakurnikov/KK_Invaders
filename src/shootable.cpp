@@ -1,13 +1,19 @@
 #include "shootable.hpp"
-
-Shootable::Shootable()
-{
-  m_ammo = 100;
-  m_rapidity = 1;
-}
+#include "bullet.hpp"
 
 void Shootable::Shot()
 {
   m_ammo--;
+  Bullet();
+}
+
+unsigned int Shootable::GetAmmo()
+{
+  return m_ammo;
+}
+
+float Shootable::GetRapidity()
+{
+  return m_rapidity;
 }
 

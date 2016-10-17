@@ -1,5 +1,6 @@
 #pragma once
 
+#include "defaultvalues.hpp"
 #include "point2d.hpp"
 #include "box2d.hpp"
 #include <cmath>
@@ -12,19 +13,16 @@ class GameEntity
 public:
   GameEntity();
 
-  GameEntity(Point2D const & obj);
-
-  GameEntity(Point2D const & obj, float width, float height);
-
-  GameEntity(Box2D const & obj);
-
-  GameEntity(std::initializer_list<float> const & lst);
-
   virtual ~GameEntity() = default;
 
-  virtual Point2D GetCoordinate();
-
   virtual void Damage(int amount);
+
+  bool IsCreated();
+
+  unsigned int GetHP();
+
+  Point2D GetCoordinate();
+
 
 protected:
   bool m_isCreated = false;

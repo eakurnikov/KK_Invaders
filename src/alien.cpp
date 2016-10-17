@@ -1,29 +1,34 @@
 #include "alien.hpp"
+#include "bullet.hpp"
 
 Alien::Alien()
 {
   m_isAlive = true;
+  m_rapidity = ALIEN_RAPIDITY;
+  m_height = ALIEN_HEIGHT;
+  m_width = ALIEN_WIDTH;
+  m_coordinate = {0.5f, 0.5f};
+  m_body = Box2D(m_coordinate, m_width, m_height);
 }
 
-Alien::Alien(Point2D const & obj)
+Alien::Alien(Point2D const & obj, float rapidity)
 {
   m_isAlive = true;
+  m_rapidity = rapidity;
+  m_height = ALIEN_HEIGHT;
+  m_width = ALIEN_WIDTH;
   m_coordinate = obj;
-  m_body = Box2D(obj, 10, 10);
+  m_body = Box2D(obj, m_width, m_height);
 }
 
-Alien::Alien(Box2D const & obj)
+Alien::Alien(Box2D const & obj, float rapidity)
 {
   m_isAlive = true;
+  m_rapidity = rapidity;
+  m_height = ALIEN_HEIGHT;
+  m_width = ALIEN_WIDTH;
   m_coordinate = obj.GetCenter();
   m_body = obj;
-}
-
-Alien::Alien(std::initializer_list<float> const & lst)
-{
-  m_isAlive = true;
-  m_coordinate = Point2D(lst);
-  m_body = Box2D(m_coordinate, 10, 10);
 }
 
 void Alien::Move()
@@ -38,6 +43,20 @@ void Alien::MoveDown()
 
 void Alien::Shot()
 {
-
+  Bullet();
 }
 
+bool Alien::IsAlive()
+{
+  return m_isAlive;
+}
+
+float Alien::GetXshift()
+{
+  return m_xShift;
+}
+
+float Alien::GetYshift()
+{
+  return m_yShift;
+}

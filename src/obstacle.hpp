@@ -1,5 +1,6 @@
 #pragma once
 
+#include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
 #include "point2d.hpp"
@@ -17,8 +18,5 @@ public:
   Obstacle(Point2D const & obj);
 
   Obstacle(Box2D const & obj);
-
-  Obstacle(std::initializer_list<float> const & lst);
-
 };
 

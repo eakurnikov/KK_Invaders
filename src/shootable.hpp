@@ -1,5 +1,6 @@
 #pragma once
 
+#include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
 #include "point2d.hpp"
@@ -12,11 +13,13 @@
 class Shootable : public Movable
 {
 public:
-  Shootable();
-
   virtual ~Shootable() = default;
 
   virtual void Shot();
+
+  unsigned int GetAmmo();
+
+  float GetRapidity();
 
 protected:
   unsigned int m_ammo = 0;
