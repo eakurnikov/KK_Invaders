@@ -25,3 +25,8 @@ Point2D GameEntity::GetCoordinate()
 {
   return m_coordinate;
 }
+
+Box2D GameEntity::GetBody()
+{
+  return m_body;
+}

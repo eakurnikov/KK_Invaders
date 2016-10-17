@@ -6,7 +6,7 @@ Bullet::Bullet()
   m_speed = BULLET_SPEED;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
-  m_coordinate = {0.5f, 0.5f};
+  m_coordinate = {m_width / 2, m_height / 2};
   m_body = Box2D(m_coordinate, m_width, m_height);
   m_trajectory = {m_coordinate, m_coordinate + m_speed};
 }
@@ -17,7 +17,7 @@ Bullet::Bullet(float speed, float damage)
   m_speed = speed;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
-  m_coordinate = {0.5f, 0.5f};
+  m_coordinate = {m_width / 2, m_height / 2};
   m_body = Box2D(m_coordinate, m_width, m_height);
   m_trajectory = {m_coordinate, m_coordinate + m_speed};
 }
@@ -76,7 +76,7 @@ float Bullet::GetDamage()
   return m_damage;
 }
 
-Ray2D Bullet::GetDirection()
+Ray2D Bullet::GetTrajectory()
 {
   return m_trajectory;
 }

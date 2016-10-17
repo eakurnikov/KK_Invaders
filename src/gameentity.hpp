@@ -23,6 +23,7 @@ public:
 
   Point2D GetCoordinate();
 
+  Box2D GetBody();
 
 protected:
   bool m_isCreated = false;

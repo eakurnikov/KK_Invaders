@@ -30,7 +30,7 @@ public:
 
   float GetDamage();
 
-  Ray2D GetDirection();
+  Ray2D GetTrajectory();
 
 private:
   float m_damage = 0;

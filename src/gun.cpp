@@ -7,7 +7,7 @@ Gun::Gun()
   m_rapidity = GUN_RAPIDITY;
   m_height = GUN_HEIGHT;
   m_width = GUN_WIDTH;
-  m_coordinate = {0.5f, 0.5f};
+  m_coordinate = {m_width / 2, m_height / 2};
   m_body = Box2D(m_coordinate, m_width, m_height);
 }
 
@@ -18,7 +18,7 @@ Gun::Gun(unsigned int const Ammo)
   m_rapidity = GUN_RAPIDITY;
   m_height = GUN_HEIGHT;
   m_width = GUN_WIDTH;
-  m_coordinate = {0.5f, 0.5f};
+  m_coordinate = {m_width / 2, m_height / 2};
   m_body = Box2D(m_coordinate, m_width, m_height);
 }
 

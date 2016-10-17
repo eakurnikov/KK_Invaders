@@ -7,7 +7,7 @@ Alien::Alien()
   m_rapidity = ALIEN_RAPIDITY;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
-  m_coordinate = {0.5f, 0.5f};
+  m_coordinate = {m_width / 2, m_height / 2};
   m_body = Box2D(m_coordinate, m_width, m_height);
 }
 
