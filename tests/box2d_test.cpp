@@ -16,10 +16,10 @@ TEST(box2d_test, test_construction)
 
   // Две координаты
   Box2D b2 = Box2D(1.0f, 3.0f);
-  EXPECT_EQ(b2.leftBottomPoint().x(), 0.0f);
-  EXPECT_EQ(b2.leftBottomPoint().y(), 0.0f);
-  EXPECT_EQ(b2.rightTopPoint().x(), 1.0f);
-  EXPECT_EQ(b2.rightTopPoint().y(), 3.0f);
+  EXPECT_EQ(b2.leftBottomPoint().x(), 1.0f);
+  EXPECT_EQ(b2.leftBottomPoint().y(), 3.0f);
+  EXPECT_EQ(b2.rightTopPoint().x(), 2.0f);
+  EXPECT_EQ(b2.rightTopPoint().y(), 4.0f);
 
   // Четыре координаты
   Box2D b3 = Box2D(1.1f, 1.2f, 2.4f, 2.5f);
@@ -29,16 +29,18 @@ TEST(box2d_test, test_construction)
   EXPECT_EQ(b3.rightTopPoint().y(), 2.5f);
 
   // Одна точка
-  Point2D p1 = { 1.0f, 2.0f };
+  Point2D p1 = { 1.0f, 3.0f };
   Box2D b4 = Box2D(p1);
-  EXPECT_EQ(b4.rightTopPoint().x(), 1.0f);
-  EXPECT_EQ(b4.rightTopPoint().y(), 2.0f);
+  EXPECT_EQ(b4.leftBottomPoint().x(), 1.0f);
+  EXPECT_EQ(b4.leftBottomPoint().y(), 3.0f);
+  EXPECT_EQ(b4.rightTopPoint().x(), 2.0f);
+  EXPECT_EQ(b4.rightTopPoint().y(), 4.0f);
 
   // Две точки
   Point2D p2 = { 3.0f, 4.0f };
   Box2D b5 = Box2D(p1, p2);
   EXPECT_EQ(b5.leftBottomPoint().x(), 1.0f);
-  EXPECT_EQ(b5.leftBottomPoint().y(), 2.0f);
+  EXPECT_EQ(b5.leftBottomPoint().y(), 3.0f);
   EXPECT_EQ(b5.rightTopPoint().x(), 3.0f);
   EXPECT_EQ(b5.rightTopPoint().y(), 4.0f);
 
@@ -54,9 +56,9 @@ TEST(box2d_test, test_construction)
   EXPECT_EQ(b7.rightTopPoint().y(), 1.2f);
 
   // Конструктор с параметрами - точкой и двумя сторонами прямоугольника
-  Box2D b8 = {1.1f, 1.2f, 2.0f, 2.0f};
-  EXPECT_EQ(b8.leftBottomPoint().x(), 1.1f);
-  EXPECT_EQ(b8.leftBottomPoint().y(), 1.2f);
+  Box2D b8 = {Point2D(1.0f, 1.0f), 2.0f, 2.0f};
+  EXPECT_EQ(b8.leftBottomPoint().x(), 0.0f);
+  EXPECT_EQ(b8.leftBottomPoint().y(), 0.0f);
   EXPECT_EQ(b8.rightTopPoint().x(), 2.0f);
   EXPECT_EQ(b8.rightTopPoint().y(), 2.0f);
 }
@@ -139,6 +141,21 @@ TEST(box2d_test, test_move)
   Box2D b3 = std::move(b1);
   EXPECT_EQ(b3, Box2D(1.1f, 2.2f, 3.3f, 4.4f));
   EXPECT_EQ(b1, Box2D(0.0f, 0.0f, 0.0f, 0.0f));
+}
+
+TEST(box2d_test, test_set)
+{
+    // Тест на установку значения левой нижней точки.
+    Point2D p1 = {1.0f, 1.0f};
+    Box2D b1 = {0.0f, 0.0f, 1.0f, 1.0f};
+    Box2D b2 = {1.0f, 1.0f, 2.0f, 2.0f};
+    b1.SetLeftBottomPoint(p1);
+    EXPECT_EQ(b1, b2);
+
+    // Тест на установку значения центра.
+    Box2D b3 = {0.0f, 0.0f, 2.0f, 2.0f};
+    b3.SetCenter(Point2D(1.0f, 1.0f));
+    EXPECT_EQ(b3.GetCenter(), p1);
 }
 
 TEST(box2d_test, test_height)
