@@ -19,6 +19,6 @@ public:
   Space(Box2D const & obj);
 
 private:
-  Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
+  Box2D m_body = {0.0f, 0.0f, SPACE_WIDTH, SPACE_HEIGHT};
 };
 

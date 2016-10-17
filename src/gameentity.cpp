@@ -30,3 +30,13 @@ Box2D GameEntity::GetBody()
 {
   return m_body;
 }
+
+float GameEntity::GetWidth()
+{
+  return m_width;
+}
+
+float GameEntity::GetHeight()
+{
+  return m_height;
+}

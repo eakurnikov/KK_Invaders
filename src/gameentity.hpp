@@ -25,6 +25,10 @@ public:
 
   Box2D GetBody();
 
+  float GetWidth();
+
+  float GetHeight();
+
 protected:
   bool m_isCreated = false;
   unsigned int m_hp = 0;
