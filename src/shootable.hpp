@@ -7,8 +7,8 @@ class Shootable : public Movable
 public:
   virtual ~Shootable() = default;
   virtual void Shot() = 0;
-  unsigned int const GetRapidity() const;
+  unsigned int const GetVelocity() const;
 
 protected:
-  unsigned int m_rapidity = 0;
+  unsigned int m_velocity = 0;
 };

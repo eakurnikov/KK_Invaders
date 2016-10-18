@@ -4,7 +4,7 @@ Alien::Alien(Point2D const & position)
 {
   m_body = Box2D(position, ALIEN_HEIGHT, ALIEN_WIDTH);
   m_speed = START_ALIEN_SPEED;
-  m_rapidity = ALIEN_RAPIDITY;
+  m_velocity = ALIEN_VELOCITY;
   m_hp = ALIEN_HIT_POINTS;
 }
 

@@ -87,7 +87,7 @@ TEST(gameentity_test, test_gun)
   EXPECT_EQ(g1.IsAlive(), true);
 
   EXPECT_EQ(g1.GetCoordinate(), p1);
-  EXPECT_EQ(g1.GetRapidity(), GUN_RAPIDITY);
+  EXPECT_EQ(g1.GetVelocity(), GUN_VELOCITY);
 
   EXPECT_EQ(g1.GetNumberOfLives(), START_NUMBER_OF_LIFES);
   for (int i = START_NUMBER_OF_LIFES; i > 0; i--) g1.DecreaseOneLife();
@@ -113,7 +113,7 @@ TEST(gameentity_test, test_alien)
   EXPECT_EQ(a1.IsAlive(), true);
 
   EXPECT_EQ(a1.GetCoordinate(), p1);
-  EXPECT_EQ(a1.GetRapidity(), ALIEN_RAPIDITY);
+  EXPECT_EQ(a1.GetVelocity(), ALIEN_VELOCITY);
 
   EXPECT_EQ(a1.GetXshift(), ALIEN_XSHIFT);
   EXPECT_EQ(a1.GetYshift(), ALIEN_YSHIFT);

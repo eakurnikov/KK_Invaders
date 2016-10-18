@@ -4,7 +4,7 @@ Gun::Gun()
 {
   m_body = Box2D(Point2D(SPACE_WIDTH / 2 - GUN_WIDTH / 2, 0.0f), GUN_HEIGHT, GUN_WIDTH);
   m_speed = GUN_SPEED;
-  m_rapidity = GUN_RAPIDITY;
+  m_velocity = GUN_VELOCITY;
   m_hp = GUN_HIT_POINTS;
 }
 
@@ -12,7 +12,7 @@ Gun::Gun(Point2D const & centerPosition)
 {
   m_body = Box2D(centerPosition, GUN_HEIGHT, GUN_WIDTH);
   m_speed = GUN_SPEED;
-  m_rapidity = GUN_RAPIDITY;
+  m_velocity = GUN_VELOCITY;
   m_hp = GUN_HIT_POINTS;
 }
 
