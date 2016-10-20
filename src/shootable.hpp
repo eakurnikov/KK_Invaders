@@ -23,6 +23,6 @@ public:
 
 protected:
   unsigned int m_ammo = 0;
-  float m_rapidity = 0;
+  float m_rapidity = 0.0f;
 };
 

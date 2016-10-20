@@ -19,6 +19,6 @@ public:
   float GetSpeed();
 
 protected:
-  float m_speed = 0;
+  float m_speed = 0.0f;
 };
 

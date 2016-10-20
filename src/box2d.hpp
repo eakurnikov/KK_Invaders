@@ -145,10 +145,10 @@ public:
 
 private:
   // Левая нижняя точка
-  Point2D m_leftBottomPoint = { 0.0, 0.0 };
+  Point2D m_leftBottomPoint = {0.0, 0.0};
 
   // Правая верхняя точка
-  Point2D m_rightTopPoint = { 0.0, 0.0 };
+  Point2D m_rightTopPoint = {0.0, 0.0};
 
   // Проверка корректности задания точек прямоугольника.
   void CheckPoints();

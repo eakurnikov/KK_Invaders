@@ -1,3 +1,4 @@
+#pragma once
 #include "Point2D.hpp"
 #include <iostream>
 
