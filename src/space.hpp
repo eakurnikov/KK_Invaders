@@ -30,6 +30,5 @@ private:
   std::vector<Obstacle> m_obstacles;
   std::list<Bullet> m_bullets;
   std::list<Alien> m_aliens;
-  //Box2D m_body = {250.0f, 250.0f, SPACE_WIDTH, SPACE_HEIGHT};
 };
 
