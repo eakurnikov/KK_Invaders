@@ -35,8 +35,8 @@ Box2D::Box2D(Point2D const & leftBottomPoint)
 
 // Конструктор с параметрами - точкой и двумя сторонами прямоугольника.
 Box2D::Box2D(Point2D const & centerPoint, float const xSide, float const ySide)
-  : m_leftBottomPoint(centerPoint.x() - xSide / 2, centerPoint.y() - ySide / 2)
-  , m_rightTopPoint(centerPoint.x() + xSide / 2, centerPoint.y() + ySide / 2)
+  : m_leftBottomPoint(centerPoint.x() - xSide / 2.0f, centerPoint.y() - ySide / 2.0f)
+  , m_rightTopPoint(centerPoint.x() + xSide / 2.0f, centerPoint.y() + ySide / 2.0f)
 {
   CheckPoints();
 }
@@ -292,14 +292,14 @@ bool Box2D::operator != (Box2D const & obj) const
 // Установить центр.
 void Box2D::SetCenter(Point2D const & obj)
 {
-  m_leftBottomPoint = { obj.x() - Width() / 2, obj.y() - Height() / 2 };
-  m_rightTopPoint = { obj.x() + Width() / 2, obj.y() + Height() / 2 };
+  m_leftBottomPoint = { obj.x() - Width() / 2.0f, obj.y() - Height() / 2.0f };
+  m_rightTopPoint = { obj.x() + Width() / 2.0f, obj.y() + Height() / 2.0f };
 }
 
 // Вернуть центр.
 Point2D Box2D::GetCenter() const
 {
-  Point2D p = { (m_leftBottomPoint.x() + m_rightTopPoint.x()) / 2 , (m_leftBottomPoint.y() + m_rightTopPoint.y()) / 2 };
+  Point2D p = { (m_leftBottomPoint.x() + m_rightTopPoint.x()) / 2.0f , (m_leftBottomPoint.y() + m_rightTopPoint.y()) / 2.0f };
   return p;
 }
 
@@ -318,7 +318,7 @@ float Box2D::Width() const
 // Вернуть периметр
 float Box2D::Perimeter() const
 {
-  return 2 * (m_rightTopPoint.x() - m_leftBottomPoint.x()) + 2 * (m_rightTopPoint.y() - m_leftBottomPoint.y());
+  return 2.0f * (m_rightTopPoint.x() - m_leftBottomPoint.x()) + 2 * (m_rightTopPoint.y() - m_leftBottomPoint.y());
 }
 
 // Вернуть площадь

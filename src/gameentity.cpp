@@ -1,15 +1,43 @@
+#include <cmath>
 #include "gameentity.hpp"
 
-bool GameEntity::IsAlive() const { return (m_hp > 0) ? true : false; }
+GameEntity::GameEntity()
+{
+  m_isCreated = true;
+  m_hp = 100;
+}
 
-void GameEntity::Destroy() {}
+void GameEntity::Damage(int amount)
+{
+  m_hp -= amount;
+}
 
-unsigned int const GameEntity::GetHP() const { return m_hp; }
+bool GameEntity::IsCreated()
+{
+  return m_isCreated;
+}
 
-Point2D const GameEntity::GetCoordinate() const { return m_body.GetCenter(); }
+unsigned int GameEntity::GetHP()
+{
+  return m_hp;
+}
 
-Box2D const & GameEntity::GetBody() const { return m_body; }
+Point2D GameEntity::GetCoordinate()
+{
+  return m_coordinate;
+}
 
-float const GameEntity::GetWidth() const { return m_body.Width(); }
+Box2D GameEntity::GetBody()
+{
+  return m_body;
+}
 
-float const GameEntity::GetHeight() const { return m_body.Height(); }
+float GameEntity::GetWidth()
+{
+  return m_width;
+}
+
+float GameEntity::GetHeight()
+{
+  return m_height;
+}

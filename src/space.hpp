@@ -1,25 +1,34 @@
 #pragma once
 
+#include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "obstacle.hpp"
 #include "bullet.hpp"
 #include "gun.hpp"
 #include "alien.hpp"
+#include "point2d.hpp"
+#include "box2d.hpp"
+#include <cmath>
+#include <initializer_list>
+#include <functional>
+#include <ostream>
 #include <vector>
+#include <list>
+#include <deque>
 
-class Space
+class Space : public GameEntity
 {
 public:
-  Space() = default;
-  Space(float const height, float const width);
-  Box2D const & GetField() const;
-  float const GetWidth() const;
-  float const GetHeight() const;
+  Space();
+
+  Space(Point2D const & obj);
+
+  Space(Box2D const & obj);
 
 private:
-  Box2D m_field = Box2D(0.0f, 0.0f, SPACE_WIDTH, SPACE_HEIGHT);
-  Gun m_gun;
+  std::deque<Gun> m_gun;
   std::vector<Obstacle> m_obstacles;
-  std::vector<Bullet> m_bullets;
-  std::vector<Alien> m_aliens;
+  std::list<Bullet> m_bullets;
+  std::list<Alien> m_aliens;
 };
+

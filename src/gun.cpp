@@ -2,26 +2,43 @@
 
 Gun::Gun()
 {
-  m_body = Box2D(Point2D(SPACE_WIDTH / 2 - GUN_WIDTH / 2, 0.0f), GUN_HEIGHT, GUN_WIDTH);
-  m_speed = GUN_SPEED;
-  m_velocity = GUN_VELOCITY;
-  m_hp = GUN_HIT_POINTS;
+  m_isAlive = true;
+  m_ammo = 100;
+  m_rapidity = GUN_RAPIDITY;
+  m_height = GUN_HEIGHT;
+  m_width = GUN_WIDTH;
+  m_coordinate = Point2D(SPACE_WIDTH / 2.0f, 0.0f);
+  m_body = Box2D(m_coordinate, m_width, m_height);
 }
 
-Gun::Gun(Point2D const & centerPosition)
+Gun::Gun(Point2D const & obj)
 {
-  m_body = Box2D(centerPosition, GUN_HEIGHT, GUN_WIDTH);
-  m_speed = GUN_SPEED;
-  m_velocity = GUN_VELOCITY;
-  m_hp = GUN_HIT_POINTS;
+  m_isAlive = true;
+  m_ammo = 100;
+  m_rapidity = GUN_RAPIDITY;
+  m_height = GUN_HEIGHT;
+  m_width = GUN_WIDTH;
+  m_coordinate = obj;
+  m_body = Box2D(obj, m_width, m_height);
 }
 
-void Gun::Move(float const xShift, float const yShift) {}
+Gun::Gun(Point2D const & obj, unsigned int const Ammo, float rapidity)
+{
+  m_isAlive = true;
+  m_ammo = Ammo;
+  m_rapidity = rapidity;
+  m_height = GUN_HEIGHT;
+  m_width = GUN_WIDTH;
+  m_coordinate = obj;
+  m_body = Box2D(obj, m_width, m_height);
+}
 
-void Gun::Shot() {}
+void Gun::Move(float const shift)
+{
+  m_coordinate.x() += shift;
+}
 
-unsigned int const Gun::GetNumberOfLives () const { return m_numberOfLives; }
-
-void Gun::DecreaseOneLife() { m_numberOfLives--; }
-
-bool Gun::IsGameOver() const { return (m_numberOfLives > 0) ? false : true; }
+bool Gun::IsAlive()
+{
+  return m_isAlive;
+}
