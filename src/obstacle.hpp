@@ -18,5 +18,10 @@ public:
   Obstacle(Point2D const & obj);
 
   Obstacle(Box2D const & obj);
+
+  bool IsAlive();
+
+private:
+  bool m_isAlive = false;
 };
 

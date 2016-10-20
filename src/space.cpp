@@ -4,7 +4,7 @@ Space::Space()
 {
   m_height = SPACE_HEIGHT;
   m_width = SPACE_WIDTH;
-  m_coordinate = {m_width / 2, m_height / 2};
+  m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
 }
 

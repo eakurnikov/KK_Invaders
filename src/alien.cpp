@@ -7,24 +7,24 @@ Alien::Alien()
   m_rapidity = ALIEN_RAPIDITY;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
-  m_coordinate = {m_width / 2, m_height / 2};
+  m_coordinate = Point2D(SPACE_WIDTH / 2.0f, SPACE_HEIGHT / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
 }
 
-Alien::Alien(Point2D const & obj, float rapidity)
+Alien::Alien(Point2D const & obj)
 {
   m_isAlive = true;
-  m_rapidity = rapidity;
+  m_rapidity = ALIEN_RAPIDITY;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
 }
 
-Alien::Alien(Box2D const & obj, float rapidity)
+Alien::Alien(Box2D const & obj)
 {
   m_isAlive = true;
-  m_rapidity = rapidity;
+  m_rapidity = ALIEN_RAPIDITY;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
   m_coordinate = obj.GetCenter();

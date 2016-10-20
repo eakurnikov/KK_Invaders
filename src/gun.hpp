@@ -16,15 +16,9 @@ class Gun : public Shootable
 public:
   Gun();
 
-  Gun(unsigned int const Ammo);
-
   Gun(Point2D const & obj);
 
-  Gun(Box2D const & obj);
-
   Gun(Point2D const & obj, unsigned int const Ammo, float rapidity);
-
-  Gun(Box2D const & obj, unsigned int const Ammo, float rapidity);
 
   void Move(float const shift);
 

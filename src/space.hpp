@@ -2,12 +2,19 @@
 
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
+#include "obstacle.hpp"
+#include "bullet.hpp"
+#include "gun.hpp"
+#include "alien.hpp"
 #include "point2d.hpp"
 #include "box2d.hpp"
 #include <cmath>
 #include <initializer_list>
 #include <functional>
 #include <ostream>
+#include <vector>
+#include <list>
+#include <deque>
 
 class Space : public GameEntity
 {
@@ -19,6 +26,10 @@ public:
   Space(Box2D const & obj);
 
 private:
-  Box2D m_body = {0.0f, 0.0f, SPACE_WIDTH, SPACE_HEIGHT};
+  std::deque<Gun> m_gun;
+  std::vector<Obstacle> m_obstacles;
+  std::list<Bullet> m_bullets;
+  std::list<Alien> m_aliens;
+  //Box2D m_body = {250.0f, 250.0f, SPACE_WIDTH, SPACE_HEIGHT};
 };
 

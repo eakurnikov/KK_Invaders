@@ -16,9 +16,9 @@ class Alien : public Shootable
 public:
   Alien();
 
-  Alien(Point2D const & obj, float rapidity);
+  Alien(Point2D const & obj);
 
-  Alien(Box2D const & obj, float rapidity);
+  Alien(Box2D const & obj);
 
   void Move() override;
 

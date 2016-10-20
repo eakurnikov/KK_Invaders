@@ -16,24 +16,21 @@ class Bullet : public Movable
 public:
   Bullet();
 
-  Bullet(float speed, float damage);
-
-  Bullet(Point2D const & obj);
-
-  Bullet(Point2D const & obj, float speed, float damage);
-
   Bullet(Ray2D const & obj);
 
   Bullet(Ray2D const & obj, float speed, float damage);
 
   void Move() override;
 
+  bool IsAlive();
+
   float GetDamage();
 
   Ray2D GetTrajectory();
 
 private:
-  float m_damage = 0;
-  Ray2D m_trajectory = {0.0f, 0.0f, 0.0f, 0.0f};
+  bool m_isAlive = false;
+  float m_damage = BULLET_DAMAGE;
+  Ray2D m_trajectory = {0.0f, 1.0f, 0.0f, 0.0f};
 };
 
