@@ -38,10 +38,3 @@ protected:
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };
 
-/*template <typename T>
-std::ostream & operator << (std::ostream & os, T const & obj)
-{
-  os << typeid(obj).name() << " {" << obj.GetCoordinate() << "}";
-  return os;
-}*/
-
