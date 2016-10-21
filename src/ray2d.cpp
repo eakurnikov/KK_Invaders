@@ -9,7 +9,15 @@
 Ray2D::Ray2D(float const directionX, float const directionY)
   : m_direction(directionX, directionY)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием четырех координат, определяющих направление луча и его начало
@@ -17,14 +25,30 @@ Ray2D::Ray2D( float const directionX, float const directionY, float const initia
   : m_direction(directionX, directionY)
   , m_initial(initialX, initialY)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием точки, определяющей направление луча
 Ray2D::Ray2D(Point2D const & direction)
   : m_direction(direction)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием двух точек, определяющих направление луча и его начало
@@ -32,7 +56,15 @@ Ray2D::Ray2D(Point2D const & direction, Point2D const & initial)
   : m_direction(direction)
   , m_initial(initial)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием параметров на основе сущестующего луча
@@ -51,7 +83,16 @@ Ray2D::Ray2D(std::initializer_list<Point2D> const & lst)
   {
     *vals[i] = *it;
   }
-  Normalize();
+
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор со списком иниациализации
@@ -65,7 +106,16 @@ Ray2D::Ray2D(std::initializer_list<float> const & lst)
   {
     *vals[i] = *it;
   }
-  Normalize();
+
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор перемещения
@@ -144,12 +194,12 @@ void Ray2D::RotateDirection (float const degree)
 {
   try
   {
-    if (m_direction.x() == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(m_direction.x(), 0.0f)) throw std::invalid_argument("Division by zero.");
     float deg = 180 / M_PI * atanf(fabs(m_direction.y() / m_direction.x()) * M_PI / 180);
 
-    if((m_direction.x() < 0) && (m_direction.y() > 0)) deg += 90;
-    else if((m_direction.x() < 0) && (m_direction.y() < 0)) deg += 180;
-    else if((m_direction.x() > 0) && (m_direction.y() < 0)) deg += 270;
+    if((m_direction.x() < 0.0f) && (m_direction.y() > 0.0f)) deg += 90;
+    else if((m_direction.x() < 0.0f) && (m_direction.y() < 0.0f)) deg += 180;
+    else if((m_direction.x() > 0.0f) && (m_direction.y() < 0.0f)) deg += 270;
 
     m_direction.x() = cosf((degree + deg) * M_PI / 180);
     m_direction.y() = sinf((degree + deg) * M_PI / 180);
@@ -158,6 +208,7 @@ void Ray2D::RotateDirection (float const degree)
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
   }
 }
 
@@ -181,51 +232,47 @@ void Ray2D::Normalize()
   float norm = sqrtf((m_direction.x() - m_initial.x()) * (m_direction.x() - m_initial.x()) + (m_direction.y() - m_initial.y()) * (m_direction.y() - m_initial.y()));
   try
   {
-    if (norm == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(norm, 0.0f)) throw std::invalid_argument("Division by zero.");
     m_direction = (m_direction - m_initial) / norm + m_initial;
   }
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
   }
 }
 
 // Проверка на равенство с погрешностью
-bool Ray2D::EqualWithEps(float v1, float v2) const
+/*bool Ray2D::EqualWithEps(float v1, float v2) const
 {
   return fabs(v1 - v2) < kEps;
-}
+}*/
 
 // Проверка на пересечение луча с отрезком
 bool Ray2D::Intersection(Point2D const & p1, Point2D const & p2) const
 {
   try
   {
-    if (m_direction.x() == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(m_direction.x(), 0.0f)) throw std::invalid_argument("Division by zero.");
     float k = m_direction.y() / m_direction.x();
     float b = m_initial.y() - k * m_initial.x();
 
-    if (EqualWithEps(p1.x(), p2.x()))
+    if (OperationsWithEpsilon::EqualWithEps(p1.x(), p2.x()))
     {
-      if ((m_initial.x() <= p1.x() && m_direction.x() > 0
-      || m_initial.x() >= p1.x() && m_direction.x() < 0)
-      && k * p1.x() + b >= p1.y()
-      && k * p1.x() + b <= p2.y())
+      if ((m_initial.x() <= p1.x() && m_direction.x() > 0.0f || m_initial.x() >= p1.x() && m_direction.x() < 0.0f)
+          && k * p1.x() + b >= p1.y() && k * p1.x() + b <= p2.y())
         return true;
     }
     else
     {
-      if (EqualWithEps(m_direction.x(), 0.0f)
-      && m_initial.x() >= p1.x()
-      && m_initial.x() <= p2.x()
-      && (m_initial.y() <= p1.y() && m_direction.y() > 0
-      || m_initial.y() >= p1.y() && m_direction.y() < 0))
+      if (OperationsWithEpsilon::EqualWithEps(m_direction.x(), 0.0f) && m_initial.x() >= p1.x() && m_initial.x() <= p2.x()
+          && (m_initial.y() <= p1.y() && m_direction.y() > 0.0f || m_initial.y() >= p1.y() && m_direction.y() < 0.0f))
         return true;
-      if (k == 0) throw std::invalid_argument("Division by zero.");
-      if ((m_initial.y() <= p1.y() && m_direction.y() > 0
-      || m_initial.y() >= p1.y() && m_direction.y() < 0)
-      && (p1.y() - b) / k >= p1.x()
-      && (p1.y() - b) / k <= p2.x())
+
+      if (OperationsWithEpsilon::EqualWithEps(k, 0.0f)) throw std::invalid_argument("Division by zero.");
+
+      if ((m_initial.y() <= p1.y() && m_direction.y() > 0.0f || m_initial.y() >= p1.y() && m_direction.y() < 0.0f)
+          && (p1.y() - b) / k >= p1.x() && (p1.y() - b) / k <= p2.x())
         return true;
     }
   return false;
@@ -233,6 +280,7 @@ bool Ray2D::Intersection(Point2D const & p1, Point2D const & p2) const
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
   }
 }
 

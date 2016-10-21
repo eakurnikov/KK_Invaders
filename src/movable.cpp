@@ -1,7 +1,12 @@
 #include <cmath>
 #include "movable.hpp"
 
-float Movable::GetSpeed()
+void Movable::SetSpeed(float speed)
+{
+  m_speed = speed;
+}
+
+float Movable::GetSpeed() const
 {
   return m_speed;
 }

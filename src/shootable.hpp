@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
@@ -17,12 +18,14 @@ public:
 
   virtual void Shot();
 
-  unsigned int GetAmmo();
+  unsigned int GetAmmo() const;
 
-  float GetRapidity();
+  void SetFiringRate(float firingRate);
+
+  float GetFiringRate() const;
 
 protected:
   unsigned int m_ammo = 0;
-  float m_rapidity = 0.0f;
+  float m_firingRate = 0.0f;
 };
 

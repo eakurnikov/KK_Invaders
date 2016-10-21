@@ -195,7 +195,7 @@ Box2D & Box2D::operator /= (Point2D const & obj)
 {
   try
   {
-    if (obj.x() == 0 || obj.y() == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(obj.x(), 0.0f) || OperationsWithEpsilon::EqualWithEps(obj.y(), 0.0f)) throw std::invalid_argument("Division by zero.");
     m_leftBottomPoint /= obj;
     m_rightTopPoint /= obj;
 
@@ -204,8 +204,7 @@ Box2D & Box2D::operator /= (Point2D const & obj)
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
-
-    return *this;
+    throw;
   }
 }
 
@@ -222,7 +221,7 @@ Box2D & Box2D::operator /= (float const scale)
 {
   try
   {
-    if (scale == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(scale, 0.0f)) throw std::invalid_argument("Division by zero.");
     m_rightTopPoint /= scale;
 
     return *this;
@@ -230,8 +229,7 @@ Box2D & Box2D::operator /= (float const scale)
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
-
-    return *this;
+    throw;
   }
 
   return *this;
@@ -266,14 +264,13 @@ Box2D Box2D::operator / (float const scale) const
 {
   try
   {
-    if (scale == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(scale, 0.0f)) throw std::invalid_argument("Division by zero.");
     return {m_leftBottomPoint / scale, m_rightTopPoint / scale};
   }
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
-
-    return *this;
+    throw;
   }
 }
 
@@ -318,7 +315,7 @@ float Box2D::Width() const
 // Вернуть периметр
 float Box2D::Perimeter() const
 {
-  return 2.0f * (m_rightTopPoint.x() - m_leftBottomPoint.x()) + 2 * (m_rightTopPoint.y() - m_leftBottomPoint.y());
+  return 2.0f * (m_rightTopPoint.x() - m_leftBottomPoint.x()) + 2.0f * (m_rightTopPoint.y() - m_leftBottomPoint.y());
 }
 
 // Вернуть площадь
@@ -389,16 +386,16 @@ bool Box2D::IsBoxesIntersect(Box2D const & obj) const
 }
 
 // Проверка на равенство с эпсилон #1.
-bool Box2D::EqualWithEps(float const a, float const b) const
+/*bool Box2D::EqualWithEps(float const a, float const b) const
 {
   return fabs(a - b) < kEps;
-}
+}*/
 
 // Проверка на равенство с эпсилон #2.
-bool Box2D::EqualWithEps(Point2D const & p1, Point2D const & p2) const
+/*bool Box2D::EqualWithEps(Point2D const & p1, Point2D const & p2) const
 {
   return (fabs(p1.x() - p2.x())) < kEps && (fabs(p1.y() - p2.y()) < kEps);
-}
+}*/
 
 // Вывод в поток
 std::ostream & operator << (std::ostream & os, Box2D const & obj)

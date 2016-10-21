@@ -126,7 +126,7 @@ TEST(gameentity_test, test_gun_construction)
   EXPECT_EQ(g1.GetBody().leftBottomPoint().y(), -GUN_HEIGHT / 2.0f);
   EXPECT_EQ(g1.GetBody().Height(), GUN_HEIGHT);
   EXPECT_EQ(g1.GetBody().Width(), GUN_WIDTH);
-  EXPECT_EQ(g1.GetRapidity(), GUN_RAPIDITY);
+  EXPECT_EQ(g1.GetFiringRate(), GUN_FIRING_RATE);
   EXPECT_EQ(g1.IsAlive(), true);
   EXPECT_EQ(g1.IsCreated(), true);
 
@@ -135,7 +135,7 @@ TEST(gameentity_test, test_gun_construction)
   EXPECT_EQ(g2.GetBody().leftBottomPoint().y(), 0.0f);
   EXPECT_EQ(g2.GetBody().Height(), GUN_HEIGHT);
   EXPECT_EQ(g2.GetBody().Width(), GUN_WIDTH);
-  EXPECT_EQ(g2.GetRapidity(), GUN_RAPIDITY);
+  EXPECT_EQ(g2.GetFiringRate(), GUN_FIRING_RATE);
   EXPECT_EQ(g2.IsAlive(), true);
   EXPECT_EQ(g2.IsCreated(), true);
 
@@ -145,7 +145,7 @@ TEST(gameentity_test, test_gun_construction)
   EXPECT_EQ(g3.GetBody().Height(), GUN_HEIGHT);
   EXPECT_EQ(g3.GetBody().Width(), GUN_WIDTH);
   EXPECT_EQ(g3.GetAmmo(), 100);
-  EXPECT_EQ(g3.GetRapidity(), 1.0f);
+  EXPECT_EQ(g3.GetFiringRate(), 1.0f);
   EXPECT_EQ(g3.IsAlive(), true);
   EXPECT_EQ(g3.IsCreated(), true);
 }
@@ -159,7 +159,7 @@ TEST(gameentity_test, test_alien_construction)
   EXPECT_EQ(a1.GetBody().rightTopPoint().y(), SPACE_HEIGHT / 2.0f + ALIEN_HEIGHT / 2.0f);
   EXPECT_EQ(a1.GetBody().Height(), ALIEN_HEIGHT);
   EXPECT_EQ(a1.GetBody().Width(), ALIEN_WIDTH);
-  EXPECT_EQ(a1.GetRapidity(), ALIEN_RAPIDITY);
+  EXPECT_EQ(a1.GetFiringRate(), ALIEN_FIRING_RATE);
   EXPECT_EQ(a1.IsAlive(), true);
   EXPECT_EQ(a1.IsCreated(), true);
 

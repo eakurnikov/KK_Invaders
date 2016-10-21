@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
@@ -22,11 +23,13 @@ public:
 
   void Move() override;
 
-  bool IsAlive();
+  bool IsAlive() const;
 
-  float GetDamage();
+  void SetDamage(float damage);
 
-  Ray2D GetTrajectory();
+  float GetDamage() const;
+
+  Ray2D GetTrajectory() const;
 
 private:
   bool m_isAlive = false;

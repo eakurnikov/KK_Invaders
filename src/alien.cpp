@@ -4,7 +4,7 @@
 Alien::Alien()
 {
   m_isAlive = true;
-  m_rapidity = ALIEN_RAPIDITY;
+  m_firingRate = ALIEN_FIRING_RATE;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, SPACE_HEIGHT / 2.0f);
@@ -14,7 +14,7 @@ Alien::Alien()
 Alien::Alien(Point2D const & obj)
 {
   m_isAlive = true;
-  m_rapidity = ALIEN_RAPIDITY;
+  m_firingRate = ALIEN_FIRING_RATE;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
   m_coordinate = obj;
@@ -24,7 +24,7 @@ Alien::Alien(Point2D const & obj)
 Alien::Alien(Box2D const & obj)
 {
   m_isAlive = true;
-  m_rapidity = ALIEN_RAPIDITY;
+  m_firingRate = ALIEN_FIRING_RATE;
   m_height = ALIEN_HEIGHT;
   m_width = ALIEN_WIDTH;
   m_coordinate = obj.GetCenter();
@@ -46,17 +46,17 @@ void Alien::Shot()
   Bullet();
 }
 
-bool Alien::IsAlive()
+bool Alien::IsAlive() const
 {
   return m_isAlive;
 }
 
-float Alien::GetXshift()
+float Alien::GetXshift() const
 {
   return m_xShift;
 }
 
-float Alien::GetYshift()
+float Alien::GetYshift() const
 {
   return m_yShift;
 }

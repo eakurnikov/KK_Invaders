@@ -30,8 +30,8 @@ float const GUN_HIT_POINTS = 1;
 float const BULLET_HIT_POINTS = 1;
 float const OBSTACLE_HIT_POINTS = 1;
 
-float const ALIEN_RAPIDITY = 1;
-float const GUN_RAPIDITY = 1;
+float const ALIEN_FIRING_RATE = 1;
+float const GUN_FIRING_RATE = 1;
 
 float const START_NUMBER_OF_LIFES = 3;
 

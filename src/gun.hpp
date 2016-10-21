@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
@@ -18,11 +19,11 @@ public:
 
   Gun(Point2D const & obj);
 
-  Gun(Point2D const & obj, unsigned int const Ammo, float rapidity);
+  Gun(Point2D const & obj, unsigned int const Ammo, float firingRate);
 
   void Move(float const shift);
 
-  bool IsAlive();
+  bool IsAlive() const;
 
 private:
   bool m_isAlive = false;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "point2d.hpp"
 #include "box2d.hpp"
@@ -17,17 +18,17 @@ public:
 
   virtual void Damage(int amount);
 
-  bool IsCreated();
+  bool IsCreated() const;
 
-  unsigned int GetHP();
+  unsigned int GetHP() const;
 
-  Point2D GetCoordinate();
+  Point2D GetCoordinate() const;
 
-  Box2D GetBody();
+  Box2D GetBody() const;
 
-  float GetWidth();
+  float GetWidth() const;
 
-  float GetHeight();
+  float GetHeight() const;
 
 protected:
   bool m_isCreated = false;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "point2d.hpp"
@@ -16,7 +17,9 @@ public:
 
   virtual void Move();
 
-  float GetSpeed();
+  void SetSpeed(float speed);
+
+  float GetSpeed() const;
 
 protected:
   float m_speed = 0.0f;

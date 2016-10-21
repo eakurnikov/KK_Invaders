@@ -1,4 +1,3 @@
-#pragma once
 #include "Point2D.hpp"
 #include <iostream>
 
@@ -120,7 +119,7 @@ Point2D & Point2D::operator /= (Point2D const & obj)
 {
   try
   {
-    if (obj.x() == 0 || obj.y() == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(obj.x(), 0.0f) || OperationsWithEpsilon::EqualWithEps(obj.y(), 0.0f)) throw std::invalid_argument("Division by zero.");
     m_x /= obj.x();
     m_y /= obj.y();
 
@@ -130,8 +129,7 @@ Point2D & Point2D::operator /= (Point2D const & obj)
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
-
-    return *this;
+    throw;
   }
 }
 
@@ -140,7 +138,7 @@ Point2D & Point2D::operator /= (float const scale)
 {
   try
   {
-    if (scale == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(scale, 0.0f)) throw std::invalid_argument("Division by zero.");
     m_x /= scale;
     m_y /= scale;
 
@@ -149,8 +147,7 @@ Point2D & Point2D::operator /= (float const scale)
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
-
-    return *this;
+    throw;
   }
 }
 
@@ -195,21 +192,20 @@ Point2D Point2D::operator / (float const scale) const
 {
   try
   {
-    if (scale == 0) throw std::invalid_argument("Division by zero.");
+    if (OperationsWithEpsilon::EqualWithEps(scale, 0.0f)) throw std::invalid_argument("Division by zero.");
     return { m_x / scale, m_y / scale };
   }
   catch(std::exception const & ex)
   {
     std::cerr << "Error occurred: " << ex.what() << std::endl;
-
-    return *this;
+    throw;
   }
 }
 
 // Оператор логического равенства.
 bool Point2D::operator == (Point2D const & obj) const
 {
-  return EqualWithEps(m_x, obj.x()) && EqualWithEps(m_y, obj.y());
+  return OperationsWithEpsilon::EqualWithEps(m_x, obj.x()) && OperationsWithEpsilon::EqualWithEps(m_y, obj.y());
 }
 
 // Оператор логического неравенства.
@@ -256,10 +252,10 @@ float Point2D::operator [] (unsigned int index) const
 }
 
 // Проверка на равенство с эпсилон.
-bool Point2D::EqualWithEps(float a, float b) const
+/*bool Point2D::EqualWithEps(float a, float b) const
 {
   return fabs(a - b) < kEps;
-}
+}*/
 
 // Внутренняя сущность для вычисления хэша
 size_t Point2D::Hash::operator () (Point2D const & p) const

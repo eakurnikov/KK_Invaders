@@ -27,7 +27,7 @@ Obstacle::Obstacle(Box2D const & obj)
   m_body = obj;
 }
 
-bool Obstacle::IsAlive()
+bool Obstacle::IsAlive() const
 {
   return m_isAlive;
 }

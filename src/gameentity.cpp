@@ -12,32 +12,32 @@ void GameEntity::Damage(int amount)
   m_hp -= amount;
 }
 
-bool GameEntity::IsCreated()
+bool GameEntity::IsCreated() const
 {
   return m_isCreated;
 }
 
-unsigned int GameEntity::GetHP()
+unsigned int GameEntity::GetHP() const
 {
   return m_hp;
 }
 
-Point2D GameEntity::GetCoordinate()
+Point2D GameEntity::GetCoordinate() const
 {
   return m_coordinate;
 }
 
-Box2D GameEntity::GetBody()
+Box2D GameEntity::GetBody() const
 {
   return m_body;
 }
 
-float GameEntity::GetWidth()
+float GameEntity::GetWidth() const
 {
   return m_width;
 }
 
-float GameEntity::GetHeight()
+float GameEntity::GetHeight() const
 {
   return m_height;
 }

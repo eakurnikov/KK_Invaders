@@ -41,17 +41,22 @@ void Bullet::Move()
   m_coordinate.y() += m_speed;
 }
 
-bool Bullet::IsAlive()
+bool Bullet::IsAlive() const
 {
   return m_isAlive;
 }
 
-float Bullet::GetDamage()
+void Bullet::SetDamage(float damage)
+{
+  m_damage = damage;
+}
+
+float Bullet::GetDamage() const
 {
   return m_damage;
 }
 
-Ray2D Bullet::GetTrajectory()
+Ray2D Bullet::GetTrajectory() const
 {
   return m_trajectory;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
@@ -26,11 +27,11 @@ public:
 
   void Shot() override;
 
-  bool IsAlive();
+  bool IsAlive() const;
 
-  float GetXshift();
+  float GetXshift() const;
 
-  float GetYshift();
+  float GetYshift() const;
 
 private:
   bool m_isAlive = false;

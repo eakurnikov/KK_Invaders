@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "gameentity.hpp"
 #include "movable.hpp"
@@ -19,7 +20,7 @@ public:
 
   Obstacle(Box2D const & obj);
 
-  bool IsAlive();
+  bool IsAlive() const;
 
 private:
   bool m_isAlive = false;

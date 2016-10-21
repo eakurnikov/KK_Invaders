@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "point2d.hpp"
 #include <cmath>
 #include <initializer_list>
@@ -154,10 +155,10 @@ private:
   void CheckPoints();
 
   // Проверка на равенство с эпсилон #1.
-  bool EqualWithEps(float const a, float const b) const;
+  //bool EqualWithEps(float const a, float const b) const;
 
   // Проверка на равенство с эпсилон #2.
-  bool EqualWithEps(Point2D const & a, Point2D const & b) const;
+  //bool EqualWithEps(Point2D const & a, Point2D const & b) const;
 };
 
 std::ostream & operator << (std::ostream & os, Box2D const & obj);

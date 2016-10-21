@@ -16,13 +16,18 @@ void Shootable::Shot()
   Bullet b = Bullet();
 }
 
-unsigned int Shootable::GetAmmo()
+unsigned int Shootable::GetAmmo() const
 {
   return m_ammo;
 }
 
-float Shootable::GetRapidity()
+void Shootable::SetFiringRate(float firingRate)
 {
-  return m_rapidity;
+  m_firingRate = firingRate;
+}
+
+float Shootable::GetFiringRate() const
+{
+  return m_firingRate;
 }
 

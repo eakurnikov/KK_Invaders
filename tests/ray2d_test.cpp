@@ -47,6 +47,8 @@ TEST(ray2d_test, test_construction)
   // Конструктор копирования
   Ray2D r5 = r4;
   EXPECT_EQ(r4, r5);
+
+  EXPECT_THROW(Ray2D(p1, p1), std::invalid_argument);
 }
 
 TEST(ray2d_test, test_initializer_list)

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "point2d.hpp"
 #include "box2d.hpp"
 #include <initializer_list>
@@ -91,7 +92,7 @@ private:
   void Normalize();
 
   // Проверка на равенство с погрешностью
-  bool EqualWithEps(float f1, float f2) const;
+  //bool EqualWithEps(float f1, float f2) const;
 
 
   // Переменные
