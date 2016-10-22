@@ -242,12 +242,6 @@ void Ray2D::Normalize()
   }
 }
 
-// Проверка на равенство с погрешностью
-/*bool Ray2D::EqualWithEps(float v1, float v2) const
-{
-  return fabs(v1 - v2) < kEps;
-}*/
-
 // Проверка на пересечение луча с отрезком
 bool Ray2D::Intersection(Point2D const & p1, Point2D const & p2) const
 {

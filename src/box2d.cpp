@@ -385,17 +385,11 @@ bool Box2D::IsBoxesIntersect(Box2D const & obj) const
          this->IsPointInBox(obj.rightBottomPoint());
 }
 
-// Проверка на равенство с эпсилон #1.
-/*bool Box2D::EqualWithEps(float const a, float const b) const
+// Проверка на равенство с эпсилон .
+bool Box2D::EqualWithEps(Point2D const & p1, Point2D const & p2) const
 {
-  return fabs(a - b) < kEps;
-}*/
-
-// Проверка на равенство с эпсилон #2.
-/*bool Box2D::EqualWithEps(Point2D const & p1, Point2D const & p2) const
-{
-  return (fabs(p1.x() - p2.x())) < kEps && (fabs(p1.y() - p2.y()) < kEps);
-}*/
+  return (OperationsWithEpsilon::EqualWithEps(p1.x(), p2.x()) && OperationsWithEpsilon::EqualWithEps(p1.y(), p2.y()));
+}
 
 // Вывод в поток
 std::ostream & operator << (std::ostream & os, Box2D const & obj)

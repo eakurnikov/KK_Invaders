@@ -154,11 +154,8 @@ private:
   // Проверка корректности задания точек прямоугольника.
   void CheckPoints();
 
-  // Проверка на равенство с эпсилон #1.
-  //bool EqualWithEps(float const a, float const b) const;
-
-  // Проверка на равенство с эпсилон #2.
-  //bool EqualWithEps(Point2D const & a, Point2D const & b) const;
+  // Проверка на равенство с эпсилон.
+  bool EqualWithEps(Point2D const & a, Point2D const & b) const;
 };
 
 std::ostream & operator << (std::ostream & os, Box2D const & obj);
