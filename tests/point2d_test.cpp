@@ -80,6 +80,7 @@ TEST(point2d_test, test_calculus)
   EXPECT_EQ(p1 - p2, Point2D(0.2f, 0.4f));
   EXPECT_EQ(p1 * 2.0f, Point2D(2.4f, 4.8f));
   EXPECT_EQ(p1 / 2.0f, Point2D(0.6f, 1.2f));
+  EXPECT_THROW(p1 / 0.0f, std::invalid_argument);
 
   p1 += { 1.2f, 2.4f };
   EXPECT_EQ(p1, Point2D(2.4f, 4.8f));
@@ -92,6 +93,8 @@ TEST(point2d_test, test_calculus)
 
   p1 /= 2.0f;
   EXPECT_EQ(p1, Point2D(1.2f, 2.4f));
+
+  EXPECT_THROW(p1 /= 0.0f, std::invalid_argument);
 }
 
 TEST(point2d_test, test_square_brackets)

@@ -1,4 +1,5 @@
 #include "ray2d.hpp"
+#include <iostream>
 
 #define M_PI 3.14159265358979323846
 
@@ -8,22 +9,46 @@
 Ray2D::Ray2D(float const directionX, float const directionY)
   : m_direction(directionX, directionY)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием четырех координат, определяющих направление луча и его начало
-Ray2D::Ray2D(float const directionX, float const directionY, float const initialX, float const initialY)
+Ray2D::Ray2D( float const directionX, float const directionY, float const initialX, float const initialY)
   : m_direction(directionX, directionY)
   , m_initial(initialX, initialY)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием точки, определяющей направление луча
 Ray2D::Ray2D(Point2D const & direction)
   : m_direction(direction)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием двух точек, определяющих направление луча и его начало
@@ -31,7 +56,15 @@ Ray2D::Ray2D(Point2D const & direction, Point2D const & initial)
   : m_direction(direction)
   , m_initial(initial)
 {
-  Normalize();
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор с заданием параметров на основе сущестующего луча
@@ -50,13 +83,22 @@ Ray2D::Ray2D(std::initializer_list<Point2D> const & lst)
   {
     *vals[i] = *it;
   }
-  Normalize();
+
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор со списком иниациализации
 Ray2D::Ray2D(std::initializer_list<float> const & lst)
 {
-  float * vals[] = { &m_direction.x(), &m_direction.y(), &m_initial.x(), &m_initial.y()};
+  float * vals[] = { &m_direction.x(), &m_direction.y(), &m_initial.x(), &m_initial.y() };
   int const count = sizeof(vals) / sizeof(vals[0]);
   auto it = lst.begin();
 
@@ -64,7 +106,16 @@ Ray2D::Ray2D(std::initializer_list<float> const & lst)
   {
     *vals[i] = *it;
   }
-  Normalize();
+
+  try
+  {
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Конструктор перемещения
@@ -109,7 +160,7 @@ bool Ray2D::operator != (Ray2D const & obj) const
 // Математическое отрицание (изменяет направление луча)
 Ray2D Ray2D::operator - () const
 {
-  return { -m_direction, m_initial};
+  return {-m_direction, m_initial};
 }
 
 // Методы
@@ -118,6 +169,7 @@ Ray2D Ray2D::operator - () const
 void Ray2D::SetInitial(Point2D const & initial)
 {
   m_initial = initial;
+  Normalize();
 }
 
 // Изменить направления луча
@@ -127,83 +179,103 @@ void Ray2D::SetDirection (Point2D const & direction)
   Normalize();
 }
 
-Point2D const & Ray2D::initial() const { return m_initial; }
+Point2D const & Ray2D::initial() const
+{
+  return m_initial;
+}
 
-Point2D const & Ray2D::direction() const { return m_direction; }
+Point2D const & Ray2D::direction() const
+{
+  return m_direction;
+}
 
 // Поворот направление луча на degree градусов против часовой стрелки
 void Ray2D::RotateDirection (float const degree)
 {
-  //TODO: обработать деление на 0
-  float deg = 180 / M_PI * atanf(fabs(m_direction.y() / m_direction.x())*M_PI/180);
+  try
+  {
+    if (OperationsWithEpsilon::EqualWithEps(m_direction.x(), 0.0f)) throw std::invalid_argument("Division by zero.");
+    float deg = 180 / M_PI * atanf(fabs(m_direction.y() / m_direction.x()) * M_PI / 180);
 
-  if((m_direction.x() < 0) && (m_direction.y() > 0)) deg += 90;
-  else if((m_direction.x() < 0) && (m_direction.y() < 0)) deg += 180;
-  else if((m_direction.x() > 0) && (m_direction.y() < 0)) deg += 270;
+    if((m_direction.x() < 0.0f) && (m_direction.y() > 0.0f)) deg += 90;
+    else if((m_direction.x() < 0.0f) && (m_direction.y() < 0.0f)) deg += 180;
+    else if((m_direction.x() > 0.0f) && (m_direction.y() < 0.0f)) deg += 270;
 
-  m_direction.x() = cosf((degree + deg) * M_PI / 180);
-  m_direction.y() = sinf((degree + deg) * M_PI / 180);
-  Normalize();
+    m_direction.x() = cosf((degree + deg) * M_PI / 180);
+    m_direction.y() = sinf((degree + deg) * M_PI / 180);
+    Normalize();
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Сдвиг начальной точки луча в горизонтальном направлении
 void Ray2D::HorizontalMove (float const x)
 {
   m_initial.x() += x;
+  m_direction.x() += x;
 }
 
 // Сдвиг начальной точки луча в вертикальном направлении
 void Ray2D::VerticalMove (float const y)
 {
   m_initial.y() += y;
+  m_direction.y() += y;
 }
 
 // Нормирование вектора направления луча
 void Ray2D::Normalize()
 {
-  //TODO: обработать деление на 0
-  float norm = sqrtf(m_direction.x()*m_direction.x() + m_direction.y()*m_direction.y());
-  m_direction /= norm;
-}
-
-// Проверка на равенство с погрешностью
-bool Ray2D::EqualWithEps(float v1, float v2) const
-{
-  return fabs(v1 - v2) < kEps;
+  float norm = sqrtf((m_direction.x() - m_initial.x()) * (m_direction.x() - m_initial.x()) + (m_direction.y() - m_initial.y()) * (m_direction.y() - m_initial.y()));
+  try
+  {
+    if (OperationsWithEpsilon::EqualWithEps(norm, 0.0f)) throw std::invalid_argument("Division by zero.");
+    m_direction = (m_direction - m_initial) / norm + m_initial;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Проверка на пересечение луча с отрезком
 bool Ray2D::Intersection(Point2D const & p1, Point2D const & p2) const
 {
-  // TODO: обработать деление на 0
-  float k = m_direction.y() / m_direction.x();
-  float b = m_initial.y() - k * m_initial.x();
-
-  if (EqualWithEps(p1.x(), p2.x()))
+  try
   {
-    if ((m_initial.x() <= p1.x() && m_direction.x() > 0
-    || m_initial.x() >= p1.x() && m_direction.x() < 0)
-    && k * p1.x() + b >= p1.y()
-    && k * p1.x() + b <= p2.y())
-      return true;
-  }
-  else
-  {
-    if (EqualWithEps(m_direction.x(), 0.0f)
-    && m_initial.x() >= p1.x()
-    && m_initial.x() <= p2.x()
-    && (m_initial.y() <= p1.y() && m_direction.y() > 0
-    || m_initial.y() >= p1.y() && m_direction.y() < 0))
-      return true;
+    if (OperationsWithEpsilon::EqualWithEps(m_direction.x(), 0.0f)) throw std::invalid_argument("Division by zero.");
+    float k = m_direction.y() / m_direction.x();
+    float b = m_initial.y() - k * m_initial.x();
 
-    // TODO: обработать деление на 0
-    if ((m_initial.y() <= p1.y() && m_direction.y() > 0
-    || m_initial.y() >= p1.y() && m_direction.y() < 0)
-    && (p1.y() - b) / k >= p1.x()
-    && (p1.y() - b) / k <= p2.x())
-      return true;
-  }
+    if (OperationsWithEpsilon::EqualWithEps(p1.x(), p2.x()))
+    {
+      if ((m_initial.x() <= p1.x() && m_direction.x() > 0.0f || m_initial.x() >= p1.x() && m_direction.x() < 0.0f)
+          && k * p1.x() + b >= p1.y() && k * p1.x() + b <= p2.y())
+        return true;
+    }
+    else
+    {
+      if (OperationsWithEpsilon::EqualWithEps(m_direction.x(), 0.0f) && m_initial.x() >= p1.x() && m_initial.x() <= p2.x()
+          && (m_initial.y() <= p1.y() && m_direction.y() > 0.0f || m_initial.y() >= p1.y() && m_direction.y() < 0.0f))
+        return true;
+
+      if (OperationsWithEpsilon::EqualWithEps(k, 0.0f)) throw std::invalid_argument("Division by zero.");
+
+      if ((m_initial.y() <= p1.y() && m_direction.y() > 0.0f || m_initial.y() >= p1.y() && m_direction.y() < 0.0f)
+          && (p1.y() - b) / k >= p1.x() && (p1.y() - b) / k <= p2.x())
+        return true;
+    }
   return false;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 // Проверка на пересечение луча и прямоугольника

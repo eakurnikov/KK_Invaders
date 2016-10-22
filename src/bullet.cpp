@@ -1,22 +1,63 @@
 #include "bullet.hpp"
 
-Bullet::Bullet(Ray2D const & direction, Point2D const & startPosition)
-  : m_direction(direction)
+Bullet::Bullet()
 {
+  m_isAlive = true;
+  m_damage = BULLET_DAMAGE;
   m_speed = BULLET_SPEED;
-  m_body = Box2D(startPosition, BULLET_HEIGHT, BULLET_WIDTH);
-  m_hp = BULLET_HIT_POINTS;
+  m_height = BULLET_HEIGHT;
+  m_width = BULLET_WIDTH;
+  m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
+  m_body = Box2D(m_coordinate, m_width, m_height);
+  m_trajectory = Ray2D(Point2D(m_coordinate.x(), m_coordinate.y() + m_speed), m_coordinate);
 }
 
-Ray2D const & Bullet::GetDirection() const
+Bullet::Bullet(Ray2D const & obj)
 {
-  return m_direction;
+  m_isAlive = true;
+  m_damage = BULLET_DAMAGE;
+  m_speed = BULLET_SPEED;
+  m_height = BULLET_HEIGHT;
+  m_width = BULLET_WIDTH;
+  m_coordinate = obj.initial();
+  m_body = Box2D(m_coordinate, m_width, m_height);
+  m_trajectory = obj;
 }
 
-void Bullet::Move(float const xShift, float const yShift)
-{}
+Bullet::Bullet(Ray2D const & obj, float speed, float damage)
+{
+  m_isAlive = true;
+  m_damage = damage;
+  m_speed = speed;
+  m_height = BULLET_HEIGHT;
+  m_width = BULLET_WIDTH;
+  m_coordinate = obj.initial();
+  m_body = Box2D(m_coordinate, m_width, m_height);
+  m_trajectory = obj;
+}
 
-unsigned int const Bullet::GetDamage() const
+void Bullet::Move()
+{
+  m_coordinate.y() += m_speed;
+}
+
+bool Bullet::IsAlive() const
+{
+  return m_isAlive;
+}
+
+void Bullet::SetDamage(float damage)
+{
+  m_damage = damage;
+}
+
+float Bullet::GetDamage() const
 {
   return m_damage;
 }
+
+Ray2D Bullet::GetTrajectory() const
+{
+  return m_trajectory;
+}
+

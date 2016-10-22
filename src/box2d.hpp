@@ -1,5 +1,6 @@
 #pragma once
 
+#include "operationswithepsilon.h"
 #include "point2d.hpp"
 #include <cmath>
 #include <initializer_list>
@@ -145,18 +146,15 @@ public:
 
 private:
   // Левая нижняя точка
-  Point2D m_leftBottomPoint = { 0.0, 0.0 };
+  Point2D m_leftBottomPoint = {0.0, 0.0};
 
   // Правая верхняя точка
-  Point2D m_rightTopPoint = { 0.0, 0.0 };
+  Point2D m_rightTopPoint = {0.0, 0.0};
 
   // Проверка корректности задания точек прямоугольника.
   void CheckPoints();
 
-  // Проверка на равенство с эпсилон #1.
-  bool EqualWithEps(float const a, float const b) const;
-
-  // Проверка на равенство с эпсилон #2.
+  // Проверка на равенство с эпсилон.
   bool EqualWithEps(Point2D const & a, Point2D const & b) const;
 };
 

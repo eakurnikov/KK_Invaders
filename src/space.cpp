@@ -1,9 +1,25 @@
 #include "space.hpp"
 
-Space::Space(float const height, float const width) { m_field = Box2D(0.0f, 0.0f, height, width); }
+Space::Space()
+{
+  m_height = SPACE_HEIGHT;
+  m_width = SPACE_WIDTH;
+  m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
+  m_body = Box2D(m_coordinate, m_width, m_height);
+}
 
-Box2D const & Space::GetField() const { return m_field; }
+Space::Space(Point2D const & obj)
+{
+  m_height = SPACE_HEIGHT;
+  m_width = SPACE_WIDTH;
+  m_coordinate = obj;
+  m_body = Box2D(obj, m_width, m_height);
+}
 
-float const Space::GetWidth() const { return m_field.Width(); }
-
-float const Space::GetHeight() const { return m_field.Height();}
+Space::Space(Box2D const & obj)
+{
+  m_height = SPACE_HEIGHT;
+  m_width = SPACE_WIDTH;
+  m_coordinate = obj.GetCenter();
+  m_body = obj;
+}

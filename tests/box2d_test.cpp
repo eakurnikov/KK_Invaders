@@ -224,6 +224,7 @@ TEST(box2d_test, test_calculus)
   EXPECT_EQ(b1 * scale, Box2D(3.0f, 3.0f, 6.0f, 6.0f));
   scale = 2.0f;
   EXPECT_EQ(b1 / scale, Box2D(0.5f, 0.5f, 1.0f, 1.0f));
+  EXPECT_THROW(b1 / 0.0f, std::invalid_argument);
 
   b1 += scale;
   EXPECT_EQ(b1, Box2D(3.0f, 3.0f, 4.0f, 4.0f));
@@ -236,6 +237,8 @@ TEST(box2d_test, test_calculus)
 
   b1 /= scale;
   EXPECT_EQ(b1, Box2D(1.0f, 1.0f, 2.0f, 2.0f));
+
+  EXPECT_THROW(b1 /= 0.0f, std::invalid_argument);
 
   Box2D b2 = { 1.0f, 1.0f, 4.0f, 4.0f };
   Box2D b3 = { 1.0f, 1.0f, 4.0f, 4.0f };
@@ -256,7 +259,7 @@ TEST(box2d_test, test_calculus)
   b1 /= p1;
   EXPECT_EQ(b1, Box2D(1.0f, 1.0f, 2.0f, 2.0f));
 
-  Box2D b4 = { 1.0f, 2.0f, 3.0f, 4.0f };
+  EXPECT_THROW(b1 /= Point2D(0.0f, 0.0f), std::invalid_argument);
 }
 
 TEST(box2d_test, test_square_brackets)
