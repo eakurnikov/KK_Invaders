@@ -6,6 +6,7 @@
 #include "alien.hpp"
 #include "logger.hpp"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -56,6 +57,8 @@ TEST(logger_test, test_log)
 
   int i = 10;
 
+  vector<Bullet> v(3);
+
   Logger::Log(a, ActionType::CauseDamage, str);
   EXPECT_EQ(str.str(), s + action4 + name_alien + alive + center_1 + width_1 + height_1 + xs + ys + rate + s);
 
@@ -90,4 +93,10 @@ TEST(logger_test, test_log)
   str.str(string());
   Logger::Log(i, str);
   EXPECT_EQ(str.str(), "10");
+
+  str.str(string());
+  Logger::Log(v, ActionType::Creation, str);
+  EXPECT_EQ(str.str(), s + action1 + name_bullet + alive + traj + speed + damage + width_2 + height_2 + s +
+                       s + action1 + name_bullet + alive + traj + speed + damage + width_2 + height_2 + s +
+                       s + action1 + name_bullet + alive + traj + speed + damage + width_2 + height_2 + s);
 }
