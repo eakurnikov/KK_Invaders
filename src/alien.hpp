@@ -36,8 +36,8 @@ public:
 
 private:
   bool m_isAlive = false;
-  float const m_yShift = 10.0;
-  float const m_xShift = 1.0;
+  float const m_yShift = 10.0f;
+  float const m_xShift = 1.0f;
 };
 
 std::ostream & operator << (std::ostream & os, Alien const & obj);

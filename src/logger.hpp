@@ -60,7 +60,7 @@ public:
     return os;
   }
 
-  template <typename EntityType, template<typename, typename...> class C, typename... Args>
+  template <typename EntityType, template<typename, typename...> class C>
   static std::ostream & Log(C <EntityType, std::allocator<EntityType>> const & objs, ActionType actionType, std::ostream & os)
   {
     for (auto const & obj : objs)
