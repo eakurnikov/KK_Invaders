@@ -32,3 +32,13 @@ bool Obstacle::IsAlive() const
   return m_isAlive;
 }
 
+std::ostream & operator << (std::ostream & os, Obstacle const & obj)
+{
+  os << "Obstacle" << std::endl << ((obj.IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
+     << " - Health: " << obj.GetHP() << std::endl
+     << " - Center: " << obj.GetCoordinate() << std::endl
+     << " - Width: " << obj.GetWidth() << std::endl
+     << " - Height: " << obj.GetHeight() << std::endl;
+
+  return os;
+}

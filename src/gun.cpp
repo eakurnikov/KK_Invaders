@@ -35,10 +35,31 @@ Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
 
 void Gun::Move(float const shift)
 {
-  m_coordinate.x() += shift;
+  try
+  {
+    if (m_coordinate.x() + shift > SPACE_WIDTH || m_coordinate.x() + shift  < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    m_coordinate.x() += shift;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 bool Gun::IsAlive() const
 {
   return m_isAlive;
+}
+
+std::ostream & operator << (std::ostream & os, Gun const & obj)
+{
+  os << "Gun" << std::endl << ((obj.IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
+     << " - Center: " << obj.GetCoordinate() << std::endl
+     << " - Width: " << obj.GetWidth() << std::endl
+     << " - Height: " << obj.GetHeight() << std::endl
+     << " - Ammo: " << obj.GetAmmo() << std::endl
+     << " - Firing rate: " << obj.GetFiringRate() << std::endl;
+
+  return os;
 }

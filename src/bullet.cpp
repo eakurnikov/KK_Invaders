@@ -1,4 +1,5 @@
 #include "bullet.hpp"
+#include "logger.hpp"
 
 Bullet::Bullet()
 {
@@ -38,7 +39,16 @@ Bullet::Bullet(Ray2D const & obj, float speed, float damage)
 
 void Bullet::Move()
 {
-  m_coordinate.y() += m_speed;
+  try
+  {
+    if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    m_coordinate.y() += m_speed;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 bool Bullet::IsAlive() const
@@ -48,7 +58,16 @@ bool Bullet::IsAlive() const
 
 void Bullet::SetDamage(float damage)
 {
-  m_damage = damage;
+  try
+  {
+    if (damage <= 0) throw std::invalid_argument("Damage <= 0.");
+    m_damage = damage;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 float Bullet::GetDamage() const
@@ -61,3 +80,35 @@ Ray2D Bullet::GetTrajectory() const
   return m_trajectory;
 }
 
+//TODO: добавить вывод в лог, кто нанес урон пуле
+void Bullet::Hit(Alien & obj)
+{
+  obj.Damage(m_damage);
+  Logger::Log(obj, ActionType::SufferDamage, cout);
+}
+
+//TODO: добавить вывод в лог, кто нанес урон пушке
+void Bullet::Hit(Gun & obj)
+{
+  obj.Damage(m_damage);
+  Logger::Log(obj, ActionType::SufferDamage, cout);
+}
+
+//TODO: добавить вывод в лог, кто нанес урон препятствию
+void Bullet::Hit(Obstacle & obj)
+{
+  obj.Damage(m_damage);
+  Logger::Log(obj, ActionType::SufferDamage, cout);
+}
+
+std::ostream & operator << (std::ostream & os, Bullet const & obj)
+{
+  os << "Bullet" << std::endl << ((obj.IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
+     << " - Trajectory: " << obj.GetTrajectory() << std::endl
+     << " - Speed: " << obj.GetSpeed() << std::endl
+     << " - Damage: " << obj.GetDamage() << std::endl
+     << " - Width: " << obj.GetWidth() << std::endl
+     << " - Height: " << obj.GetHeight() << std::endl;
+
+  return os;
+}

@@ -8,6 +8,8 @@
 #include <initializer_list>
 #include <functional>
 #include <ostream>
+#include <vector>
+#include <string>
 
 class GameEntity
 {
@@ -20,7 +22,11 @@ public:
 
   bool IsCreated() const;
 
+  void SetHP(unsigned int hp);
+
   unsigned int GetHP() const;
+
+  void SetCoordinate(Point2D const & coordinate);
 
   Point2D GetCoordinate() const;
 
@@ -36,5 +42,18 @@ protected:
   float m_height, m_width = 0.0f;
   Point2D m_coordinate = {0.0f, 0.0f};
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
+};
+
+template<typename T, template<typename, typename> class C>
+std::ostream & operator << (std::ostream & os, C<T, std::allocator<T> > const & objs)
+{
+  for (auto const & obj : objs)
+  os << obj << ' ';
+  return os;
+}
+
+enum ActionType
+{
+  Creation, Destroying, Shot, CauseDamage, SufferDamage
 };
 

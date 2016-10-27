@@ -6,6 +6,7 @@
 #include <initializer_list>
 #include <functional>
 #include <ostream>
+#include <iostream>
 
 class Box2D
 {

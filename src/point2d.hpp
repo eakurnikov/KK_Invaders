@@ -112,12 +112,8 @@ public:
   };
 
 private:
-
   float m_x = 0.0f;
   float m_y = 0.0f;
-
-  // Проверка на равенство с эпсилон.
-  //bool EqualWithEps(float const a, float const b) const;
 };
 
 std::ostream & operator << (std::ostream & os, Point2D const & obj);

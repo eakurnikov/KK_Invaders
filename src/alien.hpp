@@ -11,6 +11,7 @@
 #include <initializer_list>
 #include <functional>
 #include <ostream>
+#include <iostream>
 
 class Alien : public Shootable
 {
@@ -35,7 +36,8 @@ public:
 
 private:
   bool m_isAlive = false;
-  float const m_yShift = 10;
-  float const m_xShift = 1;
+  float const m_yShift = 10.0;
+  float const m_xShift = 1.0;
 };
 
+std::ostream & operator << (std::ostream & os, Alien const & obj);

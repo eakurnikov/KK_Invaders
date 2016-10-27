@@ -251,12 +251,6 @@ float Point2D::operator [] (unsigned int index) const
   }
 }
 
-// Проверка на равенство с эпсилон.
-/*bool Point2D::EqualWithEps(float a, float b) const
-{
-  return fabs(a - b) < kEps;
-}*/
-
 // Внутренняя сущность для вычисления хэша
 size_t Point2D::Hash::operator () (Point2D const & p) const
 {

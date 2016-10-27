@@ -4,15 +4,7 @@
 
 void Shootable::Shot()
 {
-  try
-  {
-    if (m_ammo == 0) throw std::invalid_argument("Ammo is empty.");
-    m_ammo--;
-  }
-  catch(std::exception const & ex)
-  {
-    std::cerr << "Error occurred: " << ex.what() << std::endl;
-  }
+  if (m_ammo != 0) m_ammo--;
   Bullet b = Bullet();
 }
 
@@ -23,7 +15,16 @@ unsigned int Shootable::GetAmmo() const
 
 void Shootable::SetFiringRate(float firingRate)
 {
-  m_firingRate = firingRate;
+  try
+  {
+    if (firingRate <= 0.0f) throw std::invalid_argument("Firing rate <= 0.");
+    m_firingRate = firingRate;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 float Shootable::GetFiringRate() const

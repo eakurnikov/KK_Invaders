@@ -4,6 +4,9 @@
 #include "bullet.hpp"
 #include "gun.hpp"
 #include "alien.hpp"
+#include <string>
+
+using namespace std;
 
 TEST(gameentity_test, test_space_construction)
 {
@@ -184,4 +187,82 @@ TEST(gameentity_test, test_alien_construction)
   EXPECT_EQ(a3.GetBody().Width(), p2.x() - p1.x());
   EXPECT_EQ(a3.IsAlive(), true);
   EXPECT_EQ(a3.IsCreated(), true);
+}
+
+TEST(gameentity_test, test_exceptions)
+{
+  Bullet b;
+  EXPECT_THROW(b.SetDamage(-100), std::invalid_argument);
+  EXPECT_THROW(b.SetHP(200),std::invalid_argument);
+  EXPECT_THROW(b.SetCoordinate(Point2D(-10.0f, -10.f)), std::invalid_argument);
+  EXPECT_THROW(b.SetCoordinate(Point2D(1000.0f, 1000.f)), std::invalid_argument);
+
+  Gun g;
+  EXPECT_THROW(g.Move(1000.0f), std::invalid_argument);
+  EXPECT_THROW(g.SetFiringRate(-100.0f), std::invalid_argument);
+  EXPECT_THROW(g.SetFiringRate(0.0f), std::invalid_argument);
+  EXPECT_THROW(g.SetHP(200),std::invalid_argument);
+  EXPECT_THROW(g.SetCoordinate(Point2D(-10.0f, -10.f)), std::invalid_argument);
+  EXPECT_THROW(g.SetCoordinate(Point2D(1000.0f, 1000.f)), std::invalid_argument);
+
+  Alien a;
+  EXPECT_THROW(a.SetFiringRate(-100.0f), std::invalid_argument);
+  EXPECT_THROW(a.SetFiringRate(0.0f), std::invalid_argument);
+  EXPECT_THROW(a.SetHP(200),std::invalid_argument);
+  EXPECT_THROW(a.SetCoordinate(Point2D(-10.0f, -10.f)), std::invalid_argument);
+  EXPECT_THROW(a.SetCoordinate(Point2D(1000.0f, 1000.f)), std::invalid_argument);
+}
+
+TEST(gameentity_test, test_output)
+{
+  stringstream str;
+
+  string name_alien = "Alien\n";
+  string name_bullet = "Bullet\n";
+  string name_gun = "Gun\n";
+  string name_obstacle = "Obstacle\n";
+  string name_space = "Space\n";
+  string alive = " - Alive\n";
+  string created = " - Created\n";
+  string health = " - Health: 100\n";
+  string center_1 = " - Center: Point2D {250, 250}\n";
+  string center_2 = " - Center: Point2D {2.5, 2.5}\n";
+  string center_3 = " - Center: Point2D {250, 0}\n";
+  string width_1 = " - Width: 20\n";
+  string height_1 = " - Height: 20\n";
+  string width_2 = " - Width: 5\n";
+  string height_2 = " - Height: 5\n";
+  string width_3 = " - Width: 500\n";
+  string height_3 = " - Height: 500\n";
+  string traj = " - Trajectory: Ray2D {initial point: {2.5, 2.5}, direction: {2.5, 3.5}}\n";
+  string speed = " - Speed: 10\n";
+  string damage = " - Damage: 1\n";
+  string ammo = " - Ammo: 100\n";
+  string xs = " - X Shift: 1\n";
+  string ys = " - Y Shift: 10\n";
+  string rate = " - Firing rate: 1\n";
+
+  Alien a;
+  str << a;
+  EXPECT_EQ(str.str(), name_alien + alive + center_1 + width_1 + height_1 + xs + ys + rate);
+
+  Bullet b;
+  str.str(string());
+  str << b;
+  EXPECT_EQ(str.str(), name_bullet + alive + traj + speed + damage + width_2 + height_2);
+
+  Gun g;
+  str.str(string());
+  str << g;
+  EXPECT_EQ(str.str(), name_gun + alive + center_3 + width_1 + height_1 + ammo + rate);
+
+  Obstacle o;
+  str.str(string());
+  str << o;
+  EXPECT_EQ(str.str(), name_obstacle + alive + health + center_2 + width_2 + height_2);
+
+  Space s;
+  str.str(string());
+  str << s;
+  EXPECT_EQ(str.str(), name_space + created + center_1 + width_3 + height_3);
 }
