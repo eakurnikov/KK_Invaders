@@ -63,32 +63,8 @@ public:
   template <typename EntityType, template<typename, typename...> class C, typename... Args>
   static std::ostream & Log(C <EntityType, std::allocator<EntityType>> const & objs, ActionType actionType, std::ostream & os)
   {
-    string action = "";
-    switch(actionType)
-    {
-      case ActionType::Creation:
-        action = "Created ";
-        break;
-      case ActionType::CauseDamage:
-        action = "Caused damage ";
-        break;
-      case ActionType::SufferDamage:
-        action = "Suffered damage ";
-        break;
-      case ActionType::Destroying:
-        action = "Destroyed ";
-        break;
-      case ActionType::Shot:
-        action = "Shoots ";
-        break;
-      default:
-        action = "";
-    }
-
     for (auto const & obj : objs)
-    os << "--------------" << endl
-       << action << obj
-       << "--------------" << endl;
+      Log(obj, actionType, os);
 
     return os;
   }
