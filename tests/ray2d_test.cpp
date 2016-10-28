@@ -97,6 +97,7 @@ TEST(ray2d_test, test_assignment)
   EXPECT_EQ(r1.initial().y(), -1.0f);
   EXPECT_EQ(r1.direction().x(), 0.0f);
   EXPECT_EQ(r1.direction().y(), 0.0f);
+  EXPECT_EQ(r1.GetDirection(), 1.0f);
 }
 
 TEST(ray2d_test, test_equality)

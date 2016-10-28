@@ -189,6 +189,11 @@ Point2D const & Ray2D::direction() const
   return m_direction;
 }
 
+float const Ray2D::GetDirection() const
+{
+  return m_direction.y() - m_initial.y();
+}
+
 // Поворот направление луча на degree градусов против часовой стрелки
 void Ray2D::RotateDirection (float const degree)
 {

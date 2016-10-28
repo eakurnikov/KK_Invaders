@@ -23,3 +23,13 @@ Space::Space(Box2D const & obj)
   m_coordinate = obj.GetCenter();
   m_body = obj;
 }
+
+std::ostream & operator << (std::ostream & os, Space const & obj)
+{
+  os << "Space" << std::endl << ((obj.IsCreated() == true) ? " - Created" : " - Not created") << std::endl
+     << " - Center: " << obj.GetCoordinate() << std::endl
+     << " - Width: " << obj.GetWidth() << std::endl
+     << " - Height: " << obj.GetHeight() << std::endl;
+
+  return os;
+}

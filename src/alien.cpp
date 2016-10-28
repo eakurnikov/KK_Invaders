@@ -1,5 +1,6 @@
 #include "alien.hpp"
 #include "bullet.hpp"
+#include "logger.hpp"
 
 Alien::Alien()
 {
@@ -33,17 +34,36 @@ Alien::Alien(Box2D const & obj)
 
 void Alien::Move()
 {
-  m_coordinate.x() += m_xShift;
+  try
+  {
+    if (m_coordinate.x() + m_xShift > SPACE_WIDTH || m_coordinate.x() + m_xShift  < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    m_coordinate.x() += m_xShift;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 void Alien::MoveDown()
 {
-  m_coordinate.y() -= m_yShift;
+  try
+  {
+    if (m_coordinate.y() - m_xShift < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    m_coordinate.y() -= m_yShift;
+  }
+  catch(std::exception const & ex)
+  {
+    std::cerr << "Error occurred: " << ex.what() << std::endl;
+    throw;
+  }
 }
 
 void Alien::Shot()
 {
-  Bullet();
+  Bullet b;
+  Logger::Log(*this, ActionType::Shot, std::cout);
 }
 
 bool Alien::IsAlive() const
@@ -59,4 +79,17 @@ float Alien::GetXshift() const
 float Alien::GetYshift() const
 {
   return m_yShift;
+}
+
+std::ostream & operator << (std::ostream & os, Alien const & obj)
+{
+  os << "Alien" << std::endl << ((obj.IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
+     << " - Center: " << obj.GetCoordinate() << std::endl
+     << " - Width: " << obj.GetWidth() << std::endl
+     << " - Height: " << obj.GetHeight() << std::endl
+     << " - X Shift: " << obj.GetXshift() << std::endl
+     << " - Y Shift: " << obj.GetYshift() << std::endl
+     << " - Firing rate: " << obj.GetFiringRate() << std::endl;
+
+  return os;
 }

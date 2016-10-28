@@ -33,3 +33,4 @@ private:
   std::list<Alien> m_aliens;
 };
 
+std::ostream & operator << (std::ostream & os, Space const & obj);

@@ -55,6 +55,8 @@ public:
 
   Point2D const & direction() const;
 
+  float const GetDirection() const;
+
   // Поворот направление луча на degree градусов против часовой стрелки
   void RotateDirection (float const degree);
 
