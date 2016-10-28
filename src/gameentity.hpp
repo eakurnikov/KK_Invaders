@@ -44,11 +44,11 @@ protected:
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
 };
 
-template<typename T, template<typename, typename> class C>
+template <typename T, template <typename, typename> class C>
 std::ostream & operator << (std::ostream & os, C<T, std::allocator<T> > const & objs)
 {
   for (auto const & obj : objs)
-  os << obj << ' ';
+    os << obj << ' ';
   return os;
 }
 
