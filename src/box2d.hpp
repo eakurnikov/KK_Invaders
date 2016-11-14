@@ -11,6 +11,7 @@
 class Box2D
 {
 public:
+
   // Разрешаем конструктор по умолчанию.
   Box2D() = default;
 
@@ -146,6 +147,7 @@ public:
   bool IsBoxesIntersect(Box2D const & obj) const;
 
 private:
+
   // Левая нижняя точка
   Point2D m_leftBottomPoint = {0.0, 0.0};
 

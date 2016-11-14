@@ -10,6 +10,7 @@
 class Point2D
 {
 public:
+
   // Разрешаем конструирование по умолчанию.
   Point2D() = default;
 
@@ -112,7 +113,9 @@ public:
   };
 
 private:
+
   float m_x = 0.0f;
+
   float m_y = 0.0f;
 };
 

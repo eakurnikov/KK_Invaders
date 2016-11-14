@@ -14,11 +14,10 @@
 class GameEntity
 {
 public:
-  GameEntity();
 
   virtual ~GameEntity() = default;
 
-  virtual void Damage(int amount);
+  virtual void SufferDamage(int amount);
 
   bool IsCreated() const;
 
@@ -36,12 +35,23 @@ public:
 
   float GetHeight() const;
 
+  virtual void PrintInfo(std::ostream & os);
+
 protected:
+
+  GameEntity();
+
   bool m_isCreated = false;
+
   unsigned int m_hp = 0;
+
   float m_height, m_width = 0.0f;
+
   Point2D m_coordinate = {0.0f, 0.0f};
+
   Box2D m_body = {0.0f, 0.0f, 0.0f, 0.0f};
+
+  std::string m_info = "";
 };
 
 template <typename T, template <typename, typename> class C>

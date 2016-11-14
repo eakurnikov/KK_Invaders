@@ -10,19 +10,23 @@
 #include "point2d.hpp"
 #include "box2d.hpp"
 #include "ray2d.hpp"
+#include "logger.hpp"
 #include <cmath>
 #include <initializer_list>
 #include <functional>
 #include <ostream>
+#include <vector>
 
 class Bullet : public Movable
 {
 public:
   Bullet();
 
-  Bullet(Ray2D const & obj);
+  Bullet(Shootable & shooter);
 
-  Bullet(Ray2D const & obj, float speed, float damage);
+  Bullet(Ray2D const & obj, Shootable & shooter);
+
+  Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter);
 
   void Move() override;
 
@@ -34,18 +38,25 @@ public:
 
   Ray2D GetTrajectory() const;
 
-  void Hit(Alien & obj);
+  Shootable * GetShooter() const;
 
-  void Hit(Gun & obj);
+  void Notify() const;
 
-  void Hit(Obstacle & obj);
+  void Hit(GameEntity & obj);
+
+  void PrintInfo(std::ostream & os) override;
 
 private:
+
   bool m_isAlive = false;
+
   float m_damage = BULLET_DAMAGE;
+
   Ray2D m_trajectory = {0.0f, 1.0f, 0.0f, 0.0f};
-  //TODO: добавить поле стрелка, добавить его инициализацию в конструкторы, добавить изменения в тесты, дописать Hit
-  //GameEntity m_shooter = Gun();
+
+  Shootable * m_viewerFirst;
+
+  GameEntity * m_viewerSecond;
 };
 
 std::ostream & operator<<(std::ostream & os, Bullet const & obj);

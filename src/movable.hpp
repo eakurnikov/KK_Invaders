@@ -13,6 +13,7 @@
 class Movable : public GameEntity
 {
 public:
+
   virtual ~Movable() = default;
 
   virtual void Move();
@@ -22,6 +23,9 @@ public:
   float GetSpeed() const;
 
 protected:
+
+  Movable() = default;
+
   float m_speed = 0.0f;
 };
 

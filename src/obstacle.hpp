@@ -14,15 +14,21 @@
 class Obstacle : public GameEntity
 {
 public:
+
   Obstacle();
 
   Obstacle(Point2D const & obj);
 
   Obstacle(Box2D const & obj);
 
+  void SufferDamage(int amount) override;
+
   bool IsAlive() const;
 
+  void PrintInfo(std::ostream & os) override;
+
 private:
+
   bool m_isAlive = false;
 };
 
