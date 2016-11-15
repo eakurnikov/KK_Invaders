@@ -16,6 +16,7 @@
 class Alien : public Shootable
 {
 public:
+
   Alien();
 
   Alien(Point2D const & obj);
@@ -28,16 +29,26 @@ public:
 
   void Shot() override;
 
+  void SufferDamage(int amount) override;
+
+  void CauseDamage(int amount) const override;
+
   bool IsAlive() const;
 
   float GetXshift() const;
 
   float GetYshift() const;
 
+  void PrintInfo(std::ostream & os) override;
+
 private:
+
   bool m_isAlive = false;
+
   float const m_yShift = 10.0f;
+
   float const m_xShift = 1.0f;
+
 };
 
 std::ostream & operator << (std::ostream & os, Alien const & obj);

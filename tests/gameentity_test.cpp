@@ -76,7 +76,25 @@ TEST(gameentity_test, test_obstacle_construction)
 
 TEST(gameentity_test, test_bullet_construction)
 {
-  Bullet b1;
+  Gun g;
+
+  Bullet b0 = Bullet();
+  EXPECT_EQ(b0.GetBody().leftBottomPoint().x(), 0.0f);
+  EXPECT_EQ(b0.GetBody().leftBottomPoint().y(), 0.0f);
+  EXPECT_EQ(b0.GetBody().rightTopPoint().x(), BULLET_WIDTH);
+  EXPECT_EQ(b0.GetBody().rightTopPoint().y(), BULLET_HEIGHT);
+  EXPECT_EQ(b0.GetBody().Height(), BULLET_HEIGHT);
+  EXPECT_EQ(b0.GetBody().Width(), BULLET_WIDTH);
+  EXPECT_EQ(b0.GetSpeed(), BULLET_SPEED);
+  EXPECT_EQ(b0.GetDamage(), BULLET_DAMAGE);
+  EXPECT_EQ(b0.GetTrajectory().direction(), Point2D(BULLET_WIDTH / 2.0f, BULLET_HEIGHT / 2.0f + 1.0f));
+  EXPECT_EQ(b0.GetTrajectory().initial(), Point2D(BULLET_WIDTH / 2.0f, BULLET_HEIGHT / 2.0f));
+  //EXPECT_EQ(b1.GetTrajectory(), Ray2D(Point2D(BULLET_WIDTH / 2.0f, BULLET_HEIGHT / 2.0f + BULLET_SPEED), Point2D(BULLET_WIDTH / 2.0f, BULLET_HEIGHT / 2.0f)));
+  EXPECT_EQ(b0.IsAlive(), true);
+  EXPECT_EQ(b0.IsCreated(), true);
+  EXPECT_EQ(b0.GetShooter(), nullptr);
+
+  Bullet b1 = Bullet(g);
   EXPECT_EQ(b1.GetBody().leftBottomPoint().x(), 0.0f);
   EXPECT_EQ(b1.GetBody().leftBottomPoint().y(), 0.0f);
   EXPECT_EQ(b1.GetBody().rightTopPoint().x(), BULLET_WIDTH);
@@ -90,10 +108,11 @@ TEST(gameentity_test, test_bullet_construction)
   //EXPECT_EQ(b1.GetTrajectory(), Ray2D(Point2D(BULLET_WIDTH / 2.0f, BULLET_HEIGHT / 2.0f + BULLET_SPEED), Point2D(BULLET_WIDTH / 2.0f, BULLET_HEIGHT / 2.0f)));
   EXPECT_EQ(b1.IsAlive(), true);
   EXPECT_EQ(b1.IsCreated(), true);
+  EXPECT_EQ(b1.GetShooter(), &g);
 
   Point2D p1 = { 0.0f, 1.0f };
   Point2D p2 = { 0.0f, 3.0f };
-  Bullet b2 = Bullet(Ray2D(p2, p1));
+  Bullet b2 = Bullet(Ray2D(p2, p1), g);
   EXPECT_EQ(b2.GetBody().leftBottomPoint().x(), p1.x() - BULLET_WIDTH / 2.0f);
   EXPECT_EQ(b2.GetBody().leftBottomPoint().y(), p1.y() - BULLET_HEIGHT / 2.0f);
   EXPECT_EQ(b2.GetBody().rightTopPoint().x(), p1.x() + BULLET_WIDTH / 2.0f);
@@ -106,8 +125,9 @@ TEST(gameentity_test, test_bullet_construction)
   EXPECT_EQ(b2.GetTrajectory().initial(), p1);
   EXPECT_EQ(b2.IsAlive(), true);
   EXPECT_EQ(b2.IsCreated(), true);
+  EXPECT_EQ(b2.GetShooter(), &g);
 
-  Bullet b6 = Bullet(Ray2D(p2, p1), 2.0f, 1.0f);
+  Bullet b6 = Bullet(Ray2D(p2, p1), 2.0f, 1.0f, g);
   EXPECT_EQ(b6.GetBody().leftBottomPoint().x(), p1.x() - BULLET_WIDTH / 2.0f);
   EXPECT_EQ(b6.GetBody().leftBottomPoint().y(), p1.y() - BULLET_HEIGHT / 2.0f);
   EXPECT_EQ(b6.GetBody().rightTopPoint().x(), p1.x() + BULLET_WIDTH / 2.0f);
@@ -120,6 +140,7 @@ TEST(gameentity_test, test_bullet_construction)
   EXPECT_EQ(b6.GetTrajectory().initial(), p1);
   EXPECT_EQ(b6.IsAlive(), true);
   EXPECT_EQ(b6.IsCreated(), true);
+  EXPECT_EQ(b6.GetShooter(), &g);
 }
 
 TEST(gameentity_test, test_gun_construction)
@@ -217,6 +238,7 @@ TEST(gameentity_test, test_output)
 {
   stringstream str;
 
+  string line = "--------------\n";
   string name_alien = "Alien\n";
   string name_bullet = "Bullet\n";
   string name_gun = "Gun\n";
@@ -243,26 +265,26 @@ TEST(gameentity_test, test_output)
   string rate = " - Firing rate: 1\n";
 
   Alien a;
-  str << a;
-  EXPECT_EQ(str.str(), name_alien + alive + center_1 + width_1 + height_1 + xs + ys + rate);
+  a.PrintInfo(str);
+  EXPECT_EQ(str.str(), line + name_alien + alive + center_1 + width_1 + height_1 + xs + ys + rate + line);
 
   Bullet b;
   str.str(string());
-  str << b;
-  EXPECT_EQ(str.str(), name_bullet + alive + traj + speed + damage + width_2 + height_2);
+  b.PrintInfo(str);
+  EXPECT_EQ(str.str(), line + name_bullet + alive + traj + speed + damage + width_2 + height_2 + line);
 
   Gun g;
   str.str(string());
-  str << g;
-  EXPECT_EQ(str.str(), name_gun + alive + center_3 + width_1 + height_1 + ammo + rate);
+  g.PrintInfo(str);
+  EXPECT_EQ(str.str(), line + name_gun + alive + center_3 + width_1 + height_1 + ammo + rate + line);
 
   Obstacle o;
   str.str(string());
-  str << o;
-  EXPECT_EQ(str.str(), name_obstacle + alive + health + center_2 + width_2 + height_2);
+  o.PrintInfo(str);
+  EXPECT_EQ(str.str(), line + name_obstacle + alive + health + center_2 + width_2 + height_2 + line);
 
   Space s;
   str.str(string());
-  str << s;
-  EXPECT_EQ(str.str(), name_space + created + center_1 + width_3 + height_3);
+  s.PrintInfo(str);
+  EXPECT_EQ(str.str(), line + name_space + created + center_1 + width_3 + height_3 + line);
 }

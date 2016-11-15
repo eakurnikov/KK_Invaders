@@ -10,6 +10,8 @@ Alien::Alien()
   m_width = ALIEN_WIDTH;
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, SPACE_HEIGHT / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
+
+  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
 }
 
 Alien::Alien(Point2D const & obj)
@@ -20,6 +22,8 @@ Alien::Alien(Point2D const & obj)
   m_width = ALIEN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
+
+  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
 }
 
 Alien::Alien(Box2D const & obj)
@@ -30,6 +34,8 @@ Alien::Alien(Box2D const & obj)
   m_width = ALIEN_WIDTH;
   m_coordinate = obj.GetCenter();
   m_body = obj;
+
+  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
 }
 
 void Alien::Move()
@@ -62,8 +68,19 @@ void Alien::MoveDown()
 
 void Alien::Shot()
 {
-  Bullet b;
-  Logger::Log(*this, ActionType::Shot, std::cout);
+  Bullet b = Bullet(*this);
+  Logger::Instance().Log(*this, ActionType::Shot, std::cout);
+}
+
+void Alien::SufferDamage(int amount)
+{
+  m_hp -= amount;
+  Logger::Instance().Log(*this, ActionType::SufferDamage, amount, std::cout);
+}
+
+void Alien::CauseDamage(int amount) const
+{
+  Logger::Instance().Log(*this, ActionType::CauseDamage, amount, cout);
 }
 
 bool Alien::IsAlive() const
@@ -81,15 +98,22 @@ float Alien::GetYshift() const
   return m_yShift;
 }
 
+void Alien::PrintInfo(std::ostream & os)
+{
+  os << "--------------" << std::endl
+     << "Alien" << std::endl << ((this->IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
+     << " - Center: " << this->GetCoordinate() << std::endl
+     << " - Width: " << this->GetWidth() << std::endl
+     << " - Height: " << this->GetHeight() << std::endl
+     << " - X Shift: " << this->GetXshift() << std::endl
+     << " - Y Shift: " << this->GetYshift() << std::endl
+     << " - Firing rate: " << this->GetFiringRate() << std::endl
+     << "--------------" << std::endl;
+}
+
 std::ostream & operator << (std::ostream & os, Alien const & obj)
 {
-  os << "Alien" << std::endl << ((obj.IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
-     << " - Center: " << obj.GetCoordinate() << std::endl
-     << " - Width: " << obj.GetWidth() << std::endl
-     << " - Height: " << obj.GetHeight() << std::endl
-     << " - X Shift: " << obj.GetXshift() << std::endl
-     << " - Y Shift: " << obj.GetYshift() << std::endl
-     << " - Firing rate: " << obj.GetFiringRate() << std::endl;
+  os << "Alien (" << obj.GetCoordinate() << ") ";
 
   return os;
 }

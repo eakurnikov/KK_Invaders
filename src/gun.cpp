@@ -1,4 +1,5 @@
 #include "Gun.hpp"
+#include "logger.hpp"
 
 Gun::Gun()
 {
@@ -9,6 +10,8 @@ Gun::Gun()
   m_width = GUN_WIDTH;
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, 0.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
+
+  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
 }
 
 Gun::Gun(Point2D const & obj)
@@ -20,6 +23,8 @@ Gun::Gun(Point2D const & obj)
   m_width = GUN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
+
+  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
 }
 
 Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
@@ -31,6 +36,8 @@ Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
   m_width = GUN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
+
+  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
 }
 
 void Gun::Move(float const shift)
@@ -47,19 +54,45 @@ void Gun::Move(float const shift)
   }
 }
 
+void Gun::Shot()
+{
+  if (m_ammo != 0) m_ammo--;
+  Bullet b = Bullet(*this);
+
+  Logger::Instance().Log(*this, ActionType::Shot, std::cout);
+}
+
+void Gun::SufferDamage(int amount)
+{
+  m_hp -= amount;
+  Logger::Instance().Log(*this, ActionType::SufferDamage, amount, std::cout);
+}
+
+void Gun::CauseDamage(int amount) const
+{
+  Logger::Instance().Log(*this, ActionType::CauseDamage, amount, cout);
+}
+
 bool Gun::IsAlive() const
 {
   return m_isAlive;
 }
 
+void Gun::PrintInfo(std::ostream & os)
+{
+  os << "--------------" << std::endl
+     << "Gun" << std::endl << ((this->IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
+     << " - Center: " << this->GetCoordinate() << std::endl
+     << " - Width: " << this->GetWidth() << std::endl
+     << " - Height: " << this->GetHeight() << std::endl
+     << " - Ammo: " << this->GetAmmo() << std::endl
+     << " - Firing rate: " << this->GetFiringRate() << std::endl
+     << "--------------" << std::endl;
+}
+
 std::ostream & operator << (std::ostream & os, Gun const & obj)
 {
-  os << "Gun" << std::endl << ((obj.IsAlive() == true) ? " - Alive" : " - Dead") << std::endl
-     << " - Center: " << obj.GetCoordinate() << std::endl
-     << " - Width: " << obj.GetWidth() << std::endl
-     << " - Height: " << obj.GetHeight() << std::endl
-     << " - Ammo: " << obj.GetAmmo() << std::endl
-     << " - Firing rate: " << obj.GetFiringRate() << std::endl;
+  os << "Gun (" << obj.GetCoordinate() << ") ";
 
   return os;
 }

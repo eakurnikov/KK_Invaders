@@ -15,6 +15,7 @@
 class Gun : public Shootable
 {
 public:
+
   Gun();
 
   Gun(Point2D const & obj);
@@ -23,9 +24,18 @@ public:
 
   void Move(float const shift);
 
+  void Shot() override;
+
+  void SufferDamage(int amount) override;
+
+  void CauseDamage(int amount) const override;
+
   bool IsAlive() const;
 
+  void PrintInfo(std::ostream & os) override;
+
 private:
+
   bool m_isAlive = false;
 };
 

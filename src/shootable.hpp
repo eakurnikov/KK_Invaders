@@ -14,9 +14,10 @@
 class Shootable : public Movable
 {
 public:
+
   virtual ~Shootable() = default;
 
-  virtual void Shot();
+  virtual void Shot() = 0;
 
   unsigned int GetAmmo() const;
 
@@ -24,8 +25,14 @@ public:
 
   float GetFiringRate() const;
 
+  virtual void CauseDamage(int amount) const = 0;
+
 protected:
+
+  Shootable() = default;
+
   unsigned int m_ammo = 0;
+
   float m_firingRate = 0.0f;
 };
 

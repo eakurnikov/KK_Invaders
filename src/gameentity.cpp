@@ -1,5 +1,6 @@
 #include <cmath>
 #include "gameentity.hpp"
+#include "logger.hpp"
 
 GameEntity::GameEntity()
 {
@@ -7,9 +8,9 @@ GameEntity::GameEntity()
   m_hp = 100;
 }
 
-void GameEntity::Damage(int amount)
+void GameEntity::SufferDamage(int amount)
 {
-  m_hp -= amount;
+
 }
 
 bool GameEntity::IsCreated() const
@@ -68,4 +69,9 @@ float GameEntity::GetWidth() const
 float GameEntity::GetHeight() const
 {
   return m_height;
+}
+
+void GameEntity::PrintInfo(std::ostream & os)
+{
+
 }

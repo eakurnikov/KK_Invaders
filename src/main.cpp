@@ -6,8 +6,11 @@
 #include "ray2d.hpp"
 #include "bullet.hpp"
 #include "logger.hpp"
+#include "factory.hpp"
 #include <vector>
 #include <list>
+#include <memory>
+#include <string>
 
 int main()
 {
