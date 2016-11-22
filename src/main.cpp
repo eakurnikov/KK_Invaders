@@ -12,14 +12,18 @@
 #include <memory>
 #include <string>
 
+#include "gl_widget.hpp"
 #include "mainwindow.hpp"
 #include <QApplication>
+#include <QColor>
 
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   MainWindow w;
-  w.show();
+  GLWidget glw(&w, QColor(255,1,1,1));
+  //w.show();
+  glw.show();
 
   return a.exec();
 }

@@ -5,8 +5,13 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QTime>
-#include "textured_rect.hpp"
 #include <array>
+#include <vector>
+#include <cstdlib>
+#include <cmath>
+#include "textured_rect.hpp"
+#include "star.hpp"
+
 
 class MainWindow;
 
@@ -52,6 +57,10 @@ private:
 
   QVector2D m_position = QVector2D(200, 200);
   std::array<bool, 4> m_directions = { { false, false, false, false } };
+
+  QOpenGLTexture * m_textureStar = nullptr;
+  int m_starsNumber = 50 + std::rand() % 100;
+  std::vector<Star> m_stars;
 };
 
 #endif // GL_WIDGET_HPP

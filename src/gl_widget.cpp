@@ -7,7 +7,6 @@
 #include <QCoreApplication>
 #include <QtGui/QMouseEvent>
 #include <QtGui/QGuiApplication>
-#include <cmath>
 
 #include <iostream>
 
@@ -64,9 +63,13 @@ void GLWidget::initializeGL()
   m_texturedRect = new TexturedRect();
   m_texturedRect->Initialize(this);
 
-  m_texture = new QOpenGLTexture(QImage("data/alien.png"));
+  m_texture = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/KK_Invaders/data/alien.png"));
+  m_textureStar = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/KK_Invaders/data/star.png"));
 
   m_time.start();
+
+  for(int i = 0; i < m_starsNumber; i++)
+    m_stars.push_back(Star());
 }
 
 void GLWidget::paintGL()
@@ -137,6 +140,16 @@ void GLWidget::Render()
   m_texturedRect->Render(m_texture, m_position, QSize(128, 128), m_screenSize);
   m_texturedRect->Render(m_texture, QVector2D(400, 400), QSize(128, 128), m_screenSize);
   m_texturedRect->Render(m_texture, QVector2D(600, 600), QSize(128, 128), m_screenSize);
+
+  for(int i = 0; i < m_stars.size(); ++i)
+  {
+    int size = (int) 7 * sinf((m_stars[i].getT() - m_time.elapsed()) / 1000.0f);
+    m_texturedRect->Render(m_textureStar,
+                           QVector2D(m_stars[i].getX() * m_screenSize.width(),
+                                     m_stars[i].getY() * m_screenSize.height()),
+                           QSize(size, size),
+                           m_screenSize);
+  }
 }
 
 void GLWidget::mousePressEvent(QMouseEvent * e)
