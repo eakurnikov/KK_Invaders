@@ -1,5 +1,10 @@
 #include "mainwindow.hpp"
 #include "defaultvalues.hpp"
+#include <json/json.h>
+#include <json/writer.h>
+#include <json/reader.h>
+#include <fstream>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
@@ -275,6 +280,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_sliderObstacleNumberInGroup, SIGNAL(valueChanged(int)), this, SLOT(sliderMovedCustomChecked()));
   connect(m_sliderObstacleNumberOfGroups, SIGNAL(valueChanged(int)), this, SLOT(sliderMovedCustomChecked()));
 
+  connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(WriteJson()));
+
 }
 void MainWindow::sliderMovedCustomChecked()
 {
@@ -346,6 +353,87 @@ void MainWindow::radioButtonProClicked()
   m_sliderObstacleHP->setValue(OBSTACLE_HP_MAX);
   m_sliderObstacleNumberInGroup->setValue(OBSTACLE_NUMBER_IN_GROUP_MAX);
   m_sliderObstacleNumberOfGroups->setValue(OBSTACLE_NUMBER_OF_GROUPS_MAX);
+}
+
+void MainWindow::WriteJson()
+{
+  Json::Value settings;
+  auto & root = settings["settings"];
+  root["aliensCount"] = 100;
+  //
+  root["GunHP"] = m_sliderGunHP->value();
+  root["GunFiringRate"] = m_sliderGunFiringRate->value();
+  root["GunSpeed"] = m_sliderGunSpeed->value();
+  root["GunNumberOfLives"] = m_sliderGunNumberOfLives->value();
+
+  root["AlienHP"] = m_sliderAlienHP->value();
+  root["AlienFiringRate"] = m_sliderAlienFiringRate->value();
+  root["AlienSpeed"] = m_sliderAlienSpeed->value();
+  root["AlienNumberInLevel"] = m_sliderAlienNumberInLevel->value();
+  root["AlienNumberOfLevels"] = m_sliderAlienNumberOfLevels->value();
+
+  root["BulletHP"] = m_sliderBulletHP->value();
+  root["BulletSpeed"] = m_sliderBulletSpeed->value();
+  root["BulletDamage"] = m_sliderBulletDamage->value();
+
+  root["BulletHP"] = m_sliderBulletHP->value();
+  root["BulletSpeed"] = m_sliderBulletSpeed->value();
+  root["BulletDamage"] = m_sliderBulletDamage->value();
+
+  root["ObstacleHP"] = m_sliderObstacleHP->value();
+  root["ObstacleNumberInGroup"] = m_sliderObstacleNumberInGroup->value();
+  root["ObstacleNumberOfGroups"] = m_sliderObstacleNumberOfGroups->value();
+  //
+  root["bulletsCount"] = 200;
+  root["entities"]["gun"]["health"] = 50;
+  root["entities"]["alien"]["health"] = 20;
+  root["entities"]["obstacle"]["health"] = 15;
+  std::ofstream settingsFile;
+  settingsFile.open("settings.json");
+  if (settingsFile.is_open())
+  {
+    Json::StyledWriter styledWriter;
+    settingsFile << styledWriter.write(settings);
+    settingsFile.close();
+  }
+}
+
+void MainWindow::ReadJson()
+{
+  Json::Value settings;
+  std::ifstream file("settings.json");
+  if (file.is_open())
+  {
+    file >> settings;
+    file.close();
+  }
+  std::cout << settings["settings"]["aliensCount"].asInt() << std::endl;
+  std::cout << settings["settings"]["GunHP"].asInt() << std::endl;
+  std::cout << settings["settings"]["GunFiringRate"].asInt() << std::endl;
+  std::cout << settings["settings"]["GunSpeed"].asInt() << std::endl;
+  std::cout << settings["settings"]["GunNumberOfLives"].asInt() << std::endl;
+
+  std::cout << settings["settings"]["AlienHP"].asInt() << std::endl;
+  std::cout << settings["settings"]["AlienFiringRate"].asInt() << std::endl;
+  std::cout << settings["settings"]["AlienSpeed"].asInt() << std::endl;
+  std::cout << settings["settings"]["AlienNumberInLevel"].asInt() << std::endl;
+  std::cout << settings["settings"]["AlienNumberOfLevels"].asInt() << std::endl;
+
+  std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
+  std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
+  std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
+
+  std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
+  std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
+  std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
+
+  std::cout << settings["settings"]["ObstacleHP"].asInt() << std::endl;
+  std::cout << settings["settings"]["ObstacleNumberInGroup"].asInt() << std::endl;
+
+  std::cout << settings["settings"]["bulletsCount"].asInt() << std::endl;
+  std::cout << settings["settings"]["entities"]["gun"]["health"].asInt() << std::endl;
+  std::cout << settings["settings"]["entities"]["alien"]["health"].asInt() << std::endl;
+  std::cout << settings["settings"]["entities"]["obstacle"]["health"].asInt() << std::endl;
 }
 
 MainWindow::~MainWindow()

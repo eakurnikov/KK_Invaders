@@ -11,7 +11,7 @@ Alien::Alien()
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, SPACE_HEIGHT / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 Alien::Alien(Point2D const & obj)
@@ -23,7 +23,7 @@ Alien::Alien(Point2D const & obj)
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 Alien::Alien(Box2D const & obj)
@@ -35,7 +35,7 @@ Alien::Alien(Box2D const & obj)
   m_coordinate = obj.GetCenter();
   m_body = obj;
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 void Alien::Move()
@@ -69,18 +69,18 @@ void Alien::MoveDown()
 void Alien::Shot()
 {
   Bullet b = Bullet(*this);
-  Logger::Instance().Log(*this, ActionType::Shot, std::cout);
+  Logger::Instance().Log(*this, ActionType::Shot);
 }
 
 void Alien::SufferDamage(int amount)
 {
   m_hp -= amount;
-  Logger::Instance().Log(*this, ActionType::SufferDamage, amount, std::cout);
+  Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
 }
 
 void Alien::CauseDamage(int amount) const
 {
-  Logger::Instance().Log(*this, ActionType::CauseDamage, amount, cout);
+  Logger::Instance().Log(*this, ActionType::CauseDamage, amount);
 }
 
 bool Alien::IsAlive() const
