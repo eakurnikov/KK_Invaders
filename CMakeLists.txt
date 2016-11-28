@@ -66,4 +66,7 @@ endmacro(copy_files)
 
 set(DATA_FILES_LIST data/alien.png)
 set(DATA_FILES_LIST data/star.png)
+set(DATA_FILES_LIST data/peter.png)
+set(DATA_FILES_LIST data/owl.png)
+set(DATA_FILES_LIST data/owly.png)
 copy_files("${DATA_FILES_LIST}" ${CMAKE_CURRENT_BINARY_DIR})
