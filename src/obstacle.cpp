@@ -9,7 +9,7 @@ Obstacle::Obstacle()
   m_coordinate = {m_width / 2.0f, m_height / 2.0f};
   m_body = Box2D(m_coordinate, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 Obstacle::Obstacle(Point2D const & obj)
@@ -20,7 +20,7 @@ Obstacle::Obstacle(Point2D const & obj)
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 Obstacle::Obstacle(Box2D const & obj)
@@ -31,13 +31,13 @@ Obstacle::Obstacle(Box2D const & obj)
   m_coordinate = obj.GetCenter();
   m_body = obj;
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 void Obstacle::SufferDamage(int amount)
 {
   m_hp -= amount;
-  Logger::Instance().Log(*this, ActionType::SufferDamage, amount, std::cout);
+  Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
 }
 
 bool Obstacle::IsAlive() const

@@ -11,7 +11,7 @@ Gun::Gun()
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, 0.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 Gun::Gun(Point2D const & obj)
@@ -24,7 +24,7 @@ Gun::Gun(Point2D const & obj)
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
@@ -37,7 +37,7 @@ Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
 
-  Logger::Instance().Log(*this, ActionType::Creation, std::cout);
+  Logger::Instance().Log(*this, ActionType::Creation);
 }
 
 void Gun::Move(float const shift)
@@ -59,18 +59,18 @@ void Gun::Shot()
   if (m_ammo != 0) m_ammo--;
   Bullet b = Bullet(*this);
 
-  Logger::Instance().Log(*this, ActionType::Shot, std::cout);
+  Logger::Instance().Log(*this, ActionType::Shot);
 }
 
 void Gun::SufferDamage(int amount)
 {
   m_hp -= amount;
-  Logger::Instance().Log(*this, ActionType::SufferDamage, amount, std::cout);
+  Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
 }
 
 void Gun::CauseDamage(int amount) const
 {
-  Logger::Instance().Log(*this, ActionType::CauseDamage, amount, cout);
+  Logger::Instance().Log(*this, ActionType::CauseDamage, amount);
 }
 
 bool Gun::IsAlive() const

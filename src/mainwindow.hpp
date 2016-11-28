@@ -24,6 +24,7 @@ class MainWindow
 
 public:
   MainWindow(QWidget *parent = 0);
+  void ReadJson();
   ~MainWindow();
 
 private slots:
@@ -31,6 +32,7 @@ private slots:
   void radioButtonNoobClicked();
   void radioButtonNormalClicked();
   void radioButtonProClicked();
+  void WriteJson();
 
 private:
   QTimer * m_timer = nullptr;

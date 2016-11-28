@@ -63,8 +63,8 @@ void GLWidget::initializeGL()
   m_texturedRect = new TexturedRect();
   m_texturedRect->Initialize(this);
 
-  m_texture = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/KK_Invaders/data/alien.png"));
-  m_textureStar = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/KK_Invaders/data/star.png"));
+  m_texture = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/Projects/KK_Invaders/data/alien.png"));
+  m_textureStar = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/Projects/KK_Invaders/data/star.png"));
 
   m_time.start();
 
@@ -81,7 +81,7 @@ void GLWidget::paintGL()
   painter.begin(this);
   painter.beginNativePainting();
 
-  glClearColor(m_background.redF(), m_background.greenF(), m_background.blueF(), 1.0f);
+  glClearColor(0, 0, 0, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   glFrontFace(GL_CW);
@@ -105,12 +105,6 @@ void GLWidget::paintGL()
     painter.drawText(20, 40, framesPerSecond + " fps");
   }
   painter.end();
-
-  if (!(m_frames % 100))
-  {
-    m_time.start();
-    m_frames = 0;
-  }
   ++m_frames;
   update();
 }
@@ -123,33 +117,31 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::Update(float elapsedSeconds)
 {
-  float const kSpeed = 20.0f; // pixels per second.
+  float const kSpeed = 10.0f; // pixels per second.
 
   if (m_directions[kUpDirection])
-    m_position.setY(m_position.y() + kSpeed * elapsedSeconds);
+    m_position.setY(m_position.y() + kSpeed);
   if (m_directions[kDownDirection])
-    m_position.setY(m_position.y() - kSpeed * elapsedSeconds);
+    m_position.setY(m_position.y() - kSpeed);
   if (m_directions[kLeftDirection])
-    m_position.setX(m_position.x() - kSpeed * elapsedSeconds);
+    m_position.setX(m_position.x() - kSpeed);
   if (m_directions[kRightDirection])
-    m_position.setX(m_position.x() + kSpeed * elapsedSeconds);
+    m_position.setX(m_position.x() + kSpeed);
 }
 
 void GLWidget::Render()
 {
-  m_texturedRect->Render(m_texture, m_position, QSize(128, 128), m_screenSize);
-  m_texturedRect->Render(m_texture, QVector2D(400, 400), QSize(128, 128), m_screenSize);
-  m_texturedRect->Render(m_texture, QVector2D(600, 600), QSize(128, 128), m_screenSize);
-
   for(int i = 0; i < m_stars.size(); ++i)
   {
-    int size = (int) 7 * sinf((m_stars[i].getT() - m_time.elapsed()) / 1000.0f);
-    m_texturedRect->Render(m_textureStar,
-                           QVector2D(m_stars[i].getX() * m_screenSize.width(),
+    int size = 10 * sinf((m_stars[i].getT() - m_time.elapsed()) / 500.0f);
+    m_texturedRect->Render(m_textureStar,                           QVector2D(m_stars[i].getX() * m_screenSize.width(),
                                      m_stars[i].getY() * m_screenSize.height()),
                            QSize(size, size),
                            m_screenSize);
   }
+  m_texturedRect->Render(m_texture, QVector2D(400, 400), QSize(128, 128), m_screenSize);
+  m_texturedRect->Render(m_texture, QVector2D(600, 600), QSize(128, 128), m_screenSize);
+  m_texturedRect->Render(m_texture, m_position, QSize(128, 128), m_screenSize);
 }
 
 void GLWidget::mousePressEvent(QMouseEvent * e)

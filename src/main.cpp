@@ -22,8 +22,7 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   MainWindow w;
   GLWidget glw(&w, QColor(255,1,1,1));
-  //w.show();
+  w.show();
   glw.show();
-
   return a.exec();
 }
