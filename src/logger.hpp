@@ -29,7 +29,7 @@ public:
   template <typename T>
   void Log(T obj)
   {
-    m_file.open("D:/C++ Projects/private-void.KK_Invaders/KK_Invaders/Log.txt", ios::app);
+    m_file.open("Log.txt", ios::app);
     if (m_file.is_open())
     {
       m_file << obj;
@@ -40,7 +40,7 @@ public:
   template <typename EntityType>
   void Log(EntityType & entity, ActionType actionType)
   {
-    m_file.open("D:/C++ Projects/private-void.KK_Invaders/KK_Invaders/Log.txt", ios::app);
+    m_file.open("Log.txt", ios::app);
     if (m_file.is_open())
     {
       string action = "";
@@ -72,7 +72,7 @@ public:
   template <typename EntityType, typename parameter>
   void Log(EntityType & entity, ActionType actionType, parameter param)
   {
-    m_file.open("D:/C++ Projects/private-void.KK_Invaders/KK_Invaders/Log.txt", ios::app);
+    m_file.open("Log.txt", ios::app);
     if (m_file.is_open())
     {
       string action = "";
@@ -108,7 +108,7 @@ public:
   template <typename EntityType, template<typename, typename> class C>
   void Log(C <EntityType, std::allocator<EntityType>> const & objs, ActionType actionType)
   {
-    m_file.open("D:/C++ Projects/private-void.KK_Invaders/KK_Invaders/Log.txt", ios::app);
+    m_file.open("Log.txt", ios::app);
     if (m_file.is_open())
     {
       for (auto const & obj : objs)
@@ -116,14 +116,6 @@ public:
       m_file.close();
     }
   }
-
-  /*std::ofstream const & OpenFile(std::string & fileName)
-  {
-    m_file(fileName);
-    if (m_file.is_open())
-      return f;
-    throw std::exception("Can not open the file.");
-  }*/
 
 private:
 
