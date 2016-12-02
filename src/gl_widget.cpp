@@ -158,20 +158,45 @@ void GLWidget::Update(float elapsedSeconds)
 
 void GLWidget::Render()
 {
-  for(int i = 0; i < m_stars.size(); ++i)
-  {
-    int size = 10 * sinf((m_stars[i].getT() - m_time.elapsed()) / 500.0f);
-    m_texturedRect->Render(m_textureStar, QVector2D(m_stars[i].getX() * m_screenSize.width(), m_stars[i].getY() * m_screenSize.height()), QSize(size, size), m_screenSize);
-  }
+  RenderStars();
+  RenderAliens();
+  RenderGun();
+  RenderBullets();
+  RenderObstacles();
+}
+
+void GLWidget::RenderAliens()
+{
   for(int i = 0; i < m_aliens.size(); ++i)
   {
     m_texturedRect->Render(m_textureAlien, QVector2D((int)m_aliens[i]->GetCoordinate().x(),(int)m_aliens[i]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
   }
-  m_texturedRect->Render(m_textureGun, m_position, QSize(128, 128), m_screenSize);
+}
+
+void GLWidget::RenderBullets()
+{
   m_texturedRect->Render(m_textureBullet, QVector2D((int)m_bullets[0]->GetCoordinate().x(),(int)m_bullets[0]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+}
+
+void GLWidget::RenderGun()
+{
+  m_texturedRect->Render(m_textureGun, m_position, QSize(128, 128), m_screenSize);
+}
+
+void GLWidget::RenderObstacles()
+{
   for(int i = 0; i < m_obstacles.size(); ++i)
   {
     m_texturedRect->Render(m_textureObstacle, QVector2D((int)m_obstacles[i]->GetCoordinate().x(),(int)m_obstacles[i]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+  }
+}
+
+void GLWidget::RenderStars()
+{
+  for(int i = 0; i < m_stars.size(); ++i)
+  {
+    int size = 10 * sinf((m_stars[i].getT() - m_time.elapsed()) / 500.0f);
+    m_texturedRect->Render(m_textureStar, QVector2D(m_stars[i].getX() * m_screenSize.width(), m_stars[i].getY() * m_screenSize.height()), QSize(size, size), m_screenSize);
   }
 }
 

@@ -38,6 +38,11 @@ protected:
 
   void Update(float elapsedSeconds);
   void Render();
+  void RenderStars();
+  void RenderAliens();
+  void RenderBullets();
+  void RenderGun();
+  void RenderObstacles();
 
   void mousePressEvent(QMouseEvent * e) override;
   void mouseDoubleClickEvent(QMouseEvent * e) override;
