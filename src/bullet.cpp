@@ -21,7 +21,8 @@ Bullet::Bullet(Shootable & shooter)
   m_speed = BULLET_SPEED;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
-  m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
+  m_coordinate = shooter.GetCoordinate();
+  //m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
   m_trajectory = Ray2D(Point2D(m_coordinate.x(), m_coordinate.y() + m_speed), m_coordinate);
 

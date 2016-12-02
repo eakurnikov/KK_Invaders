@@ -46,12 +46,18 @@ GLWidget::GLWidget(MainWindow * mw, QColor const & background)
 {
   setMinimumSize(1024, 768);
   setFocusPolicy(Qt::StrongFocus);
+  //this->setMouseTracking(true); //это нужно дописать по идее, чтобы движение мыши отслеживалось, но нихрена
+  //m_mainWindow->setMouseTracking(true);
 }
 
 GLWidget::~GLWidget()
 {
   makeCurrent();
-  delete m_texture;
+  delete m_textureAlien;
+  delete m_textureBullet;
+  delete m_textureGun;
+  delete m_textureObstacle;
+  delete m_textureStar;
   delete m_texturedRect;
   doneCurrent();
 }
@@ -63,13 +69,34 @@ void GLWidget::initializeGL()
   m_texturedRect = new TexturedRect();
   m_texturedRect->Initialize(this);
 
-  m_texture = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/Projects/KK_Invaders/data/alien.png"));
-  m_textureStar = new QOpenGLTexture(QImage("C:/Users/Robin/Desktop/Projects/KK_Invaders/data/star.png"));
+  m_textureStar = new QOpenGLTexture(QImage("data/star.png"));
+  m_textureAlien = new QOpenGLTexture(QImage("data/alien.png"));
+  m_textureGun = new QOpenGLTexture(QImage("data/gun.png"));
+  m_textureBullet = new QOpenGLTexture(QImage("data/bullet.png"));
+  m_textureObstacle = new QOpenGLTexture(QImage("data/obstacle.png"));
 
   m_time.start();
 
   for(int i = 0; i < m_starsNumber; i++)
     m_stars.push_back(Star());
+
+  for(int j = 0; j < 3; j++)
+  {
+    for(int i = 0; i < 5; i++)
+    {
+      m_aliens.push_back(Factory::Instance().Create<Alien>(Point2D(i * 200.0f + 100.0f, j * 100.0f + 500.0f)));
+    }
+  }
+
+  m_gun = Factory::Instance().Create<Gun>(Point2D(500.0f, 50.0f));
+
+  m_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun));
+
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(200.0f, 200.0f)));
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(500.0f, 200.0f)));
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(800.0f, 200.0f)));
+
+  m_position = QVector2D((int)m_gun->GetCoordinate().x(), (int)m_gun->GetCoordinate().y());
 }
 
 void GLWidget::paintGL()
@@ -134,14 +161,18 @@ void GLWidget::Render()
   for(int i = 0; i < m_stars.size(); ++i)
   {
     int size = 10 * sinf((m_stars[i].getT() - m_time.elapsed()) / 500.0f);
-    m_texturedRect->Render(m_textureStar,                           QVector2D(m_stars[i].getX() * m_screenSize.width(),
-                                     m_stars[i].getY() * m_screenSize.height()),
-                           QSize(size, size),
-                           m_screenSize);
+    m_texturedRect->Render(m_textureStar, QVector2D(m_stars[i].getX() * m_screenSize.width(), m_stars[i].getY() * m_screenSize.height()), QSize(size, size), m_screenSize);
   }
-  m_texturedRect->Render(m_texture, QVector2D(400, 400), QSize(128, 128), m_screenSize);
-  m_texturedRect->Render(m_texture, QVector2D(600, 600), QSize(128, 128), m_screenSize);
-  m_texturedRect->Render(m_texture, m_position, QSize(128, 128), m_screenSize);
+  for(int i = 0; i < m_aliens.size(); ++i)
+  {
+    m_texturedRect->Render(m_textureAlien, QVector2D((int)m_aliens[i]->GetCoordinate().x(),(int)m_aliens[i]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+  }
+  m_texturedRect->Render(m_textureGun, m_position, QSize(128, 128), m_screenSize);
+  m_texturedRect->Render(m_textureBullet, QVector2D((int)m_bullets[0]->GetCoordinate().x(),(int)m_bullets[0]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+  for(int i = 0; i < m_obstacles.size(); ++i)
+  {
+    m_texturedRect->Render(m_textureObstacle, QVector2D((int)m_obstacles[i]->GetCoordinate().x(),(int)m_obstacles[i]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+  }
 }
 
 void GLWidget::mousePressEvent(QMouseEvent * e)
@@ -176,7 +207,8 @@ void GLWidget::mouseMoveEvent(QMouseEvent * e)
   int const py = L2D(e->y());
   if (IsLeftButton(e))
   {
-    // ...
+    //m_position = static_cast<QVector2D>(e->pos());
+    m_position.setX(px);
   }
 }
 
