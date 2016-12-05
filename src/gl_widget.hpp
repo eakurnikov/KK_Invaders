@@ -64,7 +64,6 @@ private:
 
   TexturedRect * m_texturedRect = nullptr;
 
-  //QVector2D m_position;
   std::array<bool, 4> m_directions = { { false, false, false, false } };
 
   QOpenGLTexture * m_textureStar = nullptr;
@@ -73,12 +72,14 @@ private:
 
   QOpenGLTexture * m_textureAlien = nullptr;
   std::vector<std::unique_ptr<Alien>> m_aliens;
+  int random_index;
 
   QOpenGLTexture * m_textureGun = nullptr;
   std::unique_ptr<Gun> m_gun;
 
   QOpenGLTexture * m_textureBullet = nullptr;
-  std::vector<std::unique_ptr<Bullet>> m_bullets;
+  std::vector<std::unique_ptr<Bullet>> m_alien_bullets;
+  std::vector<std::unique_ptr<Bullet>> m_gun_bullets;
 
   QOpenGLTexture * m_textureObstacle = nullptr;
   std::vector<std::unique_ptr<Obstacle>> m_obstacles;

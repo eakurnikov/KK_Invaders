@@ -15,8 +15,8 @@ float const BULLET_WIDTH = 32.0f;
 float const OBSTACLE_HEIGHT = 64.0f;
 float const OBSTACLE_WIDTH = 64.0f;
 
-float const NUMBER_OF_ALIENS_IN_LEVEL = 30;
-float const NUMBER_OF_LEVELS = 10;
+float const NUMBER_OF_ALIENS_IN_LINE = 8;
+float const NUMBER_OF_LINES = 4;
 
 float const NUMBER_OF_OBSTACLES_IN_GROUP = 10;
 float const NUMBER_OF_GROUPS = 3;

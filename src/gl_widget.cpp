@@ -82,23 +82,19 @@ void GLWidget::initializeGL()
   for(int i = 0; i < m_starsNumber; i++)
     m_stars.push_back(Star());
 
-  for(int j = 0; j < 3/*NUMBER_OF_ALIENS_IN_LEVEL / (m_screenSize.rwidth() / ALIEN_WIDTH)*/; j++)
+  for(int j = 0; j < NUMBER_OF_LINES; j++)
   {
-    for(int i = 0; i < 5/*m_screenSize.rwidth() / ALIEN_WIDTH*/; i++)
+    for(int i = 0; i < NUMBER_OF_ALIENS_IN_LINE; i++)
     {
-      m_aliens.push_back(Factory::Instance().Create<Alien>(Point2D(i * 200.0f + 100.0f, j * 100.0f + 500.0f)));
+      m_aliens.push_back(Factory::Instance().Create<Alien>(Point2D(i * 100.0f + 50.0f, j * 100.0f + 400.0f)));
     }
   }
 
   m_gun = Factory::Instance().Create<Gun>(Point2D(m_screenSize.rwidth() / 2, GUN_HEIGHT / 2));
 
-  //m_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun, Point2D(500.0f, 500.0f)));
-
   m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4, 200.0f)));
   m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 2, 200.0f)));
   m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f)));
-
-  //m_position = QVector2D(static_cast<int>(m_gun->GetCoordinate().x()), static_cast<int>(m_gun->GetCoordinate().y()));
 }
 
 void GLWidget::paintGL()
@@ -150,35 +146,63 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::Update(float elapsedSeconds)
 {
-  for(int i = 0; i < m_obstacles.size(); i++)
-      if (m_gun->GetBody().IsBoxesIntersect(m_obstacles[i]->GetBody()))
-      {
-        m_obstacles.erase(m_obstacles.begin() + i);
-        break; // НЕ УВЕРЕН, ЧТО ЭТО ПРАВИЛЬНО
-      }
+  // ВСЕ ЭТО ДОБРО ВЫЗЫВАЕТ КРЭШ ПРОГРАММЫ. НУЖНО КАК-ТО ИНАЧЕ ОБРАБАТЫВАТЬ ПОПАДАНИЯ.
 
-  for(int i = 0; i < m_aliens.size(); i++)
-    for(int j = 0; j < m_bullets.size(); j++)
-      if (m_bullets[j]->GetBody().IsBoxesIntersect(m_aliens[i]->GetBody()))
+  /*for(int i = 0; i < m_aliens.size(); i++)
+    for(int j = 0; j < m_gun_bullets.size(); j++)
+      if (m_gun_bullets[j]->GetCoordinate() > m_aliens[i]->GetCoordinate() - ALIEN_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_aliens[i]->GetCoordinate() + ALIEN_WIDTH / 2)
       {
+        m_gun_bullets[j]->Hit(*m_aliens[i]);
+
+        m_aliens[i].reset();
         m_aliens.erase(m_aliens.begin() + i);
-        m_bullets.erase(m_bullets.begin() + j);
+
+        m_gun_bullets[j].reset();
+        m_gun_bullets.erase(m_gun_bullets.begin() + j);
       }
 
   for(int i = 0; i < m_obstacles.size(); i++)
-    for(int j = 0; j < m_bullets.size(); j++)
-      if (m_bullets[j]->GetBody().IsBoxesIntersect(m_obstacles[i]->GetBody()))
+    for(int j = 0; j < m_alien_bullets.size(); j++)
+      if (m_alien_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH / 2 && m_alien_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH / 2)
       {
+        m_alien_bullets[j]->Hit(*m_obstacles[i]);
+
+        m_obstacles[i].reset();
         m_obstacles.erase(m_obstacles.begin() + i);
-        m_bullets.erase(m_bullets.begin() + j);
+
+        m_alien_bullets[j].reset();
+        m_alien_bullets.erase(m_alien_bullets.begin() + j);
       }
 
-  for(int i = 0; i < m_bullets.size(); i++)
-    if (m_bullets[i]->GetCoordinate().y() > m_screenSize.height())
-    {
-      m_bullets.erase(m_bullets.begin() + i);
-    }
+  for(int i = 0; i < m_obstacles.size(); i++)
+    for(int j = 0; j < m_gun_bullets.size(); j++)
+      if (m_gun_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH / 2)
+      {
+        m_gun_bullets[j]->Hit(*m_obstacles[i]);
 
+        m_obstacles[i].reset();
+        m_obstacles.erase(m_obstacles.begin() + i);
+
+        m_gun_bullets[j].reset();
+        m_gun_bullets.erase(m_gun_bullets.begin() + j);
+      }
+
+  for(int j = 0; j < m_alien_bullets.size(); j++)
+    if (m_alien_bullets[j]->GetCoordinate() > m_gun->GetCoordinate() - GUN_WIDTH / 2 && m_alien_bullets[j]->GetCoordinate() < m_gun->GetCoordinate() + GUN_WIDTH / 2)
+    {
+      m_alien_bullets[j]->Hit(*m_gun);
+
+      m_gun.reset();
+
+      m_alien_bullets[j].reset();
+      m_alien_bullets.erase(m_alien_bullets.begin() + j);
+    }*/
+
+  if (m_time.elapsed() % 10 == 0)
+  {
+    random_index = std::rand()% 31;
+    m_alien_bullets.push_back(Factory::Instance().Create<Bullet>(*m_aliens[random_index]));
+  }
 
   float const kSpeed = 10.0f; // pixels per second.
 
@@ -219,13 +243,22 @@ void GLWidget::RenderAliens()
 
 void GLWidget::RenderBullets()
 {
-  for(int i = 0; i < m_bullets.size(); ++i)
+  for(int i = 0; i < m_gun_bullets.size(); ++i)
   {
-    m_texturedRect->Render(m_textureBullet, Point2D(static_cast<int>(m_bullets[i]->Move().GetCoordinate().x()),static_cast<int>(m_bullets[i]->Move().GetCoordinate().y())), QSize(BULLET_WIDTH, BULLET_HEIGHT), m_screenSize);
-    if (m_bullets[i]->GetCoordinate().y() > m_screenSize.rheight() || m_bullets[i]->GetCoordinate().y() < 0)
+    m_texturedRect->Render(m_textureBullet, Point2D(static_cast<int>(m_gun_bullets[i]->Move().GetCoordinate().x()),static_cast<int>(m_gun_bullets[i]->Move().GetCoordinate().y())), QSize(BULLET_WIDTH, BULLET_HEIGHT), m_screenSize);
+    if (m_gun_bullets[i]->GetCoordinate().y() > m_screenSize.rheight() || m_gun_bullets[i]->GetCoordinate().y() < 0)
     {
-      m_bullets[i].reset(); // по идее это удаление пули
-      m_bullets.erase(m_bullets.begin() + i);
+      m_gun_bullets[i].reset();
+      m_gun_bullets.erase(m_gun_bullets.begin() + i);
+    }
+  }
+  for(int i = 0; i < m_alien_bullets.size(); ++i)
+  {
+    m_texturedRect->Render(m_textureBullet, Point2D(static_cast<int>(m_alien_bullets[i]->Move().GetCoordinate().x()),static_cast<int>(m_alien_bullets[i]->Move().GetCoordinate().y())), QSize(BULLET_WIDTH, BULLET_HEIGHT), m_screenSize);
+    if (m_alien_bullets[i]->GetCoordinate().y() > m_screenSize.rheight() || m_alien_bullets[i]->GetCoordinate().y() < 0)
+    {
+      m_alien_bullets[i].reset();
+      m_alien_bullets.erase(m_alien_bullets.begin() + i);
     }
   }
 }
@@ -260,7 +293,7 @@ void GLWidget::mousePressEvent(QMouseEvent * e)
   int const py = L2D(e->y());
   if (IsLeftButton(e))
   {
-    m_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun));
+    m_gun_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun));
   }
 }
 

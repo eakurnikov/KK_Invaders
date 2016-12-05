@@ -33,7 +33,7 @@ public:
 
   void SetY(float const & y);
 
-  Box2D GetBody() const;
+  Box2D const & GetBody() const;
 
   float GetWidth() const;
 

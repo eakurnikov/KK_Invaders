@@ -67,7 +67,7 @@ Point2D const & GameEntity::GetCoordinate() const
   return m_coordinate;
 }
 
-Box2D GameEntity::GetBody() const
+Box2D const & GameEntity::GetBody() const
 {
   return m_body;
 }

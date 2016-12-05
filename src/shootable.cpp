@@ -26,3 +26,8 @@ float Shootable::GetFiringRate() const
   return m_firingRate;
 }
 
+bool Shootable::GetAim() const
+{
+  return m_aim;
+}
+

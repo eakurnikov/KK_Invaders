@@ -10,6 +10,7 @@ Alien::Alien()
   m_width = ALIEN_WIDTH;
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, SPACE_HEIGHT / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
+  m_aim = false;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -22,6 +23,7 @@ Alien::Alien(Point2D const & obj)
   m_width = ALIEN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
+  m_aim = false;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -34,6 +36,7 @@ Alien::Alien(Box2D const & obj)
   m_width = ALIEN_WIDTH;
   m_coordinate = obj.GetCenter();
   m_body = obj;
+  m_aim = false;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }

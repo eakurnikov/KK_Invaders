@@ -18,7 +18,7 @@ Bullet::Bullet(Shootable & shooter)
 {
   m_isAlive = true;
   m_damage = BULLET_DAMAGE;
-  m_speed = BULLET_SPEED;
+  shooter.GetAim() == true ? m_speed = BULLET_SPEED : m_speed = -1 * BULLET_SPEED;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
   m_coordinate = shooter.GetCoordinate();
@@ -32,7 +32,7 @@ Bullet::Bullet(Ray2D const & obj, Shootable & shooter)
 {
   m_isAlive = true;
   m_damage = BULLET_DAMAGE;
-  m_speed = BULLET_SPEED;
+  shooter.GetAim() == true ? m_speed = BULLET_SPEED : m_speed = -1 * BULLET_SPEED;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
   m_coordinate = obj.initial();
@@ -46,7 +46,7 @@ Bullet::Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter
 {
   m_isAlive = true;
   m_damage = damage;
-  m_speed = speed;
+  shooter.GetAim() == true ? m_speed = speed : m_speed = -1 * speed;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
   m_coordinate = obj.initial();
