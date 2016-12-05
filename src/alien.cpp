@@ -38,12 +38,15 @@ Alien::Alien(Box2D const & obj)
   Logger::Instance().Log(*this, ActionType::Creation);
 }
 
-void Alien::Move()
+Alien const & Alien::Move()
 {
   try
   {
-    if (m_coordinate.x() + m_xShift > SPACE_WIDTH || m_coordinate.x() + m_xShift  < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    //if (m_coordinate.x() + m_xShift > SPACE_WIDTH || m_coordinate.x() + m_xShift  < 0)
+      //m_xShift *= -1;
+      //throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate.x() += m_xShift;
+    return *this;
   }
   catch(std::exception const & ex)
   {
@@ -52,7 +55,7 @@ void Alien::Move()
   }
 }
 
-void Alien::MoveDown()
+Alien & Alien::MoveDown()
 {
   try
   {
@@ -96,6 +99,11 @@ float Alien::GetXshift() const
 float Alien::GetYshift() const
 {
   return m_yShift;
+}
+
+void Alien::Refract()
+{
+  m_xShift *= -1;
 }
 
 void Alien::PrintInfo(std::ostream & os)

@@ -11,7 +11,7 @@ float Movable::GetSpeed() const
   return m_speed;
 }
 
-void Movable::Move()
+Movable const & Movable::Move()
 {
   m_coordinate += m_speed;
 }

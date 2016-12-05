@@ -57,11 +57,11 @@ Bullet::Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter
   m_viewerFirst = &shooter;
 }
 
-void Bullet::Move()
+Bullet const & Bullet::Move()
 {
   try
   {
-    if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    //if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate.y() += m_speed;
   }
   catch(std::exception const & ex)

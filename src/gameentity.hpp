@@ -29,6 +29,10 @@ public:
 
   Point2D GetCoordinate() const;
 
+  void SetX(float const & x);
+
+  void SetY(float const & y);
+
   Box2D GetBody() const;
 
   float GetWidth() const;

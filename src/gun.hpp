@@ -22,7 +22,7 @@ public:
 
   Gun(Point2D const & obj, unsigned int const Ammo, float firingRate);
 
-  void Move(float const shift);
+  Gun const & Move(float const shift);
 
   void Shot() override;
 

@@ -40,7 +40,7 @@ Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
   Logger::Instance().Log(*this, ActionType::Creation);
 }
 
-void Gun::Move(float const shift)
+Gun const & Gun::Move(float const shift)
 {
   try
   {
