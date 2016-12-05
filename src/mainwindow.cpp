@@ -7,7 +7,7 @@
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent)
+  : QMainWindow(parent), m_glw(this, QColor(255,1,1,1))
 {
   // Изменение размеров окна
   this->resize(800, 800);
@@ -281,6 +281,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_sliderObstacleNumberOfGroups, SIGNAL(valueChanged(int)), this, SLOT(sliderMovedCustomChecked()));
 
   connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(WriteJson()));
+  connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(StartGame()));
 
 }
 void MainWindow::sliderMovedCustomChecked()
@@ -423,6 +424,12 @@ void MainWindow::ReadJson()
   std::cout << settings["settings"]["entities"]["gun"]["health"].asInt() << std::endl;
   std::cout << settings["settings"]["entities"]["alien"]["health"].asInt() << std::endl;
   std::cout << settings["settings"]["entities"]["obstacle"]["health"].asInt() << std::endl;
+}
+
+void MainWindow::StartGame()
+{
+  this->hide();
+  m_glw.show();
 }
 
 MainWindow::~MainWindow()

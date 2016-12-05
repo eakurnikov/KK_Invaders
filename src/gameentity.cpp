@@ -43,6 +43,7 @@ void GameEntity::SetCoordinate(Point2D const & coordinate)
   {
     //if (coordinate.x() > SPACE_WIDTH || coordinate.x() < 0 || coordinate.y() > SPACE_HEIGHT || coordinate.y() < 0) throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate = coordinate;
+    m_body = Box2D(coordinate, m_width, m_height);
   }
   catch(std::exception const & ex)
   {
