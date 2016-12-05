@@ -150,6 +150,36 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::Update(float elapsedSeconds)
 {
+  for(int i = 0; i < m_obstacles.size(); i++)
+      if (m_gun->GetBody().IsBoxesIntersect(m_obstacles[i]->GetBody()))
+      {
+        m_obstacles.erase(m_obstacles.begin() + i);
+        break; // НЕ УВЕРЕН, ЧТО ЭТО ПРАВИЛЬНО
+      }
+
+  for(int i = 0; i < m_aliens.size(); i++)
+    for(int j = 0; j < m_bullets.size(); j++)
+      if (m_bullets[j]->GetBody().IsBoxesIntersect(m_aliens[i]->GetBody()))
+      {
+        m_aliens.erase(m_aliens.begin() + i);
+        m_bullets.erase(m_bullets.begin() + j);
+      }
+
+  for(int i = 0; i < m_obstacles.size(); i++)
+    for(int j = 0; j < m_bullets.size(); j++)
+      if (m_bullets[j]->GetBody().IsBoxesIntersect(m_obstacles[i]->GetBody()))
+      {
+        m_obstacles.erase(m_obstacles.begin() + i);
+        m_bullets.erase(m_bullets.begin() + j);
+      }
+
+  for(int i = 0; i < m_bullets.size(); i++)
+    if (m_bullets[i]->GetCoordinate().y() > m_screenSize.height())
+    {
+      m_bullets.erase(m_bullets.begin() + i);
+    }
+
+
   float const kSpeed = 10.0f; // pixels per second.
 
   if (m_directions[kUpDirection])
