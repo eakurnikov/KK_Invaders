@@ -92,13 +92,13 @@ void GLWidget::initializeGL()
 
   m_gun = Factory::Instance().Create<Gun>(Point2D(m_screenSize.rwidth() / 2, GUN_HEIGHT / 2));
 
-  //m_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun));
+  //m_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun, Point2D(500.0f, 500.0f)));
 
   m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4, 200.0f)));
   m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 2, 200.0f)));
   m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f)));
 
-  m_position = QVector2D(static_cast<int>(m_gun->GetCoordinate().x()), static_cast<int>(m_gun->GetCoordinate().y()));
+  //m_position = QVector2D(static_cast<int>(m_gun->GetCoordinate().x()), static_cast<int>(m_gun->GetCoordinate().y()));
 }
 
 void GLWidget::paintGL()
@@ -165,9 +165,9 @@ void GLWidget::Update(float elapsedSeconds)
 void GLWidget::Render()
 {
   RenderStars();
+  RenderBullets();
   RenderAliens();
   RenderGun();
-  RenderBullets();
   RenderObstacles();
 }
 

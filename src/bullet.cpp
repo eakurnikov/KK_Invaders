@@ -22,7 +22,6 @@ Bullet::Bullet(Shootable & shooter)
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
   m_coordinate = shooter.GetCoordinate();
-  //m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
   m_trajectory = Ray2D(Point2D(m_coordinate.x(), m_coordinate.y() + m_speed), m_coordinate);
 
@@ -63,6 +62,7 @@ Bullet const & Bullet::Move()
   {
     //if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate.y() += m_speed;
+    return *this;
   }
   catch(std::exception const & ex)
   {

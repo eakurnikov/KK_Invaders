@@ -64,7 +64,7 @@ private:
 
   TexturedRect * m_texturedRect = nullptr;
 
-  QVector2D m_position;
+  //QVector2D m_position;
   std::array<bool, 4> m_directions = { { false, false, false, false } };
 
   QOpenGLTexture * m_textureStar = nullptr;

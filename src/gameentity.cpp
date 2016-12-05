@@ -61,7 +61,7 @@ void GameEntity::SetY(float const & y)
   m_coordinate.y() = y;
 }
 
-Point2D GameEntity::GetCoordinate() const
+Point2D const & GameEntity::GetCoordinate() const
 {
   return m_coordinate;
 }

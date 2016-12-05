@@ -27,7 +27,7 @@ public:
 
   void SetCoordinate(Point2D const & coordinate);
 
-  Point2D GetCoordinate() const;
+  Point2D const & GetCoordinate() const;
 
   void SetX(float const & x);
 
