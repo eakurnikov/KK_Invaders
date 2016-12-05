@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   MainWindow w;
-  GLWidget glw(&w, QColor(255,1,1,1));
+  //GLWidget glw(&w, QColor(255,1,1,1));
   w.show();
-  glw.show();
+  //glw.show();
 
   /*std::unique_ptr<Alien> al = Factory::Instance().Create<Alien>();
   std::unique_ptr<Gun> g = Factory::Instance().Create<Gun>();

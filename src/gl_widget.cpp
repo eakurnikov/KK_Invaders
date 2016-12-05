@@ -48,6 +48,7 @@ GLWidget::GLWidget(MainWindow * mw, QColor const & background)
   setFocusPolicy(Qt::StrongFocus);
   //this->setMouseTracking(true); //это нужно дописать по идее, чтобы движение мыши отслеживалось, но нихрена
   //m_mainWindow->setMouseTracking(true);
+  this->show();
 }
 
 GLWidget::~GLWidget()
@@ -131,6 +132,8 @@ void GLWidget::paintGL()
     painter.setPen(Qt::white);
     painter.drawText(20, 40, framesPerSecond + " fps");
   }
+  painter.drawText(20, m_mainWindow->height()-100, "3");
+  painter.drawText(200, m_mainWindow->height()-100, "3");
   painter.end();
   ++m_frames;
   update();
@@ -144,16 +147,27 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::Update(float elapsedSeconds)
 {
+  for(int i = 0; i < m_aliens.size(); i++)
+      if (m_gun->GetBody().IsBoxesIntersect(m_aliens[i]->GetBody()))
+      {
+        m_aliens.erase(m_aliens.begin() + i);
+        break; // НЕ УВЕРЕН, ЧТО ЭТО ПРАВИЛЬНО
+      }
+
   float const kSpeed = 10.0f; // pixels per second.
 
   if (m_directions[kUpDirection])
-    m_position.setY(m_position.y() + kSpeed);
+    m_gun->SetCoordinate(Point2D(m_gun->GetCoordinate().x(), m_gun->GetCoordinate().y() + kSpeed));
+    //m_position.setY(m_position.y() + kSpeed);
   if (m_directions[kDownDirection])
-    m_position.setY(m_position.y() - kSpeed);
+    m_gun->SetCoordinate(Point2D(m_gun->GetCoordinate().x(), m_gun->GetCoordinate().y() - kSpeed));
+    //m_position.setY(m_position.y() - kSpeed);
   if (m_directions[kLeftDirection])
-    m_position.setX(m_position.x() - kSpeed);
+    m_gun->SetCoordinate(Point2D(m_gun->GetCoordinate().x() - kSpeed, m_gun->GetCoordinate().y()));
+    //m_position.setX(m_position.x() - kSpeed);
   if (m_directions[kRightDirection])
-    m_position.setX(m_position.x() + kSpeed);
+    m_gun->SetCoordinate(Point2D(m_gun->GetCoordinate().x() + kSpeed, m_gun->GetCoordinate().y()));
+    //m_position.setX(m_position.x() + kSpeed);
 }
 
 void GLWidget::Render()
@@ -169,25 +183,37 @@ void GLWidget::RenderAliens()
 {
   for(int i = 0; i < m_aliens.size(); ++i)
   {
-    m_texturedRect->Render(m_textureAlien, QVector2D((int)m_aliens[i]->GetCoordinate().x(),(int)m_aliens[i]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+    m_texturedRect->Render(m_textureAlien,
+                           QVector2D((int)m_aliens[i]->GetCoordinate().x(),(int)m_aliens[i]->GetCoordinate().y()),
+                           QSize(static_cast<int>(ALIEN_HEIGHT), static_cast<int>(ALIEN_WIDTH)),
+                           m_screenSize);
   }
 }
 
 void GLWidget::RenderBullets()
 {
-  m_texturedRect->Render(m_textureBullet, QVector2D((int)m_bullets[0]->GetCoordinate().x(),(int)m_bullets[0]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+  m_texturedRect->Render(m_textureBullet,
+                         QVector2D((int)m_bullets[0]->GetCoordinate().x(),(int)m_bullets[0]->GetCoordinate().y()),
+                         QSize(static_cast<int>(BULLET_HEIGHT), static_cast<int>(BULLET_HEIGHT)),
+                         m_screenSize);
 }
 
 void GLWidget::RenderGun()
 {
-  m_texturedRect->Render(m_textureGun, m_position, QSize(128, 128), m_screenSize);
+  m_texturedRect->Render(m_textureGun,
+                         QVector2D((int)m_gun->GetCoordinate().x(), (int)m_gun->GetCoordinate().y()),
+                         QSize(static_cast<int>(GUN_HEIGHT), static_cast<int>(GUN_HEIGHT)),
+                         m_screenSize);
 }
 
 void GLWidget::RenderObstacles()
 {
   for(int i = 0; i < m_obstacles.size(); ++i)
   {
-    m_texturedRect->Render(m_textureObstacle, QVector2D((int)m_obstacles[i]->GetCoordinate().x(),(int)m_obstacles[i]->GetCoordinate().y()), QSize(128, 128), m_screenSize);
+    m_texturedRect->Render(m_textureObstacle,
+                           QVector2D((int)m_obstacles[i]->GetCoordinate().x(), (int)m_obstacles[i]->GetCoordinate().y()),
+                           QSize(static_cast<int>(OBSTACLE_HEIGHT), static_cast<int>(OBSTACLE_HEIGHT)),
+                           m_screenSize);
   }
 }
 
@@ -196,7 +222,10 @@ void GLWidget::RenderStars()
   for(int i = 0; i < m_stars.size(); ++i)
   {
     int size = 10 * sinf((m_stars[i].getT() - m_time.elapsed()) / 500.0f);
-    m_texturedRect->Render(m_textureStar, QVector2D(m_stars[i].getX() * m_screenSize.width(), m_stars[i].getY() * m_screenSize.height()), QSize(size, size), m_screenSize);
+    m_texturedRect->Render(m_textureStar,
+                           QVector2D(m_stars[i].getX() * m_screenSize.width(), m_stars[i].getY() * m_screenSize.height()),
+                           QSize(size, size),
+                           m_screenSize);
   }
 }
 

@@ -16,6 +16,8 @@
 
 #include <QTimer>
 #include <QOpenGLWidget>
+#include <QColor>
+#include "gl_widget.hpp"
 
 class MainWindow
     : public QMainWindow
@@ -33,8 +35,10 @@ private slots:
   void radioButtonNormalClicked();
   void radioButtonProClicked();
   void WriteJson();
+  void StartGame();
 
 private:
+  GLWidget m_glw;
   QTimer * m_timer = nullptr;
   QGridLayout * m_layout = nullptr;
   QOpenGLWidget * m_glWidget = nullptr;

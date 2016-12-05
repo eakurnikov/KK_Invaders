@@ -3,17 +3,17 @@
 float const SPACE_HEIGHT = 500.0f;
 float const SPACE_WIDTH = 500.0f;
 
-float const ALIEN_HEIGHT = 20.0f;
-float const ALIEN_WIDTH = 20.0f;
+float const ALIEN_HEIGHT = 128.0f;
+float const ALIEN_WIDTH = 128.0f;
 
-float const GUN_HEIGHT = 20.0f;
-float const GUN_WIDTH = 20.0f;
+float const GUN_HEIGHT = 128.0f;
+float const GUN_WIDTH = 128.0f;
 
-float const BULLET_HEIGHT = 5.0f;
-float const BULLET_WIDTH = 5.0f;
+float const BULLET_HEIGHT = 128.0f;
+float const BULLET_WIDTH = 128.0f;
 
-float const OBSTACLE_HEIGHT = 5.0f;
-float const OBSTACLE_WIDTH = 5.0f;
+float const OBSTACLE_HEIGHT = 128.0f;
+float const OBSTACLE_WIDTH = 128.0f;
 
 float const NUMBER_OF_ALIENS_IN_LEVEL = 11;
 float const NUMBER_OF_LEVELS = 11;
