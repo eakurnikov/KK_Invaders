@@ -208,6 +208,7 @@ void GLWidget::RenderAliens()
     for(int i = 0; i < m_aliens.size(); ++i)
     {
       m_aliens[i]->Refract();
+      m_aliens[i]->MoveDown();
     }
   }
   for(int i = 0; i < m_aliens.size(); ++i)
@@ -221,6 +222,11 @@ void GLWidget::RenderBullets()
   for(int i = 0; i < m_bullets.size(); ++i)
   {
     m_texturedRect->Render(m_textureBullet, Point2D(static_cast<int>(m_bullets[i]->Move().GetCoordinate().x()),static_cast<int>(m_bullets[i]->Move().GetCoordinate().y())), QSize(BULLET_WIDTH, BULLET_HEIGHT), m_screenSize);
+    if (m_bullets[i]->GetCoordinate().y() > m_screenSize.rheight() || m_bullets[i]->GetCoordinate().y() < 0)
+    {
+      m_bullets[i].reset(); // по идее это удаление пули
+      m_bullets.erase(m_bullets.begin() + i);
+    }
   }
 }
 

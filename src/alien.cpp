@@ -59,8 +59,9 @@ Alien & Alien::MoveDown()
 {
   try
   {
-    if (m_coordinate.y() - m_xShift < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    //if (m_coordinate.y() - m_xShift < 0) throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate.y() -= m_yShift;
+    return *this;
   }
   catch(std::exception const & ex)
   {
