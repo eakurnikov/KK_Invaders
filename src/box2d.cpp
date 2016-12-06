@@ -1,5 +1,5 @@
-#include "box2d.hpp"
 #include <iostream>
+#include <box2d.hpp>
 
 // Конструктор с четырьмя координатами
 Box2D::Box2D(float const x1, float const y1, float const x2, float const y2)

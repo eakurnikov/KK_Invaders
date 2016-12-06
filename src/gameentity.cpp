@@ -86,3 +86,14 @@ void GameEntity::PrintInfo(std::ostream & os)
 {
 
 }
+
+bool GameEntity::DoObjectsIntersect(GameEntity const & obj1, GameEntity const & obj2)
+{
+  Box2D b1 = obj1.GetBody();
+  Box2D b2 = obj2.GetBody();
+  if (b1.rightBottomPoint().x() < b2.leftTopPoint().x()) return false; // a is left of b
+  if (b1.leftTopPoint().x() > b2.rightBottomPoint().x()) return false; // a is right of b
+  if (b1.rightBottomPoint().y() < b2.leftTopPoint().y()) return false; // a is above b
+  if (b1.leftTopPoint().y() > b2.rightBottomPoint().y()) return false; // a is below b
+  return true; // boxes overlap
+}

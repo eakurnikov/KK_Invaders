@@ -148,57 +148,61 @@ void GLWidget::Update(float elapsedSeconds)
 {
   // ВСЕ ЭТО ДОБРО ВЫЗЫВАЕТ КРЭШ ПРОГРАММЫ. НУЖНО КАК-ТО ИНАЧЕ ОБРАБАТЫВАТЬ ПОПАДАНИЯ.
 
-  /*for(int i = 0; i < m_aliens.size(); i++)
+  for(int i = 0; i < m_aliens.size(); i++)
     for(int j = 0; j < m_gun_bullets.size(); j++)
       if (m_gun_bullets[j]->GetCoordinate() > m_aliens[i]->GetCoordinate() - ALIEN_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_aliens[i]->GetCoordinate() + ALIEN_WIDTH / 2)
+      //if (GameEntity::DoObjectsIntersect(*m_aliens[i],*m_gun_bullets[j]))
       {
         m_gun_bullets[j]->Hit(*m_aliens[i]);
 
-        m_aliens[i].reset();
-        m_aliens.erase(m_aliens.begin() + i);
+        //m_aliens[i].reset();
+        //m_aliens.erase(m_aliens.begin() + i);
 
-        m_gun_bullets[j].reset();
+        //m_gun_bullets[j].reset();
         m_gun_bullets.erase(m_gun_bullets.begin() + j);
       }
 
   for(int i = 0; i < m_obstacles.size(); i++)
     for(int j = 0; j < m_alien_bullets.size(); j++)
       if (m_alien_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH / 2 && m_alien_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH / 2)
+      //if (GameEntity::DoObjectsIntersect(*m_obstacles[i],*m_alien_bullets[j]))
       {
         m_alien_bullets[j]->Hit(*m_obstacles[i]);
 
-        m_obstacles[i].reset();
-        m_obstacles.erase(m_obstacles.begin() + i);
+        //m_obstacles[i].reset();
+        //m_obstacles.erase(m_obstacles.begin() + i);
 
-        m_alien_bullets[j].reset();
+        //m_alien_bullets[j].reset();
         m_alien_bullets.erase(m_alien_bullets.begin() + j);
       }
 
   for(int i = 0; i < m_obstacles.size(); i++)
     for(int j = 0; j < m_gun_bullets.size(); j++)
       if (m_gun_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH / 2)
+      //if (GameEntity::DoObjectsIntersect(*m_obstacles[i],*m_gun_bullets[j]))
       {
         m_gun_bullets[j]->Hit(*m_obstacles[i]);
 
-        m_obstacles[i].reset();
-        m_obstacles.erase(m_obstacles.begin() + i);
+        //m_obstacles[i].reset();
+        //m_obstacles.erase(m_obstacles.begin() + i);
 
-        m_gun_bullets[j].reset();
+        //m_gun_bullets[j].reset();
         m_gun_bullets.erase(m_gun_bullets.begin() + j);
       }
 
   for(int j = 0; j < m_alien_bullets.size(); j++)
     if (m_alien_bullets[j]->GetCoordinate() > m_gun->GetCoordinate() - GUN_WIDTH / 2 && m_alien_bullets[j]->GetCoordinate() < m_gun->GetCoordinate() + GUN_WIDTH / 2)
+    //if (GameEntity::DoObjectsIntersect(*m_gun,*m_alien_bullets[j]))
     {
       m_alien_bullets[j]->Hit(*m_gun);
 
-      m_gun.reset();
+      //m_gun.reset();
 
-      m_alien_bullets[j].reset();
+      //m_alien_bullets[j].reset();
       m_alien_bullets.erase(m_alien_bullets.begin() + j);
-    }*/
+    }
 
-  if (m_time.elapsed() % 10 == 0)
+  if (m_time.elapsed() % 20 == 0)
   {
     random_index = std::rand()% 31;
     m_alien_bullets.push_back(Factory::Instance().Create<Bullet>(*m_aliens[random_index]));

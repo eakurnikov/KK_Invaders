@@ -3,6 +3,7 @@
 #include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "point2d.hpp"
+#include "gameentity.hpp"
 #include "box2d.hpp"
 #include <cmath>
 #include <initializer_list>
@@ -40,6 +41,8 @@ public:
   float GetHeight() const;
 
   virtual void PrintInfo(std::ostream & os);
+
+  static bool DoObjectsIntersect(GameEntity const & obj1, GameEntity const & obj2);
 
 protected:
 
