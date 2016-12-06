@@ -16,7 +16,7 @@ public:
 
   virtual ~Movable() = default;
 
-  virtual void Move();
+  virtual Movable const & Move();
 
   void SetSpeed(float speed);
 

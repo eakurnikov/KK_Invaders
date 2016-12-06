@@ -23,9 +23,9 @@ public:
 
   Alien(Box2D const & obj);
 
-  void Move() override;
+  Alien const & Move() override;
 
-  void MoveDown();
+  Alien & MoveDown();
 
   void Shot() override;
 
@@ -39,15 +39,17 @@ public:
 
   float GetYshift() const;
 
+  void Refract();
+
   void PrintInfo(std::ostream & os) override;
 
 private:
 
   bool m_isAlive = false;
 
-  float const m_yShift = 10.0f;
+  float m_yShift = 5.0f;
 
-  float const m_xShift = 1.0f;
+  float m_xShift = 1.0f;
 
 };
 

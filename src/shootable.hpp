@@ -27,6 +27,8 @@ public:
 
   virtual void CauseDamage(int amount) const = 0;
 
+  bool GetAim() const;
+
 protected:
 
   Shootable() = default;
@@ -34,5 +36,7 @@ protected:
   unsigned int m_ammo = 0;
 
   float m_firingRate = 0.0f;
+
+  bool m_aim = false;
 };
 

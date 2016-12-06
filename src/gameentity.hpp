@@ -3,6 +3,7 @@
 #include "operationswithepsilon.h"
 #include "defaultvalues.hpp"
 #include "point2d.hpp"
+#include "gameentity.hpp"
 #include "box2d.hpp"
 #include <cmath>
 #include <initializer_list>
@@ -27,15 +28,21 @@ public:
 
   void SetCoordinate(Point2D const & coordinate);
 
-  Point2D GetCoordinate() const;
+  Point2D const & GetCoordinate() const;
 
-  Box2D GetBody() const;
+  void SetX(float const & x);
+
+  void SetY(float const & y);
+
+  Box2D const & GetBody() const;
 
   float GetWidth() const;
 
   float GetHeight() const;
 
   virtual void PrintInfo(std::ostream & os);
+
+  static bool DoObjectsIntersect(GameEntity const & obj1, GameEntity const & obj2);
 
 protected:
 

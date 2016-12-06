@@ -10,6 +10,7 @@ Gun::Gun()
   m_width = GUN_WIDTH;
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, 0.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
+  m_aim = true;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -23,6 +24,7 @@ Gun::Gun(Point2D const & obj)
   m_width = GUN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
+  m_aim = true;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -36,11 +38,12 @@ Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
   m_width = GUN_WIDTH;
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
+  m_aim = true;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
 
-void Gun::Move(float const shift)
+Gun const & Gun::Move(float const shift)
 {
   try
   {

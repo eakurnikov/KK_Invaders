@@ -18,10 +18,10 @@ Bullet::Bullet(Shootable & shooter)
 {
   m_isAlive = true;
   m_damage = BULLET_DAMAGE;
-  m_speed = BULLET_SPEED;
+  shooter.GetAim() == true ? m_speed = BULLET_SPEED : m_speed = -1 * BULLET_SPEED;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
-  m_coordinate = Point2D(m_width / 2.0f, m_height / 2.0f);
+  m_coordinate = shooter.GetCoordinate();
   m_body = Box2D(m_coordinate, m_width, m_height);
   m_trajectory = Ray2D(Point2D(m_coordinate.x(), m_coordinate.y() + m_speed), m_coordinate);
 
@@ -32,7 +32,7 @@ Bullet::Bullet(Ray2D const & obj, Shootable & shooter)
 {
   m_isAlive = true;
   m_damage = BULLET_DAMAGE;
-  m_speed = BULLET_SPEED;
+  shooter.GetAim() == true ? m_speed = BULLET_SPEED : m_speed = -1 * BULLET_SPEED;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
   m_coordinate = obj.initial();
@@ -46,7 +46,7 @@ Bullet::Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter
 {
   m_isAlive = true;
   m_damage = damage;
-  m_speed = speed;
+  shooter.GetAim() == true ? m_speed = speed : m_speed = -1 * speed;
   m_height = BULLET_HEIGHT;
   m_width = BULLET_WIDTH;
   m_coordinate = obj.initial();
@@ -56,12 +56,13 @@ Bullet::Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter
   m_viewerFirst = &shooter;
 }
 
-void Bullet::Move()
+Bullet const & Bullet::Move()
 {
   try
   {
-    if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    //if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate.y() += m_speed;
+    return *this;
   }
   catch(std::exception const & ex)
   {

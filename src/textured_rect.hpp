@@ -9,6 +9,7 @@
 #include <QOpenGLShaderProgram>
 #include <QSize>
 #include <QVector2D>
+#include "point2d.hpp"
 
 class TexturedRect
 {
@@ -17,7 +18,7 @@ public:
   ~TexturedRect();
 
   bool Initialize(QOpenGLFunctions * functions);
-  void Render(QOpenGLTexture * texture, QVector2D const & position,
+  void Render(QOpenGLTexture * texture, Point2D const & position,
               QSize const & size, QSize const & screenSize);
 
 private:

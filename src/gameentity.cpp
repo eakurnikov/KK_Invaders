@@ -41,8 +41,9 @@ void GameEntity::SetCoordinate(Point2D const & coordinate)
 {
   try
   {
-    if (coordinate.x() > SPACE_WIDTH || coordinate.x() < 0 || coordinate.y() > SPACE_HEIGHT || coordinate.y() < 0) throw std::invalid_argument("Coodinate is out of Space!");
+    //if (coordinate.x() > SPACE_WIDTH || coordinate.x() < 0 || coordinate.y() > SPACE_HEIGHT || coordinate.y() < 0) throw std::invalid_argument("Coodinate is out of Space!");
     m_coordinate = coordinate;
+    m_body = Box2D(coordinate, m_width, m_height);
   }
   catch(std::exception const & ex)
   {
@@ -51,12 +52,22 @@ void GameEntity::SetCoordinate(Point2D const & coordinate)
   }
 }
 
-Point2D GameEntity::GetCoordinate() const
+void GameEntity::SetX(float const & x)
+{
+  m_coordinate.x() = x;
+}
+
+void GameEntity::SetY(float const & y)
+{
+  m_coordinate.y() = y;
+}
+
+Point2D const & GameEntity::GetCoordinate() const
 {
   return m_coordinate;
 }
 
-Box2D GameEntity::GetBody() const
+Box2D const & GameEntity::GetBody() const
 {
   return m_body;
 }
@@ -74,4 +85,15 @@ float GameEntity::GetHeight() const
 void GameEntity::PrintInfo(std::ostream & os)
 {
 
+}
+
+bool GameEntity::DoObjectsIntersect(GameEntity const & obj1, GameEntity const & obj2)
+{
+  Box2D b1 = obj1.GetBody();
+  Box2D b2 = obj2.GetBody();
+  if (b1.rightBottomPoint().x() < b2.leftTopPoint().x()) return false; // a is left of b
+  if (b1.leftTopPoint().x() > b2.rightBottomPoint().x()) return false; // a is right of b
+  if (b1.rightBottomPoint().y() < b2.leftTopPoint().y()) return false; // a is above b
+  if (b1.leftTopPoint().y() > b2.rightBottomPoint().y()) return false; // a is below b
+  return true; // boxes overlap
 }

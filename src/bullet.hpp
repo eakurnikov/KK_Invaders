@@ -28,7 +28,7 @@ public:
 
   Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter);
 
-  void Move() override;
+  Bullet const & Move() override;
 
   bool IsAlive() const;
 

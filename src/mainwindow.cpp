@@ -7,7 +7,7 @@
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent)
-  : QMainWindow(parent)
+  : QMainWindow(parent), m_glw(this, QColor(255,1,1,1))
 {
   // Изменение размеров окна
   this->resize(800, 800);
@@ -281,6 +281,7 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_sliderObstacleNumberOfGroups, SIGNAL(valueChanged(int)), this, SLOT(sliderMovedCustomChecked()));
 
   connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(WriteJson()));
+  connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(StartGame()));
 
 }
 void MainWindow::sliderMovedCustomChecked()
@@ -360,30 +361,24 @@ void MainWindow::WriteJson()
   Json::Value settings;
   auto & root = settings["settings"];
   root["aliensCount"] = 100;
-  //
   root["GunHP"] = m_sliderGunHP->value();
   root["GunFiringRate"] = m_sliderGunFiringRate->value();
   root["GunSpeed"] = m_sliderGunSpeed->value();
   root["GunNumberOfLives"] = m_sliderGunNumberOfLives->value();
-
   root["AlienHP"] = m_sliderAlienHP->value();
   root["AlienFiringRate"] = m_sliderAlienFiringRate->value();
   root["AlienSpeed"] = m_sliderAlienSpeed->value();
   root["AlienNumberInLevel"] = m_sliderAlienNumberInLevel->value();
   root["AlienNumberOfLevels"] = m_sliderAlienNumberOfLevels->value();
-
   root["BulletHP"] = m_sliderBulletHP->value();
   root["BulletSpeed"] = m_sliderBulletSpeed->value();
   root["BulletDamage"] = m_sliderBulletDamage->value();
-
   root["BulletHP"] = m_sliderBulletHP->value();
   root["BulletSpeed"] = m_sliderBulletSpeed->value();
   root["BulletDamage"] = m_sliderBulletDamage->value();
-
   root["ObstacleHP"] = m_sliderObstacleHP->value();
   root["ObstacleNumberInGroup"] = m_sliderObstacleNumberInGroup->value();
   root["ObstacleNumberOfGroups"] = m_sliderObstacleNumberOfGroups->value();
-  //
   root["bulletsCount"] = 200;
   root["entities"]["gun"]["health"] = 50;
   root["entities"]["alien"]["health"] = 20;
@@ -412,28 +407,29 @@ void MainWindow::ReadJson()
   std::cout << settings["settings"]["GunFiringRate"].asInt() << std::endl;
   std::cout << settings["settings"]["GunSpeed"].asInt() << std::endl;
   std::cout << settings["settings"]["GunNumberOfLives"].asInt() << std::endl;
-
   std::cout << settings["settings"]["AlienHP"].asInt() << std::endl;
   std::cout << settings["settings"]["AlienFiringRate"].asInt() << std::endl;
   std::cout << settings["settings"]["AlienSpeed"].asInt() << std::endl;
   std::cout << settings["settings"]["AlienNumberInLevel"].asInt() << std::endl;
   std::cout << settings["settings"]["AlienNumberOfLevels"].asInt() << std::endl;
-
   std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
   std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
   std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
-
   std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
   std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
   std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
-
   std::cout << settings["settings"]["ObstacleHP"].asInt() << std::endl;
   std::cout << settings["settings"]["ObstacleNumberInGroup"].asInt() << std::endl;
-
   std::cout << settings["settings"]["bulletsCount"].asInt() << std::endl;
   std::cout << settings["settings"]["entities"]["gun"]["health"].asInt() << std::endl;
   std::cout << settings["settings"]["entities"]["alien"]["health"].asInt() << std::endl;
   std::cout << settings["settings"]["entities"]["obstacle"]["health"].asInt() << std::endl;
+}
+
+void MainWindow::StartGame()
+{
+  this->hide();
+  m_glw.show();
 }
 
 MainWindow::~MainWindow()

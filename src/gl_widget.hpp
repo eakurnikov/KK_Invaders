@@ -7,10 +7,15 @@
 #include <QTime>
 #include <array>
 #include <vector>
+#include <list>
 #include <cstdlib>
 #include <cmath>
+#include <memory>
 #include "textured_rect.hpp"
 #include "star.hpp"
+#include "obstacle.hpp"
+#include "bullet.hpp"
+#include "factory.hpp"
 
 
 class MainWindow;
@@ -33,6 +38,11 @@ protected:
 
   void Update(float elapsedSeconds);
   void Render();
+  void RenderStars();
+  void RenderAliens();
+  void RenderBullets();
+  void RenderGun();
+  void RenderObstacles();
 
   void mousePressEvent(QMouseEvent * e) override;
   void mouseDoubleClickEvent(QMouseEvent * e) override;
@@ -52,15 +62,27 @@ private:
   QColor m_background;
   QSize m_screenSize;
 
-  QOpenGLTexture * m_texture = nullptr;
   TexturedRect * m_texturedRect = nullptr;
 
-  QVector2D m_position = QVector2D(200, 200);
   std::array<bool, 4> m_directions = { { false, false, false, false } };
 
   QOpenGLTexture * m_textureStar = nullptr;
   int m_starsNumber = 50 + std::rand() % 100;
   std::vector<Star> m_stars;
+
+  QOpenGLTexture * m_textureAlien = nullptr;
+  std::vector<std::unique_ptr<Alien>> m_aliens;
+  int random_index;
+
+  QOpenGLTexture * m_textureGun = nullptr;
+  std::unique_ptr<Gun> m_gun;
+
+  QOpenGLTexture * m_textureBullet = nullptr;
+  std::vector<std::unique_ptr<Bullet>> m_alien_bullets;
+  std::vector<std::unique_ptr<Bullet>> m_gun_bullets;
+
+  QOpenGLTexture * m_textureObstacle = nullptr;
+  std::vector<std::unique_ptr<Obstacle>> m_obstacles;
 };
 
 #endif // GL_WIDGET_HPP
