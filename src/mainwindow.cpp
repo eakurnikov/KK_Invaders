@@ -15,9 +15,106 @@ MainWindow::MainWindow(QWidget *parent)
   // Глобальная настройка шрифтов
   QApplication::setFont(QFont("Courier", 14, QFont::Bold, false));
 
+  // Начальный виджет
+  m_widgetWelcome = new QWidget(this);
+  setCentralWidget(m_widgetWelcome);
+
+  // Начальная таблица
+  m_layoutWelcome = new QGridLayout(m_widgetWelcome);
+
+  // Элементы начального виджета
+  m_labelWelcome = new QLabel("Welcome to KK Invaders", m_widgetWelcome);
+  m_labelWelcome->setAlignment(Qt::AlignCenter);
+  m_labelWelcome->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelWelcome->setStyleSheet("QLabel {color : Blue; }");
+
+  m_buttonConfig = new QPushButton("Настройки");
+  m_buttonWStart = new QPushButton("Начать");
+  m_buttonExit = new QPushButton("Выход");
+
+  // Размещение в начальной таблице
+  m_layoutWelcome->addWidget(m_labelWelcome, 0, 0, 1, 2);
+  m_layoutWelcome->addWidget(m_buttonConfig, 1, 0, 1, 2);
+  m_layoutWelcome->addWidget(m_buttonWStart, 2, 0);
+  m_layoutWelcome->addWidget(m_buttonExit, 2, 1);
+
+
+  // Информационный виджет
+  m_widgetInfo = new QWidget(this);
+
+  // Информационный таблица
+  m_layoutInfo = new QGridLayout(m_widgetInfo);
+
+  // Элементы Информационного виджета
+  // Название игры
+  m_labelGameName = new QLabel("KK Invaders", m_widgetInfo);
+  m_labelGameName->setAlignment(Qt::AlignCenter);
+  m_labelGameName->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameName->setStyleSheet("QLabel {color : Blue; }");
+
+  // Номер уровня
+  //std::string lvl = "Level: " + m_level;
+  m_labelGameLevel = new QLabel("Level: 1", m_widgetInfo);
+  m_labelGameLevel->setAlignment(Qt::AlignCenter);
+  m_labelGameLevel->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameLevel->setStyleSheet("QLabel {color : Blue; }");
+
+  // Счет
+  //std::string score = "Score: " + m_totalScore;
+  m_labelGameScore = new QLabel("Score: 0", m_widgetInfo);
+  m_labelGameScore->setAlignment(Qt::AlignCenter);
+  m_labelGameScore->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameScore->setStyleSheet("QLabel {color : Blue; }");
+
+  // Число жизней
+  //std::string lvl = "Lives: " + m_lives;
+  m_labelGameLives = new QLabel("Lives: 3", m_widgetInfo);
+  m_labelGameLives->setAlignment(Qt::AlignCenter);
+  m_labelGameLives->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameLives->setStyleSheet("QLabel {color : Blue; }");
+  // Кнопка запуска
+  m_buttonReady = new QPushButton("Готов!");
+
+  // Размещение в информационной таблице
+  m_layoutInfo->addWidget(m_labelGameName, 1, 0);
+  m_layoutInfo->addWidget(m_labelGameLevel, 2, 0);
+  m_layoutInfo->addWidget(m_labelGameScore, 3, 0);
+  m_layoutInfo->addWidget(m_labelGameLives, 4, 0);
+  m_layoutInfo->addWidget(m_buttonReady, 5, 0);
+
+  // Последний виджет
+  m_widgetGameOver = new QWidget(this);
+
+  // Последняя таблица
+  m_layoutGameOver = new QGridLayout(m_widgetGameOver);
+
+  // Элементы последнего виджета
+  m_labelGameOver = new QLabel("Game Over", m_widgetGameOver);
+  m_labelGameOver->setAlignment(Qt::AlignCenter);
+  m_labelGameOver->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameOver->setStyleSheet("QLabel {color : Blue; }");
+
+  // Номер последнего уровня
+  m_labelGameOverLevel = new QLabel("Current Level: 1", m_widgetGameOver);
+  m_labelGameOverLevel->setAlignment(Qt::AlignCenter);
+  m_labelGameOverLevel->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameOverLevel->setStyleSheet("QLabel {color : Blue; }");
+
+  // Счет
+  //std::string score = "Score: " + "3";
+  m_labelGameOverScore = new QLabel("Score: 3", m_widgetGameOver);
+  m_labelGameOverScore->setAlignment(Qt::AlignCenter);
+  m_labelGameOverScore->setFont(QFont("Courier", 16, QFont::Bold, false));
+  m_labelGameOverScore->setStyleSheet("QLabel {color : Blue; }");
+
+  // Размещение в информационной таблице
+  m_layoutGameOver->addWidget(m_labelGameOver, 1, 0);
+  m_layoutGameOver->addWidget(m_labelGameOverLevel, 2, 0);
+  m_layoutGameOver->addWidget(m_labelGameOverScore, 3, 0);
+
+
   // Центральный виджет
   m_centralWidget = new QWidget(this);
-  setCentralWidget(m_centralWidget);
 
   // Главная таблица
   m_layoutMain = new QGridLayout(m_centralWidget);
@@ -280,8 +377,24 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_sliderObstacleNumberInGroup, SIGNAL(valueChanged(int)), this, SLOT(sliderMovedCustomChecked()));
   connect(m_sliderObstacleNumberOfGroups, SIGNAL(valueChanged(int)), this, SLOT(sliderMovedCustomChecked()));
 
+  connect(m_buttonStart, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
   connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(WriteJson()));
   connect(m_buttonStart, SIGNAL(clicked(bool)), this, SLOT(StartGame()));
+
+  // Коннекты начального виджета
+  connect(m_buttonConfig, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
+  connect(m_buttonConfig, SIGNAL(clicked(bool)), this, SLOT(ConfigShow()));
+
+  connect(m_buttonWStart, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
+  connect(m_buttonWStart, SIGNAL(clicked(bool)), this, SLOT(StartGame()));
+
+  connect(m_buttonExit, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
+  connect(m_buttonExit, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+
+  // Коннекты информационного виджета
+  connect(m_buttonReady, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
+  connect(m_buttonReady, SIGNAL(clicked(bool)), this, SLOT(Ready()));
 
 }
 void MainWindow::sliderMovedCustomChecked()
@@ -426,10 +539,150 @@ void MainWindow::ReadJson()
   std::cout << settings["settings"]["entities"]["obstacle"]["health"].asInt() << std::endl;
 }
 
+
 void MainWindow::StartGame()
 {
+  setCentralWidget(m_widgetInfo);
+}
+
+
+void MainWindow::ConfigShow()
+{
+  setCentralWidget(m_centralWidget);
+}
+
+void MainWindow::Ready()
+{
   this->hide();
+
+  m_glw.setGunHP(getGunHP());
+  m_glw.setGunFiringRate(getGunFiringRate());
+  m_glw.setGunSpeed(getGunSpeed());
+  m_glw.setGunNumberOfLives(getGunNumberOfLives());
+
+  m_glw.setAlienHP(getAlienHP());
+  m_glw.setAlienFiringRate(getAlienFiringRate());
+  m_glw.setAlienSpeed(getAlienSpeed());
+  m_glw.setAlienNumberInLevel(getAlienNumberInLevel());
+  m_glw.setAlienNumberOfLevels(getAlienNumberOfLevels());
+
+  m_glw.setBulletHP(getBulletHP());
+  m_glw.setBulletSpeed(getBulletSpeed());
+  m_glw.setBulletDamage(getBulletDamage());
+
+  m_glw.setObstacleHP(getObstacleHP());
+  m_glw.setObstacleNumberInGroup(getObstacleNumberInGroup());
+  m_glw.setObstacleNumberOfGroups(getObstacleNumberOfGroups());
+
   m_glw.show();
+}
+
+void MainWindow::GameOver()
+{
+  setCentralWidget(m_widgetGameOver);
+}
+
+int MainWindow::getGunHP()
+{
+  return m_sliderGunHP->value();
+}
+
+int MainWindow::getGunFiringRate()
+{
+  return m_sliderGunFiringRate->value();
+}
+
+int MainWindow::getGunSpeed()
+{
+  return m_sliderGunSpeed->value();
+}
+
+int MainWindow::getGunNumberOfLives()
+{
+  return m_sliderGunNumberOfLives->value();
+}
+
+int MainWindow::getAlienHP()
+{
+  return m_sliderAlienHP->value();
+}
+
+int MainWindow::getAlienFiringRate()
+{
+  return m_sliderAlienFiringRate->value();
+}
+
+int MainWindow::getAlienSpeed()
+{
+  return m_sliderAlienSpeed->value();
+}
+
+int MainWindow::getAlienNumberInLevel()
+{
+  return m_sliderAlienNumberInLevel->value();
+}
+
+int MainWindow::getAlienNumberOfLevels()
+{
+  return m_sliderAlienNumberOfLevels->value();
+}
+
+
+int MainWindow::getBulletHP()
+{
+  return m_sliderBulletHP->value();
+}
+
+int MainWindow::getBulletSpeed()
+{
+  return m_sliderBulletSpeed->value();
+}
+
+int MainWindow::getBulletDamage()
+{
+  return m_sliderBulletDamage->value();
+}
+
+
+int MainWindow::getObstacleHP()
+{
+  return m_sliderObstacleHP->value();
+}
+
+int MainWindow::getObstacleNumberInGroup()
+{
+  return m_sliderObstacleNumberInGroup->value();
+}
+
+int MainWindow::getObstacleNumberOfGroups()
+{
+  return m_sliderObstacleNumberOfGroups->value();
+}
+
+void MainWindow::ShowInfo()
+{
+  setCentralWidget(m_widgetInfo);
+  this->show();
+}
+
+int MainWindow::getTotalScore()
+{
+  return m_totalScore;
+}
+
+int MainWindow::getLevel()
+{
+  return m_level;
+}
+
+void MainWindow::setTotalScore(int const n)
+{
+  m_totalScore = n;
+}
+
+void MainWindow::SetLevel(int const n)
+{
+  m_level = n;
 }
 
 MainWindow::~MainWindow()

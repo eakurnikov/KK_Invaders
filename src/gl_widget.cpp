@@ -78,7 +78,6 @@ void GLWidget::initializeGL()
 
   m_time.start();
 
-
   for(int i = 0; i < m_starsNumber; i++)
     m_stars.push_back(Star());
 
@@ -132,6 +131,12 @@ void GLWidget::paintGL()
     framesPerSecond.setNum(m_frames / (elapsed / 1000.0), 'f', 2);
     painter.setPen(Qt::white);
     painter.drawText(20, 40, framesPerSecond + " fps");
+    QString numberOfLives;
+    numberOfLives.setNum(m_gunNumberOfLives);
+    painter.drawText(200, 400, "Lives: " + numberOfLives);
+    QString totalScore;
+    totalScore.setNum(m_mainWindow->getTotalScore());
+    painter.drawText(400, 200, "Score: " + totalScore);
   }
   painter.end();
   ++m_frames;
@@ -150,35 +155,22 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::Update(float elapsedSeconds)
 {
-  for(int i = 0; i < m_obstacles.size(); i++)
-      if (m_gun->GetBody().IsBoxesIntersect(m_obstacles[i]->GetBody()))
-      {
-        m_obstacles.erase(m_obstacles.begin() + i);
-        break; // НЕ УВЕРЕН, ЧТО ЭТО ПРАВИЛЬНО
-      }
-
   for(int i = 0; i < m_aliens.size(); i++)
     for(int j = 0; j < m_bullets.size(); j++)
-      if (m_bullets[j]->GetBody().IsBoxesIntersect(m_aliens[i]->GetBody()))
+      if (m_bullets[j]->GetCoordinate() > m_aliens[i]->GetCoordinate() - ALIEN_WIDTH / 2 && m_bullets[j]->GetCoordinate() < m_aliens[i]->GetCoordinate() + ALIEN_WIDTH / 2)
       {
         m_aliens.erase(m_aliens.begin() + i);
         m_bullets.erase(m_bullets.begin() + j);
+        m_mainWindow->setTotalScore(m_mainWindow->getTotalScore()+100);
+        m_alienKill->play();
       }
 
-  for(int i = 0; i < m_obstacles.size(); i++)
-    for(int j = 0; j < m_bullets.size(); j++)
-      if (m_bullets[j]->GetBody().IsBoxesIntersect(m_obstacles[i]->GetBody()))
-      {
-        m_obstacles.erase(m_obstacles.begin() + i);
-        m_bullets.erase(m_bullets.begin() + j);
-      }
-
-  for(int i = 0; i < m_bullets.size(); i++)
-    if (m_bullets[i]->GetCoordinate().y() > m_screenSize.height())
-    {
-      m_bullets.erase(m_bullets.begin() + i);
-    }
-
+  //if(m_gunNumberOfLives == 0)
+  if(m_aliens.size() < 10)
+  {
+    this->hide();
+    m_mainWindow->ShowInfo();
+  }
 
   float const kSpeed = 10.0f; // pixels per second.
 
@@ -255,6 +247,7 @@ void GLWidget::mousePressEvent(QMouseEvent * e)
   if (IsLeftButton(e))
   {
     m_bullets.push_back(Factory::Instance().Create<Bullet>(*m_gun));
+    m_shot2->play();
   }
 }
 
@@ -329,3 +322,77 @@ void GLWidget::keyReleaseEvent(QKeyEvent * e)
     m_directions[kRightDirection] = false;
 }
 
+void GLWidget::setGunHP(int const n)
+{
+  m_gunHP = n;
+}
+
+void GLWidget::setGunFiringRate(int const n)
+{
+  m_gunFiringRate = n;
+}
+
+void GLWidget::setGunSpeed(int const n)
+{
+  m_gunSpeed = n;
+}
+
+void GLWidget::setGunNumberOfLives(int const n)
+{
+  m_gunNumberOfLives = n;
+}
+
+void GLWidget::setAlienHP(int const n)
+{
+  m_alienHP = n;
+}
+
+void GLWidget::setAlienFiringRate(int const n)
+{
+  m_alienFiringRate = n;
+}
+
+void GLWidget::setAlienSpeed(int const n)
+{
+  m_alienSpeed = n;
+}
+
+void GLWidget::setAlienNumberInLevel(int const n)
+{
+  m_alienNumberInLevel = n;
+}
+
+void GLWidget::setAlienNumberOfLevels(int const n)
+{
+  m_alienNumberOfLevels = n;
+}
+
+void GLWidget::setBulletHP(int const n)
+{
+  m_bulletHP = n;
+}
+
+void GLWidget::setBulletSpeed(int const n)
+{
+  m_bulletSpeed = n;
+}
+
+void GLWidget::setBulletDamage(int const n)
+{
+  m_bulletDamage = n;
+}
+
+void GLWidget::setObstacleHP(int const n)
+{
+  m_obstacleHP = n;
+}
+
+void GLWidget::setObstacleNumberInGroup(int const n)
+{
+  m_obstacleNumberInGroup = n;
+}
+
+void GLWidget::setObstacleNumberOfGroups(int const n)
+{
+  m_obstacleNumberOfGroups = n;
+}

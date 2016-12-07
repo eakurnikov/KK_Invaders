@@ -7,9 +7,11 @@ project(KK_Invaders)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_PREFIX_PATH "D:/Qt/Qt5.5.1/5.5/mingw492_32/lib/cmake")
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5OpenGL REQUIRED)
+find_package(Qt5Multimedia REQUIRED)
 
 # Set up the main source folder.
 set(SOURCE_ROOT src)
@@ -26,6 +28,7 @@ add_executable(${PROJECT_NAME} ${SRC_LIST} ${QT_WRAPPED_SRC}  ${JSONCPP_SRC} )
 
 # Qt modules
 qt5_use_modules(${PROJECT_NAME} Widgets OpenGL)
+qt5_use_modules(${PROJECT_NAME} Widgets Multimedia)
 
 # Add subdirectory with Google Test Library.
 add_subdirectory(3party/googletest)
@@ -55,6 +58,8 @@ qt5_use_modules(${PROJECT_TEST_NAME} Widgets OpenGL)
 # Finish tests setting up.
 add_test(test ${PROJECT_TEST_NAME})
 
+target_link_libraries(${PROJECT_TEST_NAME} Qt5::Widgets Qt5::Multimedia)
+
 macro(copy_files GLOBPAT DESTINATION)
   file(GLOB COPY_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${GLOBPAT})
   foreach(FILENAME ${COPY_FILES})
@@ -69,4 +74,12 @@ set(DATA_FILES_LIST data/star.png)
 set(DATA_FILES_LIST data/gun.png)
 set(DATA_FILES_LIST data/bullet.png)
 set(DATA_FILES_LIST data/obstacle.png)
+
+set(DATA_FILES_LIST data/AlienKill.wav)
+set(DATA_FILES_LIST data/BulletKill.wav)
+set(DATA_FILES_LIST data/ButtonClick.wav)
+set(DATA_FILES_LIST data/ObstacleKill.wav)
+set(DATA_FILES_LIST data/Shot.wav)
+set(DATA_FILES_LIST data/Shot2.wav)
+
 copy_files("${DATA_FILES_LIST}" ${CMAKE_CURRENT_BINARY_DIR})
