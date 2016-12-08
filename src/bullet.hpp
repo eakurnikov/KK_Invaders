@@ -22,6 +22,8 @@ class Bullet : public Movable
 public:
   Bullet();
 
+  ~Bullet();
+
   Bullet(Shootable & shooter);
 
   Bullet(Ray2D const & obj, Shootable & shooter);
@@ -47,8 +49,6 @@ public:
   void PrintInfo(std::ostream & os) override;
 
 private:
-
-  bool m_isAlive = false;
 
   float m_damage = BULLET_DAMAGE;
 

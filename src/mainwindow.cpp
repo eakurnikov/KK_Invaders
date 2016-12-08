@@ -685,6 +685,11 @@ void MainWindow::SetLevel(int const n)
   m_level = n;
 }
 
+void MainWindow::increaseTotalScore(int const score)
+{
+  m_totalScore += score;
+}
+
 MainWindow::~MainWindow()
 {
 

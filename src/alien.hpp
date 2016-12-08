@@ -19,6 +19,8 @@ public:
 
   Alien();
 
+  ~Alien();
+
   Alien(Point2D const & obj);
 
   Alien(Box2D const & obj);
@@ -31,7 +33,7 @@ public:
 
   void SufferDamage(int amount) override;
 
-  void CauseDamage(int amount) const override;
+  void CauseDamage(int amount) override;
 
   bool IsAlive() const;
 
@@ -44,8 +46,6 @@ public:
   void PrintInfo(std::ostream & os) override;
 
 private:
-
-  bool m_isAlive = false;
 
   float m_yShift = 5.0f;
 

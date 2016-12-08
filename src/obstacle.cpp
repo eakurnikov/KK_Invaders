@@ -4,6 +4,7 @@
 Obstacle::Obstacle()
 {
   m_isAlive = true;
+  m_hp = 500;
   m_height = OBSTACLE_HEIGHT;
   m_width = OBSTACLE_WIDTH;
   m_coordinate = {m_width / 2.0f, m_height / 2.0f};
@@ -15,6 +16,7 @@ Obstacle::Obstacle()
 Obstacle::Obstacle(Point2D const & obj)
 {
   m_isAlive = true;
+  m_hp = 500;
   m_height = OBSTACLE_HEIGHT;
   m_width = OBSTACLE_WIDTH;
   m_coordinate = obj;
@@ -26,6 +28,7 @@ Obstacle::Obstacle(Point2D const & obj)
 Obstacle::Obstacle(Box2D const & obj)
 {
   m_isAlive = true;
+  m_hp = 500;
   m_height = OBSTACLE_HEIGHT;
   m_width = OBSTACLE_WIDTH;
   m_coordinate = obj.GetCenter();
@@ -37,7 +40,13 @@ Obstacle::Obstacle(Box2D const & obj)
 void Obstacle::SufferDamage(int amount)
 {
   m_hp -= amount;
-  Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
+  if (m_hp > 0)
+    Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
+  else
+    {
+      Logger::Instance().Log(*this, ActionType::Destroying);
+      Kill();
+    }
 }
 
 bool Obstacle::IsAlive() const

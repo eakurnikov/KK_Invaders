@@ -14,6 +14,13 @@ Bullet::Bullet()
   m_viewerFirst = nullptr;
 }
 
+Bullet::~Bullet()
+{
+  m_isAlive = false;
+  m_coordinate = {0.0f, 0.0f};
+  m_body = Box2D(m_coordinate, 0.0f, 0.0f);
+}
+
 Bullet::Bullet(Shootable & shooter)
 {
   m_isAlive = true;

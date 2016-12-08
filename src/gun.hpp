@@ -28,15 +28,21 @@ public:
 
   void SufferDamage(int amount) override;
 
-  void CauseDamage(int amount) const override;
+  void CauseDamage(int amount) override;
 
   bool IsAlive() const;
 
   void PrintInfo(std::ostream & os) override;
 
+  int GetScore() const;
+
+  int GetNumberOfLives() const;
+
 private:
 
-  bool m_isAlive = false;
+  int m_score = 0;
+
+  int m_numberOfLives = 0;
 };
 
 std::ostream & operator << (std::ostream & os, Gun const & obj);

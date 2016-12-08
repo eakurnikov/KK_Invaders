@@ -25,7 +25,7 @@ public:
 
   float GetFiringRate() const;
 
-  virtual void CauseDamage(int amount) const = 0;
+  virtual void CauseDamage(int amount) = 0;
 
   bool GetAim() const;
 

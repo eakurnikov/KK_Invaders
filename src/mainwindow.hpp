@@ -53,6 +53,7 @@ public:
 
   void setTotalScore(int const n);
   void SetLevel(int const n);
+  void increaseTotalScore(int const score);
 
   void ShowInfo();
   ~MainWindow();
