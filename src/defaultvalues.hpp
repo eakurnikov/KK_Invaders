@@ -23,7 +23,7 @@ float const NUMBER_OF_GROUPS = 3;
 
 float const START_ALIEN_SPEED = 1;
 float const GUN_SPEED = 4;
-float const BULLET_SPEED = 10;
+float const BULLET_SPEED = 3;
 
 float const ALIEN_HIT_POINTS = 1;
 float const GUN_HIT_POINTS = 1;
@@ -35,7 +35,7 @@ float const GUN_FIRING_RATE = 1;
 
 float const START_NUMBER_OF_LIFES = 3;
 
-float const BULLET_DAMAGE = 100;
+float const BULLET_DAMAGE = 34;
 
 int constexpr GUN_HP_MIN = 1;
 int constexpr GUN_HP_MAX = 10;

@@ -77,18 +77,11 @@ void Gun::SufferDamage(int amount)
   if (m_hp > 0)
     Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
   else
-    if (m_numberOfLives > 1)
-    {
-      Logger::Instance().Log(*this, ActionType::Destroying);
-      m_numberOfLives -= 1;
-      m_hp = 100;
-    }
-    else
-      {
-        Logger::Instance().Log(*this, ActionType::Destroying);
-        m_numberOfLives -= 1;
-        Kill();
-      }
+  {
+    Logger::Instance().Log(*this, ActionType::Destroying);
+    m_hp = 0;
+    Kill();
+  }
 }
 
 void Gun::CauseDamage(int amount) const

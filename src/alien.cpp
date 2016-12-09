@@ -4,6 +4,7 @@
 
 Alien::Alien()
 {
+  m_hp = 33;
   m_isAlive = true;
   m_firingRate = ALIEN_FIRING_RATE;
   m_height = ALIEN_HEIGHT;
@@ -17,6 +18,7 @@ Alien::Alien()
 
 Alien::Alien(Point2D const & obj)
 {
+  m_hp = 33;
   m_isAlive = true;
   m_firingRate = ALIEN_FIRING_RATE;
   m_height = ALIEN_HEIGHT;
@@ -30,6 +32,7 @@ Alien::Alien(Point2D const & obj)
 
 Alien::Alien(Box2D const & obj)
 {
+  m_hp = 33;
   m_isAlive = true;
   m_firingRate = ALIEN_FIRING_RATE;
   m_height = ALIEN_HEIGHT;

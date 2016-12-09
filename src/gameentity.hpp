@@ -24,7 +24,7 @@ public:
 
   void SetHP(unsigned int hp);
 
-  unsigned int GetHP() const;
+  int GetHP() const;
 
   void SetCoordinate(Point2D const & coordinate);
 
@@ -54,7 +54,7 @@ protected:
 
   bool m_isCreated = false;
 
-  unsigned int m_hp = 0;
+  int m_hp = 0;
 
   float m_height, m_width = 0.0f;
 

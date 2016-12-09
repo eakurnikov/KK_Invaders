@@ -11,6 +11,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
   // Изменение размеров окна
   this->resize(800, 800);
+  m_mainTheme->play();
+  m_mainTheme->setLoops(QSound::Infinite);
+
 
   // Глобальная настройка шрифтов
   QApplication::setFont(QFont("Courier", 14, QFont::Bold, false));
@@ -88,7 +91,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_labelGameLives->setFont(QFont("Courier", 16, QFont::Bold, false));
   m_labelGameLives->setStyleSheet("QLabel {color : White; }");
 
-  m_labelGameLivesValue = new QLabel("1", m_widgetInfo);
+  m_labelGameLivesValue = new QLabel("3", m_widgetInfo);
   m_labelGameLivesValue->setAlignment(Qt::AlignCenter);
   m_labelGameLivesValue->setFont(QFont("Courier", 16, QFont::Bold, false));
   m_labelGameLivesValue->setStyleSheet("QLabel {color : White; }");
@@ -465,6 +468,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(m_buttonExit, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
   connect(m_buttonExit, SIGNAL(clicked(bool)), this, SLOT(close()));
 
+ // m_gameOver->loops();
+
 
   // Коннекты информационного виджета
   connect(m_buttonReady, SIGNAL(clicked(bool)), m_buttonClick, SLOT(play()));
@@ -499,7 +504,6 @@ void MainWindow::radioButtonNoobClicked()
   m_sliderObstacleNumberOfGroups->setValue(OBSTACLE_NUMBER_OF_GROUPS_MAX);
 }
 
-// TODO: Взять настройки из оригнальной игры
 void MainWindow::radioButtonNormalClicked()
 {
   m_sliderGunHP->setValue(GUN_HP_MIN);
@@ -608,40 +612,12 @@ void MainWindow::ReadJson()
   m_glw.setObstacleHP(settings["settings"]["ObstacleHP"].asInt());
   m_glw.setObstacleNumberInGroup(settings["settings"]["ObstacleNumberInGroup"].asInt());
   m_glw.setObstacleNumberOfGroups(settings["settings"]["ObstacleNumberOfGroups"].asInt());
-
-  /*
-  std::cout << settings["settings"]["aliensCount"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunFiringRate"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunNumberOfLives"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienFiringRate"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienNumberInLevel"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienNumberOfLevels"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
-  std::cout << settings["settings"]["ObstacleHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["ObstacleNumberInGroup"].asInt() << std::endl;
-  std::cout << settings["settings"]["bulletsCount"].asInt() << std::endl;
-  std::cout << settings["settings"]["entities"]["gun"]["health"].asInt() << std::endl;
-  std::cout << settings["settings"]["entities"]["alien"]["health"].asInt() << std::endl;
-  std::cout << settings["settings"]["entities"]["obstacle"]["health"].asInt() << std::endl;
-  */
 }
 
 
 void MainWindow::StartGame()
 {
   setCentralWidget(m_widgetInfo);
-  //std::string lives = "Lives: " + m_sliderGunHP->value();
-  //QString qlives(lives.c_str());
-  //m_labelGameLives->setText(qlives);
 }
 
 
@@ -654,32 +630,7 @@ void MainWindow::Ready()
 {
   this->hide();
   ReadJson();
-/*
-  m_glw.setGunHP(getGunHP());
-  m_glw.setGunFiringRate(getGunFiringRate());
-  m_glw.setGunSpeed(getGunSpeed());
-  m_glw.setGunNumberOfLives(1);//getGunNumberOfLives());
-
-  m_glw.setAlienHP(getAlienHP());
-  m_glw.setAlienFiringRate(getAlienFiringRate());
-  m_glw.setAlienSpeed(1);//getAlienSpeed());
-  m_glw.setAlienNumberInLevel(getAlienNumberInLevel());
-  m_glw.setAlienNumberOfLevels(getAlienNumberOfLevels());
-
-  m_glw.setBulletHP(getBulletHP());
-  m_glw.setBulletSpeed(getBulletSpeed());
-  m_glw.setBulletDamage(1);//getBulletDamage());
-
-  m_glw.setObstacleHP(getObstacleHP());
-  m_glw.setObstacleNumberInGroup(getObstacleNumberInGroup());
-  m_glw.setObstacleNumberOfGroups(getObstacleNumberOfGroups());
-*/
   m_glw.show();
-}
-
-void MainWindow::GameOver()
-{
-  setCentralWidget(m_widgetGameOver);
 }
 
 int MainWindow::getGunHP()
@@ -699,7 +650,7 @@ int MainWindow::getGunSpeed()
 
 int MainWindow::getGunNumberOfLives()
 {
-  return m_sliderGunNumberOfLives->value();
+  return m_numberOfLives;
 }
 
 int MainWindow::getAlienHP()
@@ -761,6 +712,7 @@ int MainWindow::getObstacleNumberOfGroups()
 
 void MainWindow::ShowInfo()
 {
+  m_numberOfLives = m_sliderGunNumberOfLives->value();
   setCentralWidget(m_widgetInfo);
   this->show();
 }
@@ -807,6 +759,33 @@ void MainWindow::ChangeLives()
   m_labelGameLives->setText(qlives);
 }
 
+void MainWindow::GameOver()
+{
+  m_gameOver->play();
+  m_labelGameOverScoreValue->setNum(m_totalScore);
+  m_labelGameOverLevelValue->setNum(m_level);
+  setCentralWidget(m_widgetGameOver);
+  this->show();
+}
+
+void MainWindow::NewLevel()
+{
+  m_labelGameScoreValue->setNum(m_totalScore);
+  m_level += 1;
+  m_labelGameLevelValue->setNum(m_level);
+  setCentralWidget(m_widgetInfo);
+  this->show();
+}
+
+void MainWindow::RestartLevel()
+{
+  m_labelGameScoreValue->setNum(m_totalScore);
+  m_labelGameLevelValue->setNum(m_level);
+  m_numberOfLives-=1;
+  m_labelGameLivesValue->setNum(m_numberOfLives);
+  setCentralWidget(m_widgetInfo);
+  this->show();
+}
 MainWindow::~MainWindow()
 {
 

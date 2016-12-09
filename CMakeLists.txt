@@ -85,5 +85,7 @@ set(DATA_FILES_LIST data/ButtonClick.wav)
 set(DATA_FILES_LIST data/ObstacleKill.wav)
 set(DATA_FILES_LIST data/Shot.wav)
 set(DATA_FILES_LIST data/Shot2.wav)
+set(DATA_FILES_LIST data/Game-over.wav)
+set(DATA_FILES_LIST data/Main-theme.wav)
 
 copy_files("${DATA_FILES_LIST}" ${CMAKE_CURRENT_BINARY_DIR})

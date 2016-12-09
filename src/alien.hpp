@@ -46,7 +46,7 @@ public:
 
 private:
 
-  float m_yShift = 5.0f;
+  float m_yShift = 8.0f;
 
   float m_xShift = 1.0f;
 

@@ -30,6 +30,7 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
   Q_OBJECT
 public:
   GLWidget(MainWindow * mw, QColor const & background);
+  void NewLevel();
   void setGunHP(int const n);
   void setGunFiringRate(int const n);
   void setGunSpeed(int const n);
@@ -91,6 +92,7 @@ private:
   int m_alienSpeed = 1;
   int m_alienNumberInLevel = 1;
   int m_alienNumberOfLevels = 1;
+  int m_numberOfAliens = NUMBER_OF_LINES * NUMBER_OF_ALIENS_IN_LINE;
 
   int m_bulletHP = 1;
   int m_bulletSpeed = 1;
@@ -117,7 +119,6 @@ private:
 
   QOpenGLTexture * m_textureAlien = nullptr;
   std::vector<std::unique_ptr<Alien>> m_aliens;
-  //std::unique_ptr<BigBro> m_bigBro;
   int random_index;
 
   QOpenGLTexture * m_textureGun = nullptr;

@@ -37,9 +37,6 @@ private:
 
   std::vector<Obstacle> m_obstacles;
 
-  //std::list<Bullet> m_bullets;
-  //Если убрать комментарий, по необъяснимым причинам компилятор ругается, что я не определил здесь буллет, хотя я включил сюда bullet.hpp
-
   std::list<Alien> m_aliens;
 };
 
