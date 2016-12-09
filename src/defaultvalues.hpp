@@ -12,13 +12,13 @@ float const GUN_WIDTH = 64.0f;
 float const BULLET_HEIGHT = 32.0f;
 float const BULLET_WIDTH = 32.0f;
 
-float const OBSTACLE_HEIGHT = 64.0f;
-float const OBSTACLE_WIDTH = 64.0f;
+float const OBSTACLE_HEIGHT = 16.0f;
+float const OBSTACLE_WIDTH = 16.0f;
 
 float const NUMBER_OF_ALIENS_IN_LINE = 8;
 float const NUMBER_OF_LINES = 4;
 
-float const NUMBER_OF_OBSTACLES_IN_GROUP = 10;
+float const NUMBER_OF_OBSTACLES_IN_GROUP = 32;
 float const NUMBER_OF_GROUPS = 3;
 
 float const START_ALIEN_SPEED = 1;
@@ -72,3 +72,5 @@ int constexpr OBSTACLE_NUMBER_OF_GROUPS_MIN = 1;
 int constexpr OBSTACLE_NUMBER_OF_GROUPS_MAX = 10;
 
 int constexpr SCORE = 10;
+int constexpr BIG_BRO_START_WIDTH = 800;
+int constexpr BIG_BRO_START_HEIGHT = 300;

@@ -43,14 +43,14 @@ Alien::Alien(Box2D const & obj)
 
 Alien const & Alien::Move()
 {
-  if(m_isAlive)
+  if (m_isAlive)
     m_coordinate.x() += m_xShift;
   return *this;
 }
 
 Alien & Alien::MoveDown()
 {
-  if(m_isAlive)
+  if (m_isAlive)
     m_coordinate.y() -= m_yShift;
   return *this;
 }

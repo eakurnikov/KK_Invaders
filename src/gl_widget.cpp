@@ -90,11 +90,27 @@ void GLWidget::initializeGL()
     }
   }
 
+  //m_bigBro = Factory::Instance().Create<BigBro>(Box2D(Point2D(m_screenSize.rwidth() / 2, m_screenSize.rheight()/2), 800, 300));
+
+  /*for (int i = 0; i < m_aliens.size() - 1; i++)
+  {
+    m_aliens[i]->Subscribe(*m_bigBro);
+  }*/
+
   m_gun = Factory::Instance().Create<Gun>(Point2D(m_screenSize.rwidth() / 2, GUN_HEIGHT / 2));
 
-  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4, 200.0f)));
-  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 2, 200.0f)));
-  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f)));
+  Point2D m_start ;
+  for(int k = 1; k <= NUMBER_OF_GROUPS; k++)
+  {
+    m_start = {k * m_screenSize.rwidth() / 4 - OBSTACLE_WIDTH * 4, 200 - OBSTACLE_HEIGHT * 2};
+    for(int j = 0; j < 4; j++)
+    {
+      for(int i = 0; i < 8; i++)
+      {
+        m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_start.x() + i * OBSTACLE_WIDTH, m_start.y() + j * OBSTACLE_HEIGHT)));
+      }
+    }
+  }
 }
 
 void GLWidget::paintGL()
@@ -145,9 +161,19 @@ void GLWidget::resizeGL(int w, int h)
   m_screenSize.setWidth(w);
   m_screenSize.setHeight(h);
 
-  m_obstacles[0]->SetCoordinate(Point2D(m_screenSize.rwidth() / 4, 200.0f));
-  m_obstacles[1]->SetCoordinate(Point2D(m_screenSize.rwidth() / 2, 200.0f));
-  m_obstacles[2]->SetCoordinate(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f));
+  m_obstacles.clear();
+  Point2D m_start ;
+  for(int k = 1; k <= NUMBER_OF_GROUPS; k++)
+  {
+    m_start = {k * m_screenSize.rwidth() / 4 - OBSTACLE_WIDTH * 4, 200 - OBSTACLE_HEIGHT * 2};
+    for(int j = 0; j < 4; j++)
+    {
+      for(int i = 0; i < 8; i++)
+      {
+        m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_start.x() + i * OBSTACLE_WIDTH, m_start.y() + j * OBSTACLE_HEIGHT)));
+      }
+    }
+  }
 }
 
 void GLWidget::Update(float elapsedSeconds)
@@ -174,7 +200,7 @@ void GLWidget::Update(float elapsedSeconds)
 
   for(int i = 0; i < m_obstacles.size(); i++)
     for(int j = 0; j < m_gun_bullets.size(); j++)
-      if (m_gun_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH / 2)
+      if (m_gun_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH && m_gun_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH)
       //if (GameEntity::DoObjectsIntersect(*m_obstacles[i],*m_gun_bullets[j]))
       {
         m_gun_bullets[j]->Hit(*m_obstacles[i]);
@@ -189,7 +215,7 @@ void GLWidget::Update(float elapsedSeconds)
       m_alien_bullets.erase(m_alien_bullets.begin() + j);
     }
 
-  if (m_time.elapsed() % 20 == 0)
+  if (m_time.elapsed() % 10 == 0)
   {
     random_index = std::rand()% 31;
     m_alien_bullets.push_back(Factory::Instance().Create<Bullet>(*m_aliens[random_index]));
@@ -218,31 +244,32 @@ void GLWidget::Render()
 
 void GLWidget::RenderAliens()
 {
-  /*for(int i = 0; i < m_aliens.size(); ++i)
+  for(int i = 0; i < m_aliens.size(); ++i)
   {
     if ((m_aliens[i]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[i]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0) && m_aliens[i]->IsAlive())
     {
-      for(int i = 0; i < m_aliens.size(); ++i)
+      for(int j = 0; j < m_aliens.size(); ++j)
       {
-        m_aliens[i]->Refract();
-        m_aliens[i]->MoveDown();
+        m_aliens[j]->Refract();
+        m_aliens[j]->MoveDown();
       }
+      break;
     }
-    break;
-  }*/
+  }
 
-  if (m_aliens[m_aliens.size() - 1]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[0]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0)
+  /*if (m_aliens[m_aliens.size() - 1]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[m_aliens.size() - 9]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0)
   {
     for(int i = 0; i < m_aliens.size(); ++i)
     {
       m_aliens[i]->Refract();
       m_aliens[i]->MoveDown();
     }
-  }
+  }*/
   for(int i = 0; i < m_aliens.size(); ++i)
   {
     m_texturedRect->Render(m_textureAlien, Point2D(static_cast<int>(m_aliens[i]->Move().GetCoordinate().x()),static_cast<int>(m_aliens[i]->Move().GetCoordinate().y())), QSize(ALIEN_WIDTH, ALIEN_HEIGHT), m_screenSize);
   }
+  //m_bigBro->Move();
 }
 
 void GLWidget::RenderBullets()

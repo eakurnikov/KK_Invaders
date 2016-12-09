@@ -117,6 +117,7 @@ private:
 
   QOpenGLTexture * m_textureAlien = nullptr;
   std::vector<std::unique_ptr<Alien>> m_aliens;
+  //std::unique_ptr<BigBro> m_bigBro;
   int random_index;
 
   QOpenGLTexture * m_textureGun = nullptr;

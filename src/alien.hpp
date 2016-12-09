@@ -12,6 +12,7 @@
 #include <functional>
 #include <ostream>
 #include <iostream>
+#include <vector>
 
 class Alien : public Shootable
 {
