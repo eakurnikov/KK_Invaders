@@ -13,6 +13,8 @@
 #include <QHBoxLayout>
 #include <QRadioButton>
 #include <QButtonGroup>
+#include <QSound>
+#include <QThread>
 
 #include <QTimer>
 #include <QOpenGLWidget>
@@ -26,6 +28,33 @@ class MainWindow
 public:
   MainWindow(QWidget *parent = 0);
   void ReadJson();
+
+  int getGunHP();
+  int getGunFiringRate();
+  int getGunSpeed();
+  int getGunNumberOfLives();
+
+  int getAlienHP();
+  int getAlienFiringRate();
+  int getAlienSpeed();
+  int getAlienNumberInLevel();
+  int getAlienNumberOfLevels();
+
+  int getBulletHP();
+  int getBulletSpeed();
+  int getBulletDamage();
+
+  int getObstacleHP();
+  int getObstacleNumberInGroup();
+  int getObstacleNumberOfGroups();
+
+  int getTotalScore();
+  int getLevel();
+
+  void setTotalScore(int const n);
+  void SetLevel(int const n);
+
+  void ShowInfo();
   ~MainWindow();
 
 private slots:
@@ -35,22 +64,76 @@ private slots:
   void radioButtonProClicked();
   void WriteJson();
   void StartGame();
+  void ConfigShow();
+  void GameOver();
+  void Ready();
+  void ChangeLevel(int const n);
+  void ChangeScore(int const n);
+  void ChangeLives();
 
 private:
   GLWidget m_glw;
+
+  int m_totalScore = 0;
+  int m_level = 1;
+
+  QSound * m_buttonClick = new QSound("data/ButtonClick.wav");
+
   QTimer * m_timer = nullptr;
   QGridLayout * m_layout = nullptr;
   QOpenGLWidget * m_glWidget = nullptr;
 
+  // Начальный виджет
+  QWidget * m_widgetWelcome = nullptr;
+
+  // Начальная таблица
+  QGridLayout * m_layoutWelcome = nullptr;
+
+  // Элементы начального виджета
+  QLabel * m_labelWelcome = nullptr;
+  QPushButton * m_buttonConfig = nullptr;
+  QPushButton * m_buttonWStart = nullptr;
+  QPushButton * m_buttonExit = nullptr;
+
+  // Информационный виджет
+  QWidget * m_widgetInfo = nullptr;
+  // Информационный таблица
+  QGridLayout * m_layoutInfo = nullptr;
+  // Элементы Информационного виджета
+  // Название игры
+  QLabel * m_labelGameName = nullptr;
+  // Номер уровня
+  QLabel * m_labelGameLevel = nullptr;
+  QLabel * m_labelGameLevelValue = nullptr;
+  // Счет
+  QLabel * m_labelGameScore = nullptr;
+  QLabel * m_labelGameScoreValue = nullptr;
+  // Число жизней
+  QLabel * m_labelGameLives = nullptr;
+  QLabel * m_labelGameLivesValue = nullptr;
+  // Кнопка запуска
+  QPushButton * m_buttonReady = nullptr;
+
+  // Последний виджет
+  QWidget * m_widgetGameOver = nullptr;
+  // Последняя таблица
+  QGridLayout * m_layoutGameOver = nullptr;
+  // Элементы последнего виджета
+  QLabel * m_labelGameOver = nullptr;
+  // Номер последнего уровня
+  QLabel * m_labelGameOverLevel = nullptr;
+  QLabel * m_labelGameOverLevelValue = nullptr;
+
+  // Счет
+  QLabel * m_labelGameOverScore = nullptr;
+  QLabel * m_labelGameOverScoreValue = nullptr;
+
   // Центральный виджет
   QWidget * m_centralWidget = nullptr;
-
   // Главная таблица
   QGridLayout * m_layoutMain = nullptr;
-
   // Выбор режима
   QLabel * m_labelMode = nullptr;
-
   // Верхний виджет (выбор режима)
   QWidget * m_topWidget = nullptr;
   QHBoxLayout * m_radioLayout = nullptr;
@@ -110,6 +193,8 @@ private:
   QLabel * m_labelBulletDamage = nullptr;
   QSlider * m_sliderBulletDamage = nullptr;
   QLabel * m_labelValueBulletDamage = nullptr;
+
+  // Настройки препятствий
   QWidget * m_centralWidgetObstacle = nullptr;
   QGridLayout * m_layoutObstacle = nullptr;
   QLabel * m_labelObstacle = nullptr;
