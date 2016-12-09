@@ -58,17 +58,8 @@ Bullet::Bullet(Ray2D const & obj, float speed, float damage, Shootable & shooter
 
 Bullet const & Bullet::Move()
 {
-  try
-  {
-    //if (m_coordinate.y() + m_speed > SPACE_HEIGHT || m_coordinate.y() + m_speed  < 0) throw std::invalid_argument("Coodinate is out of Space!");
-    m_coordinate.y() += m_speed;
-    return *this;
-  }
-  catch(std::exception const & ex)
-  {
-    std::cerr << "Error occurred: " << ex.what() << std::endl;
-    throw;
-  }
+  m_coordinate.y() += m_speed;
+  return *this;
 }
 
 bool Bullet::IsAlive() const

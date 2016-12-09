@@ -43,34 +43,16 @@ Alien::Alien(Box2D const & obj)
 
 Alien const & Alien::Move()
 {
-  try
-  {
-    //if (m_coordinate.x() + m_xShift > SPACE_WIDTH || m_coordinate.x() + m_xShift  < 0)
-      //m_xShift *= -1;
-      //throw std::invalid_argument("Coodinate is out of Space!");
+  if(m_isAlive)
     m_coordinate.x() += m_xShift;
-    return *this;
-  }
-  catch(std::exception const & ex)
-  {
-    std::cerr << "Error occurred: " << ex.what() << std::endl;
-    throw;
-  }
+  return *this;
 }
 
 Alien & Alien::MoveDown()
 {
-  try
-  {
-    //if (m_coordinate.y() - m_xShift < 0) throw std::invalid_argument("Coodinate is out of Space!");
+  if(m_isAlive)
     m_coordinate.y() -= m_yShift;
-    return *this;
-  }
-  catch(std::exception const & ex)
-  {
-    std::cerr << "Error occurred: " << ex.what() << std::endl;
-    throw;
-  }
+  return *this;
 }
 
 void Alien::Shot()
@@ -82,7 +64,13 @@ void Alien::Shot()
 void Alien::SufferDamage(int amount)
 {
   m_hp -= amount;
-  Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
+  if (m_hp > 0)
+    Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
+  else
+    {
+      Logger::Instance().Log(*this, ActionType::Destroying);
+      Kill();
+    }
 }
 
 void Alien::CauseDamage(int amount) const

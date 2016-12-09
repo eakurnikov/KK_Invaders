@@ -132,7 +132,7 @@ void GLWidget::paintGL()
     totalScore.setNum(m_mainWindow->getTotalScore());
     painter.drawText(m_screenSize.width()/2 - 100, 40, "Score: " + totalScore);
     QString numberOfLives;
-    numberOfLives.setNum(m_gunNumberOfLives);
+    numberOfLives.setNum(m_gun->GetNumberOfLives());
     painter.drawText(m_screenSize.width() - 200, 40, "Lives: " + numberOfLives);
   }
   painter.end();
@@ -152,21 +152,14 @@ void GLWidget::resizeGL(int w, int h)
 
 void GLWidget::Update(float elapsedSeconds)
 {
-  // ВСЕ ЭТО ДОБРО ВЫЗЫВАЕТ КРЭШ ПРОГРАММЫ. НУЖНО КАК-ТО ИНАЧЕ ОБРАБАТЫВАТЬ ПОПАДАНИЯ.
-
   for(int i = 0; i < m_aliens.size(); i++)
     for(int j = 0; j < m_gun_bullets.size(); j++)
       if (m_gun_bullets[j]->GetCoordinate() > m_aliens[i]->GetCoordinate() - ALIEN_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_aliens[i]->GetCoordinate() + ALIEN_WIDTH / 2)
       //if (GameEntity::DoObjectsIntersect(*m_aliens[i],*m_gun_bullets[j]))
       {
         m_gun_bullets[j]->Hit(*m_aliens[i]);
-
-        //m_aliens[i].reset();
-        //m_aliens.erase(m_aliens.begin() + i);
-
-        //m_gun_bullets[j].reset();
         m_gun_bullets.erase(m_gun_bullets.begin() + j);
-        m_mainWindow->setTotalScore(m_mainWindow->getTotalScore()+100);
+        m_mainWindow->setTotalScore(m_gun->GetScore());
         m_alienKill->play();
       }
 
@@ -176,11 +169,6 @@ void GLWidget::Update(float elapsedSeconds)
       //if (GameEntity::DoObjectsIntersect(*m_obstacles[i],*m_alien_bullets[j]))
       {
         m_alien_bullets[j]->Hit(*m_obstacles[i]);
-
-        //m_obstacles[i].reset();
-        //m_obstacles.erase(m_obstacles.begin() + i);
-
-        //m_alien_bullets[j].reset();
         m_alien_bullets.erase(m_alien_bullets.begin() + j);
       }
 
@@ -190,11 +178,6 @@ void GLWidget::Update(float elapsedSeconds)
       //if (GameEntity::DoObjectsIntersect(*m_obstacles[i],*m_gun_bullets[j]))
       {
         m_gun_bullets[j]->Hit(*m_obstacles[i]);
-
-        //m_obstacles[i].reset();
-        //m_obstacles.erase(m_obstacles.begin() + i);
-
-        //m_gun_bullets[j].reset();
         m_gun_bullets.erase(m_gun_bullets.begin() + j);
       }
 
@@ -203,10 +186,6 @@ void GLWidget::Update(float elapsedSeconds)
     //if (GameEntity::DoObjectsIntersect(*m_gun,*m_alien_bullets[j]))
     {
       m_alien_bullets[j]->Hit(*m_gun);
-
-      //m_gun.reset();
-
-      //m_alien_bullets[j].reset();
       m_alien_bullets.erase(m_alien_bullets.begin() + j);
     }
 
@@ -216,14 +195,6 @@ void GLWidget::Update(float elapsedSeconds)
     m_alien_bullets.push_back(Factory::Instance().Create<Bullet>(*m_aliens[random_index]));
   }
 
-  // Выход из игры
-  //if(m_gunNumberOfLives == 0)
-  /*if(m_aliens.size() < 10)
-  {
-    this->hide();
-    m_mainWindow->ShowInfo();
-  }
-  */
   float const kSpeed = 10.0f; // pixels per second.
 
   if (m_directions[kUpDirection])
@@ -247,6 +218,19 @@ void GLWidget::Render()
 
 void GLWidget::RenderAliens()
 {
+  /*for(int i = 0; i < m_aliens.size(); ++i)
+  {
+    if ((m_aliens[i]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[i]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0) && m_aliens[i]->IsAlive())
+    {
+      for(int i = 0; i < m_aliens.size(); ++i)
+      {
+        m_aliens[i]->Refract();
+        m_aliens[i]->MoveDown();
+      }
+    }
+    break;
+  }*/
+
   if (m_aliens[m_aliens.size() - 1]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[0]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0)
   {
     for(int i = 0; i < m_aliens.size(); ++i)

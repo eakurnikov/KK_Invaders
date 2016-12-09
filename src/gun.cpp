@@ -11,6 +11,8 @@ Gun::Gun()
   m_coordinate = Point2D(SPACE_WIDTH / 2.0f, 0.0f);
   m_body = Box2D(m_coordinate, m_width, m_height);
   m_aim = true;
+  m_score = 0;
+  m_numberOfLives = GUN_NUMBER_OF_LIVES_MIN;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -25,6 +27,8 @@ Gun::Gun(Point2D const & obj)
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
   m_aim = true;
+  m_score = 0;
+  m_numberOfLives = GUN_NUMBER_OF_LIVES_MIN;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -39,6 +43,8 @@ Gun::Gun(Point2D const & obj, unsigned int const Ammo, float firingRate)
   m_coordinate = obj;
   m_body = Box2D(obj, m_width, m_height);
   m_aim = true;
+  m_score = 0;
+  m_numberOfLives = GUN_NUMBER_OF_LIVES_MIN;
 
   Logger::Instance().Log(*this, ActionType::Creation);
 }
@@ -68,7 +74,21 @@ void Gun::Shot()
 void Gun::SufferDamage(int amount)
 {
   m_hp -= amount;
-  Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
+  if (m_hp > 0)
+    Logger::Instance().Log(*this, ActionType::SufferDamage, amount);
+  else
+    if (m_numberOfLives > 1)
+    {
+      Logger::Instance().Log(*this, ActionType::Destroying);
+      m_numberOfLives -= 1;
+      m_hp = 100;
+    }
+    else
+      {
+        Logger::Instance().Log(*this, ActionType::Destroying);
+        m_numberOfLives -= 1;
+        Kill();
+      }
 }
 
 void Gun::CauseDamage(int amount) const
@@ -98,4 +118,14 @@ std::ostream & operator << (std::ostream & os, Gun const & obj)
   os << "Gun (" << obj.GetCoordinate() << ") ";
 
   return os;
+}
+
+int Gun::GetScore() const
+{
+  return m_score;
+}
+
+int Gun::GetNumberOfLives() const
+{
+  return m_numberOfLives;
 }
