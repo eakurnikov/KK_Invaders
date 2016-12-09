@@ -25,6 +25,8 @@ public:
 
   bool IsAlive() const;
 
+  void Resurrect();
+
   void PrintInfo(std::ostream & os) override;
 
 private:

@@ -32,6 +32,8 @@ public:
 
   bool IsAlive() const;
 
+  void Resurrect();
+
   void PrintInfo(std::ostream & os) override;
 
   int GetScore() const;

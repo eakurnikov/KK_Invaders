@@ -55,6 +55,10 @@ public:
   void SetLevel(int const n);
 
   void ShowInfo();
+  void GameOver();
+  void RestartLevel();
+  void NewLevel();
+
   ~MainWindow();
 
 private slots:
@@ -65,7 +69,6 @@ private slots:
   void WriteJson();
   void StartGame();
   void ConfigShow();
-  void GameOver();
   void Ready();
   void ChangeLevel(int const n);
   void ChangeScore(int const n);
@@ -76,6 +79,7 @@ private:
 
   int m_totalScore = 0;
   int m_level = 1;
+  int m_numberOfLives = 3;
 
   QSound * m_buttonClick = new QSound("data/ButtonClick.wav");
 

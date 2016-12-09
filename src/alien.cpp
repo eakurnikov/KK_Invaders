@@ -43,14 +43,20 @@ Alien::Alien(Box2D const & obj)
 
 Alien const & Alien::Move()
 {
-  if (m_isAlive)
+  if(m_isAlive)
     m_coordinate.x() += m_xShift;
   return *this;
 }
 
+void Alien::MoveTo(Point2D const & obj)
+{
+  m_coordinate = obj;
+  m_body = Box2D(obj, m_width, m_height);
+}
+
 Alien & Alien::MoveDown()
 {
-  if (m_isAlive)
+  if(m_isAlive)
     m_coordinate.y() -= m_yShift;
   return *this;
 }
@@ -81,6 +87,11 @@ void Alien::CauseDamage(int amount) const
 bool Alien::IsAlive() const
 {
   return m_isAlive;
+}
+
+void Alien::Resurrect()
+{
+  m_isAlive = true;
 }
 
 float Alien::GetXshift() const

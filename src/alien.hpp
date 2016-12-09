@@ -12,7 +12,6 @@
 #include <functional>
 #include <ostream>
 #include <iostream>
-#include <vector>
 
 class Alien : public Shootable
 {
@@ -25,6 +24,8 @@ public:
   Alien(Box2D const & obj);
 
   Alien const & Move() override;
+
+  void MoveTo(Point2D const & obj);
 
   Alien & MoveDown();
 
@@ -41,6 +42,8 @@ public:
   float GetYshift() const;
 
   void Refract();
+
+  void Resurrect();
 
   void PrintInfo(std::ostream & os) override;
 

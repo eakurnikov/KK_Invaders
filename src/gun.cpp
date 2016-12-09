@@ -101,6 +101,11 @@ bool Gun::IsAlive() const
   return m_isAlive;
 }
 
+void Gun::Resurrect()
+{
+  m_isAlive = true;
+}
+
 void Gun::PrintInfo(std::ostream & os)
 {
   os << "--------------" << std::endl

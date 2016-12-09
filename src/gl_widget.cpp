@@ -90,27 +90,53 @@ void GLWidget::initializeGL()
     }
   }
 
-  //m_bigBro = Factory::Instance().Create<BigBro>(Box2D(Point2D(m_screenSize.rwidth() / 2, m_screenSize.rheight()/2), 800, 300));
+  m_gun = Factory::Instance().Create<Gun>(Point2D(m_screenSize.rwidth() / 2, GUN_HEIGHT / 2));
 
-  /*for (int i = 0; i < m_aliens.size() - 1; i++)
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4, 200.0f)));
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 2, 200.0f)));
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f)));
+}
+
+void GLWidget::NewLevel()
+{
+  m_numberOfAliens = NUMBER_OF_LINES * NUMBER_OF_ALIENS_IN_LINE;
+
+  m_time.start();
+
+  m_aliens.clear();
+  m_obstacles.clear();
+  m_gun_bullets.clear();
+  m_alien_bullets.clear();
+  for(int j = 0; j < NUMBER_OF_LINES; j++)
   {
-    m_aliens[i]->Subscribe(*m_bigBro);
-  }*/
+    for(int i = 0; i < NUMBER_OF_ALIENS_IN_LINE; i++)
+    {
+      m_aliens.push_back(Factory::Instance().Create<Alien>(Point2D(i * 100.0f + 50.0f, j * 100.0f + 400.0f)));
+    }
+  }
 
   m_gun = Factory::Instance().Create<Gun>(Point2D(m_screenSize.rwidth() / 2, GUN_HEIGHT / 2));
 
-  Point2D m_start ;
-  for(int k = 1; k <= NUMBER_OF_GROUPS; k++)
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4, 200.0f)));
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 2, 200.0f)));
+  m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f)));
+
+  /*for(int j = 0; j < NUMBER_OF_LINES; j++)
   {
-    m_start = {k * m_screenSize.rwidth() / 4 - OBSTACLE_WIDTH * 4, 200 - OBSTACLE_HEIGHT * 2};
-    for(int j = 0; j < 4; j++)
+    for(int i = 0; i < NUMBER_OF_ALIENS_IN_LINE; i++)
     {
-      for(int i = 0; i < 8; i++)
-      {
-        m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_start.x() + i * OBSTACLE_WIDTH, m_start.y() + j * OBSTACLE_HEIGHT)));
-      }
+      m_aliens[i+j*NUMBER_OF_ALIENS_IN_LINE]->SetCoordinate(Point2D(i * 100.0f + 50.0f, j * 100.0f + 400.0f));
+      m_aliens[i+j*NUMBER_OF_ALIENS_IN_LINE]->Resurrect();
     }
   }
+  m_gun->Resurrect();
+  m_gun->SetCoordinate(Point2D(m_screenSize.rwidth() / 2, GUN_HEIGHT / 2));
+  m_obstacles[0]->SetCoordinate(Point2D(m_screenSize.rwidth() / 4, 200.0f));
+  m_obstacles[1]->SetCoordinate(Point2D(m_screenSize.rwidth() / 2, 200.0f));
+  m_obstacles[2]->SetCoordinate(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f));
+  m_obstacles[0]->Resurrect();
+  m_obstacles[1]->Resurrect();
+  m_obstacles[2]->Resurrect();*/
 }
 
 void GLWidget::paintGL()
@@ -150,6 +176,9 @@ void GLWidget::paintGL()
     QString numberOfLives;
     numberOfLives.setNum(m_gun->GetNumberOfLives());
     painter.drawText(m_screenSize.width() - 200, 40, "Lives: " + numberOfLives);
+    QString numberOfAliensToKill;
+    numberOfAliensToKill.setNum(m_numberOfAliens);
+    painter.drawText(m_screenSize.width()/3 - 200, 40, "Aliens: " + numberOfAliensToKill);
   }
   painter.end();
   ++m_frames;
@@ -161,32 +190,48 @@ void GLWidget::resizeGL(int w, int h)
   m_screenSize.setWidth(w);
   m_screenSize.setHeight(h);
 
-  m_obstacles.clear();
-  Point2D m_start ;
-  for(int k = 1; k <= NUMBER_OF_GROUPS; k++)
-  {
-    m_start = {k * m_screenSize.rwidth() / 4 - OBSTACLE_WIDTH * 4, 200 - OBSTACLE_HEIGHT * 2};
-    for(int j = 0; j < 4; j++)
-    {
-      for(int i = 0; i < 8; i++)
-      {
-        m_obstacles.push_back(Factory::Instance().Create<Obstacle>(Point2D(m_start.x() + i * OBSTACLE_WIDTH, m_start.y() + j * OBSTACLE_HEIGHT)));
-      }
-    }
-  }
+  m_obstacles[0]->SetCoordinate(Point2D(m_screenSize.rwidth() / 4, 200.0f));
+  m_obstacles[1]->SetCoordinate(Point2D(m_screenSize.rwidth() / 2, 200.0f));
+  m_obstacles[2]->SetCoordinate(Point2D(m_screenSize.rwidth() / 4 * 3, 200.0f));
 }
 
 void GLWidget::Update(float elapsedSeconds)
 {
+  if(!m_gun->IsAlive())
+  {
+    if(m_mainWindow->getGunNumberOfLives() == 0)
+    {
+      this->hide();
+      //NewLevel();
+      m_mainWindow->GameOver();
+    }
+    else
+    {
+      this->hide();
+      NewLevel();
+      m_mainWindow->RestartLevel();
+    }
+  }
+
+  if(m_numberOfAliens == 0)
+  {
+    this->hide();
+    NewLevel();
+    m_mainWindow->NewLevel();
+  }
+
   for(int i = 0; i < m_aliens.size(); i++)
     for(int j = 0; j < m_gun_bullets.size(); j++)
       if (m_gun_bullets[j]->GetCoordinate() > m_aliens[i]->GetCoordinate() - ALIEN_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_aliens[i]->GetCoordinate() + ALIEN_WIDTH / 2)
       //if (GameEntity::DoObjectsIntersect(*m_aliens[i],*m_gun_bullets[j]))
       {
+
         m_gun_bullets[j]->Hit(*m_aliens[i]);
         m_gun_bullets.erase(m_gun_bullets.begin() + j);
-        m_mainWindow->setTotalScore(m_gun->GetScore());
+        //m_mainWindow->setTotalScore(m_gun->GetScore());
+        m_mainWindow->setTotalScore(m_mainWindow->getTotalScore()+100);
         m_alienKill->play();
+        m_numberOfAliens -= 1;
       }
 
   for(int i = 0; i < m_obstacles.size(); i++)
@@ -200,7 +245,7 @@ void GLWidget::Update(float elapsedSeconds)
 
   for(int i = 0; i < m_obstacles.size(); i++)
     for(int j = 0; j < m_gun_bullets.size(); j++)
-      if (m_gun_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH && m_gun_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH)
+      if (m_gun_bullets[j]->GetCoordinate() > m_obstacles[i]->GetCoordinate() - OBSTACLE_WIDTH / 2 && m_gun_bullets[j]->GetCoordinate() < m_obstacles[i]->GetCoordinate() + OBSTACLE_WIDTH / 2)
       //if (GameEntity::DoObjectsIntersect(*m_obstacles[i],*m_gun_bullets[j]))
       {
         m_gun_bullets[j]->Hit(*m_obstacles[i]);
@@ -215,9 +260,9 @@ void GLWidget::Update(float elapsedSeconds)
       m_alien_bullets.erase(m_alien_bullets.begin() + j);
     }
 
-  if (m_time.elapsed() % 10 == 0)
+  if (m_time.elapsed() % 127 < 1)
   {
-    random_index = std::rand()% 31;
+    random_index = std::rand()% m_numberOfAliens;
     m_alien_bullets.push_back(Factory::Instance().Create<Bullet>(*m_aliens[random_index]));
   }
 
@@ -244,32 +289,31 @@ void GLWidget::Render()
 
 void GLWidget::RenderAliens()
 {
-  for(int i = 0; i < m_aliens.size(); ++i)
+  /*for(int i = 0; i < m_aliens.size(); ++i)
   {
     if ((m_aliens[i]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[i]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0) && m_aliens[i]->IsAlive())
     {
-      for(int j = 0; j < m_aliens.size(); ++j)
+      for(int i = 0; i < m_aliens.size(); ++i)
       {
-        m_aliens[j]->Refract();
-        m_aliens[j]->MoveDown();
+        m_aliens[i]->Refract();
+        m_aliens[i]->MoveDown();
       }
-      break;
     }
-  }
+    break;
+  }*/
 
-  /*if (m_aliens[m_aliens.size() - 1]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[m_aliens.size() - 9]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0)
+  if (m_aliens[m_aliens.size() - 1]->GetCoordinate().x() + ALIEN_WIDTH / 2 > m_screenSize.rwidth() || m_aliens[0]->GetCoordinate().x() - ALIEN_WIDTH / 2 < 0)
   {
     for(int i = 0; i < m_aliens.size(); ++i)
     {
       m_aliens[i]->Refract();
       m_aliens[i]->MoveDown();
     }
-  }*/
+  }
   for(int i = 0; i < m_aliens.size(); ++i)
   {
     m_texturedRect->Render(m_textureAlien, Point2D(static_cast<int>(m_aliens[i]->Move().GetCoordinate().x()),static_cast<int>(m_aliens[i]->Move().GetCoordinate().y())), QSize(ALIEN_WIDTH, ALIEN_HEIGHT), m_screenSize);
   }
-  //m_bigBro->Move();
 }
 
 void GLWidget::RenderBullets()

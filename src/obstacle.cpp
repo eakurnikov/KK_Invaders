@@ -4,7 +4,7 @@
 Obstacle::Obstacle()
 {
   m_isAlive = true;
-  m_hp = 100;
+  m_hp = 500;
   m_height = OBSTACLE_HEIGHT;
   m_width = OBSTACLE_WIDTH;
   m_coordinate = {m_width / 2.0f, m_height / 2.0f};
@@ -16,7 +16,7 @@ Obstacle::Obstacle()
 Obstacle::Obstacle(Point2D const & obj)
 {
   m_isAlive = true;
-  m_hp = 100;
+  m_hp = 500;
   m_height = OBSTACLE_HEIGHT;
   m_width = OBSTACLE_WIDTH;
   m_coordinate = obj;
@@ -28,7 +28,7 @@ Obstacle::Obstacle(Point2D const & obj)
 Obstacle::Obstacle(Box2D const & obj)
 {
   m_isAlive = true;
-  m_hp = 100;
+  m_hp = 500;
   m_height = OBSTACLE_HEIGHT;
   m_width = OBSTACLE_WIDTH;
   m_coordinate = obj.GetCenter();
@@ -52,6 +52,11 @@ void Obstacle::SufferDamage(int amount)
 bool Obstacle::IsAlive() const
 {
   return m_isAlive;
+}
+
+void Obstacle::Resurrect()
+{
+  m_isAlive = true;
 }
 
 void Obstacle::PrintInfo(std::ostream & os)

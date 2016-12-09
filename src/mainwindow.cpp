@@ -42,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent)
   m_layoutWelcome->addWidget(m_buttonWStart, 2, 0);
   m_layoutWelcome->addWidget(m_buttonExit, 2, 1);
 
-
   // Информационный виджет
   m_widgetInfo = new QWidget(this);
   m_widgetInfo->setStyleSheet("background-color:black;");
@@ -58,7 +57,6 @@ MainWindow::MainWindow(QWidget *parent)
   m_labelGameName->setStyleSheet("QLabel {color : White; }");
   QPixmap pixmap("data/your-empire-needs-you.png");
   m_labelGameName->setPixmap(pixmap.scaled(600, 600, Qt::IgnoreAspectRatio, Qt::FastTransformation));
-
 
   // Номер уровня
   m_labelGameLevel = new QLabel("Level:", m_widgetInfo);
@@ -88,7 +86,7 @@ MainWindow::MainWindow(QWidget *parent)
   m_labelGameLives->setFont(QFont("Courier", 16, QFont::Bold, false));
   m_labelGameLives->setStyleSheet("QLabel {color : White; }");
 
-  m_labelGameLivesValue = new QLabel("1", m_widgetInfo);
+  m_labelGameLivesValue = new QLabel("3", m_widgetInfo);
   m_labelGameLivesValue->setAlignment(Qt::AlignCenter);
   m_labelGameLivesValue->setFont(QFont("Courier", 16, QFont::Bold, false));
   m_labelGameLivesValue->setStyleSheet("QLabel {color : White; }");
@@ -120,8 +118,6 @@ MainWindow::MainWindow(QWidget *parent)
   QPixmap pixmapGameOver("data/you-have-failed-your-empire.png");
   m_labelGameOver->setPixmap(pixmapGameOver.scaled(600, 600, Qt::IgnoreAspectRatio, Qt::FastTransformation));
 
-
-
   // Номер последнего уровня
   m_labelGameOverLevel = new QLabel("Last Level:", m_widgetGameOver);
   m_labelGameOverLevel->setAlignment(Qt::AlignCenter);
@@ -150,7 +146,6 @@ MainWindow::MainWindow(QWidget *parent)
   m_layoutGameOver->addWidget(m_labelGameOverLevelValue, 2, 1);
   m_layoutGameOver->addWidget(m_labelGameOverScore, 3, 0);
   m_layoutGameOver->addWidget(m_labelGameOverScoreValue, 3, 1);
-
 
   // Центральный виджет
   m_centralWidget = new QWidget(this);
@@ -608,31 +603,6 @@ void MainWindow::ReadJson()
   m_glw.setObstacleHP(settings["settings"]["ObstacleHP"].asInt());
   m_glw.setObstacleNumberInGroup(settings["settings"]["ObstacleNumberInGroup"].asInt());
   m_glw.setObstacleNumberOfGroups(settings["settings"]["ObstacleNumberOfGroups"].asInt());
-
-  /*
-  std::cout << settings["settings"]["aliensCount"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunFiringRate"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["GunNumberOfLives"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienFiringRate"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienNumberInLevel"].asInt() << std::endl;
-  std::cout << settings["settings"]["AlienNumberOfLevels"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletSpeed"].asInt() << std::endl;
-  std::cout << settings["settings"]["BulletDamage"].asInt() << std::endl;
-  std::cout << settings["settings"]["ObstacleHP"].asInt() << std::endl;
-  std::cout << settings["settings"]["ObstacleNumberInGroup"].asInt() << std::endl;
-  std::cout << settings["settings"]["bulletsCount"].asInt() << std::endl;
-  std::cout << settings["settings"]["entities"]["gun"]["health"].asInt() << std::endl;
-  std::cout << settings["settings"]["entities"]["alien"]["health"].asInt() << std::endl;
-  std::cout << settings["settings"]["entities"]["obstacle"]["health"].asInt() << std::endl;
-  */
 }
 
 
@@ -653,33 +623,9 @@ void MainWindow::ConfigShow()
 void MainWindow::Ready()
 {
   this->hide();
+  //m_glw(this, QColor(255,1,1,1));
   ReadJson();
-/*
-  m_glw.setGunHP(getGunHP());
-  m_glw.setGunFiringRate(getGunFiringRate());
-  m_glw.setGunSpeed(getGunSpeed());
-  m_glw.setGunNumberOfLives(1);//getGunNumberOfLives());
-
-  m_glw.setAlienHP(getAlienHP());
-  m_glw.setAlienFiringRate(getAlienFiringRate());
-  m_glw.setAlienSpeed(1);//getAlienSpeed());
-  m_glw.setAlienNumberInLevel(getAlienNumberInLevel());
-  m_glw.setAlienNumberOfLevels(getAlienNumberOfLevels());
-
-  m_glw.setBulletHP(getBulletHP());
-  m_glw.setBulletSpeed(getBulletSpeed());
-  m_glw.setBulletDamage(1);//getBulletDamage());
-
-  m_glw.setObstacleHP(getObstacleHP());
-  m_glw.setObstacleNumberInGroup(getObstacleNumberInGroup());
-  m_glw.setObstacleNumberOfGroups(getObstacleNumberOfGroups());
-*/
   m_glw.show();
-}
-
-void MainWindow::GameOver()
-{
-  setCentralWidget(m_widgetGameOver);
 }
 
 int MainWindow::getGunHP()
@@ -699,7 +645,7 @@ int MainWindow::getGunSpeed()
 
 int MainWindow::getGunNumberOfLives()
 {
-  return m_sliderGunNumberOfLives->value();
+  return m_numberOfLives;
 }
 
 int MainWindow::getAlienHP()
@@ -761,6 +707,7 @@ int MainWindow::getObstacleNumberOfGroups()
 
 void MainWindow::ShowInfo()
 {
+  m_numberOfLives = m_sliderGunNumberOfLives->value();
   setCentralWidget(m_widgetInfo);
   this->show();
 }
@@ -801,10 +748,35 @@ void MainWindow::ChangeScore(int const n)
 
 void MainWindow::ChangeLives()
 {
-
   std::string lives = "Lives: " + m_sliderGunHP->value();
   QString qlives(lives.c_str());
   m_labelGameLives->setText(qlives);
+}
+void MainWindow::GameOver()
+{
+  m_labelGameOverScoreValue->setNum(m_totalScore);
+  m_labelGameLevel->setNum(m_level);
+  setCentralWidget(m_widgetGameOver);
+  this->show();
+}
+
+void MainWindow::NewLevel()
+{
+  m_labelGameScoreValue->setNum(m_totalScore);
+  m_level += 1;
+  m_labelGameLevelValue->setNum(m_level);
+  setCentralWidget(m_widgetInfo);
+  this->show();
+}
+
+void MainWindow::RestartLevel()
+{
+  m_labelGameScoreValue->setNum(m_totalScore);
+  m_labelGameLevelValue->setNum(m_level);
+  m_numberOfLives-=1;
+  m_labelGameLivesValue->setNum(m_numberOfLives);
+  setCentralWidget(m_widgetInfo);
+  this->show();
 }
 
 MainWindow::~MainWindow()
