@@ -44,9 +44,13 @@ public:
 
   static bool DoObjectsIntersect(GameEntity const & obj1, GameEntity const & obj2);
 
+  void Kill();
+
 protected:
 
   GameEntity();
+
+  bool m_isAlive = false;
 
   bool m_isCreated = false;
 
@@ -73,4 +77,3 @@ enum ActionType
 {
   Creation, Destroying, Shot, CauseDamage, SufferDamage
 };
-

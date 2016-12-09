@@ -29,7 +29,6 @@ public:
 
 private:
 
-  bool m_isAlive = false;
 };
 
 std::ostream & operator << (std::ostream & os, Obstacle const & obj);

@@ -5,6 +5,7 @@
 GameEntity::GameEntity()
 {
   m_isCreated = true;
+  m_isAlive = true;
   m_hp = 100;
 }
 
@@ -96,4 +97,10 @@ bool GameEntity::DoObjectsIntersect(GameEntity const & obj1, GameEntity const & 
   if (b1.rightBottomPoint().y() < b2.leftTopPoint().y()) return false; // a is above b
   if (b1.leftTopPoint().y() > b2.rightBottomPoint().y()) return false; // a is below b
   return true; // boxes overlap
+}
+
+void GameEntity::Kill()
+{
+  m_isAlive = false;
+  m_coordinate = Point2D(-100.0f, -100.0f);
 }
